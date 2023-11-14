@@ -1,9 +1,9 @@
-package com.metrica.vibely.model;
+package com.metrica.vibely.data.entity;
 
 import java.util.List;
 import java.util.UUID;
 
-import com.metrica.vibely.model.enumerator.ChatType;
+import com.metrica.vibely.data.model.enumerator.ChatType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

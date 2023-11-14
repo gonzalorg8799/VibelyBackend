@@ -1,9 +1,9 @@
-package com.metrica.vibely.model;
+package com.metrica.vibely.data.entity;
 
 import java.util.List;
 
-import com.metrica.vibely.model.enumerator.PrivacyType;
-import com.metrica.vibely.model.enumerator.Status;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.Status;
 
 public class Admin extends User{
 	   // <<-CONSTRUCTORS->>
