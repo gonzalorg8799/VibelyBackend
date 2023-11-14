@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.metrica.vibely.data.helper.PasswordHashing;
+import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.UserService;
@@ -30,7 +32,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User create(User user) {
+	public User create(UserDTO userParam) {
+		User user = UserMapper.toEntity(userParam);
+		
 		try {
 			user.setPassword(PasswordHashing.hash(user.getPassword()));
 		} catch (Exception e) {
@@ -40,7 +44,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User update(User updatedUser) {
+	public User update(UserDTO updatedUser) {
 		String username = updatedUser.getUsername();
 		User user = userRepository.findByUsername(username).orElseThrow();
 		
