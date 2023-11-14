@@ -1,4 +1,4 @@
-package com.metrica.vibely.model;
+package com.metrica.vibely.data.entity;
 
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;

@@ -1,9 +1,9 @@
-package com.metrica.vibely.repository;
+package com.metrica.vibely.data.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.metrica.vibely.model.Post;
+import com.metrica.vibely.data.entity.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, java.util.UUID>{

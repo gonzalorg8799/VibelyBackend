@@ -1,11 +1,11 @@
-package com.metrica.vibely.model;
+package com.metrica.vibely.data.entity;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import com.metrica.vibely.model.enumerator.PrivacyType;
-import com.metrica.vibely.model.enumerator.Status;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.metrica.vibely.model;
+package com.metrica.vibely.data.entity;
 
 import java.util.List;
 import java.util.UUID;
