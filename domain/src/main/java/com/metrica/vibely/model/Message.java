@@ -20,8 +20,7 @@ public class Message {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "messageId", nullable = false)
 	private UUID messageId;
-    private String srcUsername;
-    private String content;
+    private String srcUsername, content;
     
     //Relations
 	@JoinColumn(name = "chat_id", nullable = false, foreignKey = @ForeignKey(name = "fk_chat_message"))

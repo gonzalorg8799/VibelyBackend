@@ -25,10 +25,8 @@ public class User {
 		@GeneratedValue(strategy = GenerationType.UUID)
 		@Column(name = "userId", nullable = false)
 		private UUID userId;		
-		private String username;		
-		private String password;		
-		private String nickname;		
-		private String email;
+		private String username, password, nickname, email;		
+
 		
 		@Enumerated(value = EnumType.STRING)
 		private PrivacyType privacyType;

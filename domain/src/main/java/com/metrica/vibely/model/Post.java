@@ -25,8 +25,7 @@ public class Post {
 	@Column(name = "postId", nullable = false)
 	private UUID postId;
 	private String content;
-	private Integer likes;
-	private Integer saved;
+	private Integer likes, saved;
 	
     @OneToMany() //orphanRemoval -> para que si se elimina el post "padre" se eliminen de la base de datos los comentarios y no de error.
 	private List<Post> comments;
