@@ -5,24 +5,33 @@ import java.util.UUID;
 
 import com.metrica.vibely.model.enumerator.ChatType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Chat {
 	// <<-FIELDS->>
+	
+	//Basic
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "chatId", nullable = false)
     private UUID chatId;
 	
 	@Enumerated(value = EnumType.STRING)
     private ChatType type;
 	
+	//Relations
+	@OneToMany(mappedBy = "participant_id")
     private List<User> participants;
+	
+	@OneToMany(mappedBy = "message_id")
     private List<Message> messages;
     
     // <<-CONSTRUCTORS->>
