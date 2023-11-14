@@ -20,7 +20,6 @@ public class Message {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "messageId", nullable = false)
 	private UUID messageId;
-	
     private String srcUsername;
     private String content;
     

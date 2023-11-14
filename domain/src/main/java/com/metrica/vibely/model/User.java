@@ -15,9 +15,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class User {
@@ -27,14 +24,10 @@ public class User {
 		@Id
 		@GeneratedValue(strategy = GenerationType.UUID)
 		@Column(name = "userId", nullable = false)
-		private UUID userId;
-		
-		private String username;
-		
-		private String password;
-		
-		private String nickname;
-		
+		private UUID userId;		
+		private String username;		
+		private String password;		
+		private String nickname;		
 		private String email;
 		
 		@Enumerated(value = EnumType.STRING)
@@ -43,8 +36,7 @@ public class User {
 		@Enumerated(value = EnumType.STRING)
 		private Status status;
 		
-		private Integer logins;
-		
+		private Integer logins;		
 		private LocalDate blockedDate;
 			
 			
