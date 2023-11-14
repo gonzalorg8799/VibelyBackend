@@ -1,6 +1,11 @@
 package com.metrica.vibely.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 //revisar si no tiene id explota
@@ -8,6 +13,11 @@ public class Message {
     
     // <<-FIELDS->>
 	//habría que poner el generated value para el id de cada mensaje
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID messageId;
     private Chat chatOwner;
     private String srcUsername;
     private String content;
