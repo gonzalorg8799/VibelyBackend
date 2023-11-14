@@ -7,44 +7,26 @@ import java.util.UUID;
 import com.metrica.vibely.model.enumerator.PrivacyType;
 import com.metrica.vibely.model.enumerator.Status;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
 	  // <<-FIELDS->>
+	
+	  //Basic
 		@Id
 		@GeneratedValue(strategy = GenerationType.UUID)
-		private UUID userId;
-		
-		@NotNull
-		@NotBlank
-		private String username;
-		
-		@NotNull
-		@NotBlank
-		private String password;
-		
-		@Pattern(regexp = "[a-zA-Z_-\\d]*")
-		@NotBlank
-		private String nickname;
-		
-		@Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
-		@NotNull
-		@NotBlank
-		private String email;
-		
-		private List<User> followers;
-		private List<User> following;
-		private List<Post> posts;
-		private List<Chat> chats;
+		@Column(name = "userId", nullable = false)
+		private UUID userId;		
+		private String username, password, nickname, email;		
+
 		
 		@Enumerated(value = EnumType.STRING)
 		private PrivacyType privacyType;
@@ -52,8 +34,24 @@ public class User {
 		@Enumerated(value = EnumType.STRING)
 		private Status status;
 		
-		private Integer logins;
+		private Integer logins;		
 		private LocalDate blockedDate;
+			
+			
+		//Relations
+		@OneToMany
+		private List<User> followers;
+		
+		@OneToMany
+		private List<User> following;
+		
+		@OneToMany(mappedBy = "post_id")
+		private List<Post> posts;
+		
+		@OneToMany(mappedBy = "chat_id")
+		private List<Chat> chats;
+		
+		
 
 	    // <<-CONSTRUCTORS->>
 		public User() {

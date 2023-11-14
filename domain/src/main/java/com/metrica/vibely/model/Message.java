@@ -2,25 +2,31 @@ package com.metrica.vibely.model;
 
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 
 @Entity
-//revisar si no tiene id explota
 public class Message {
     
-    // <<-FIELDS->>
-	//habría que poner el generated value para el id de cada mensaje
+    // <<-FIELDS->>	
 	
-	
+	//Basic
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "messageId", nullable = false)
 	private UUID messageId;
+    private String srcUsername, content;
+    
+    //Relations
+	@JoinColumn(name = "chat_id", nullable = false, foreignKey = @ForeignKey(name = "fk_chat_message"))
     private Chat chatOwner;
-    private String srcUsername;
-    private String content;
+
+ 
     
     // <<-CONSTRUCTORS->>
     public Message() {
