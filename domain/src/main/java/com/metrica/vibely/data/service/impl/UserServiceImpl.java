@@ -1,15 +1,22 @@
 package com.metrica.vibely.data.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.metrica.vibely.data.helper.PasswordHashing;
 import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.enumerator.Status;
 import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.UserService;
+import com.metrica.vibely.data.util.PasswordHashing;
 
+/**
+ * @since 2023-11-14
+ * @version 1.0
+ */
 @Service
 public class UserServiceImpl implements UserService {
 	
@@ -35,6 +42,12 @@ public class UserServiceImpl implements UserService {
 	public User create(UserDTO userParam) {
 		User user = UserMapper.toEntity(userParam);
 		
+		user.setStatus(Status.ENABLED);
+		user.setLogins(1);
+		user.setFollowers(List.of());
+        user.setFollowing(List.of());
+        user.setChats(List.of());
+        
 		try {
 			user.setPassword(PasswordHashing.hash(user.getPassword()));
 		} catch (Exception e) {

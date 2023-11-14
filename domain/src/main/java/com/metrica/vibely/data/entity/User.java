@@ -16,182 +16,173 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+/**
+ * 
+ * @since 2023-11-13
+ * @version 1.0
+ */
 @Entity
 public class User {
-	  // <<-FIELDS->>
-	
-	  //Basic
-		@Id
-		@GeneratedValue(strategy = GenerationType.UUID)
-		@Column(name = "userId", nullable = false)
-		private UUID userId;		
-		private String username, password, nickname, email;		
+    
+    // <<-FIELDS->>
 
-		
-		@Enumerated(value = EnumType.STRING)
-		private PrivacyType privacyType;
-		
-		@Enumerated(value = EnumType.STRING)
-		private Status status;
-		
-		private Integer logins;		
-		private LocalDate blockedDate;
-			
-			
-		//Relations
-		@OneToMany
-		private List<User> followers;
-		
-		@OneToMany
-		private List<User> following;
-		
-		@OneToMany(mappedBy = "post_id")
-		private List<Post> posts;
-		
-		@OneToMany(mappedBy = "chat_id")
-		private List<Chat> chats;
-		
-		
+    // Basic
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "userId", nullable = false)
+    private UUID userId;
+    private String username, password, nickname, email;
 
-	    // <<-CONSTRUCTORS->>
-		public User() {
-		}
+    @Enumerated(value = EnumType.STRING)
+    private PrivacyType privacyType;
 
-	    public User(
-	            UUID userId,
-	            String username,
-	            String password,
-	            String nickname,
-	            String email,
-	            List<User> followers,
-	            List<User> following,
-	            List<Chat> chats,
-	            List<Post> posts,
-	            PrivacyType privacyType,
-	            Status status,
-	            Integer logins,
-	            LocalDate blockedDate) {
-	        this.setUserId(userId);
-	        this.setUsername(username);
-	        this.setPassword(password);
-	        this.setNickname(nickname);
-	        this.setEmail(email);
-	        this.setFollowers(followers);
-	        this.setFollowing(following);
-	        this.setPosts(posts);
-	        this.setChats(chats);
-	        this.setPrivacyType(privacyType);
-	        this.setStatus(status);
-	        this.setLogins(logins);
-	        this.setBlockedDate(blockedDate);
-	    }
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
 
-	    // <<-GETTERS & SETTERS->>
-		public UUID getUserId() {
-			return userId;
-		}
+    private Integer logins;
+    private LocalDate blockedDate;
 
-	    public void generateUserId() {
-	        this.setUserId(UUID.randomUUID());
-	    }
+    // Relations
+    @OneToMany
+    private List<User> followers;
 
-		public void setUserId(UUID userId) {
-			this.userId = userId;
-		}
+    @OneToMany
+    private List<User> following;
 
-	    public String getUsername() {
-	        return username;
-	    }
+    @OneToMany(mappedBy = "post_id")
+    private List<Post> posts;
 
-	    public void setUsername(String username) {
-	        this.username = username;
-	    }
+    @OneToMany(mappedBy = "chat_id")
+    private List<Chat> chats;
 
-	    public String getPassword() {
-	        return password;
-	    }
+    // <<-CONSTRUCTORS->>
+    public User() {
+    }
 
-	    public void setPassword(String password) {
-	        this.password = password;
-	    }
+    public User(UUID userId, String username, String password, String nickname, String email, List<User> followers,
+            List<User> following, List<Chat> chats, List<Post> posts, PrivacyType privacyType, Status status,
+            Integer logins, LocalDate blockedDate) {
+        this.setUserId(userId);
+        this.setUsername(username);
+        this.setPassword(password);
+        this.setNickname(nickname);
+        this.setEmail(email);
+        this.setFollowers(followers);
+        this.setFollowing(following);
+        this.setPosts(posts);
+        this.setChats(chats);
+        this.setPrivacyType(privacyType);
+        this.setStatus(status);
+        this.setLogins(logins);
+        this.setBlockedDate(blockedDate);
+    }
 
-	    public String getNickname() {
-	        return nickname;
-	    }
+    // <<-GETTERS & SETTERS->>
+    public UUID getUserId() {
+        return userId;
+    }
 
-	    public void setNickname(String nickname) {
-	    	this.nickname=nickname;
-	    }
+    public void generateUserId() {
+        this.setUserId(UUID.randomUUID());
+    }
 
-	    public String getEmail() {
-	        return email;
-	    }
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
 
-	    public void setEmail(String email) {
-	    	this.email=email;
-	    }
+    public String getUsername() {
+        return username;
+    }
 
-	    public List<User> getFollowers() {
-	        return followers;
-	    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	    public void setFollowers(List<User> followers) {
-	        this.followers = followers;
-	    }
+    public String getPassword() {
+        return password;
+    }
 
-	    public List<User> getFollowing() {
-	        return following;
-	    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	    public void setFollowing(List<User> following) {
-	        this.following = following;
-	    }
+    public String getNickname() {
+        return nickname;
+    }
 
-	    public List<Post> getPosts() {
-	        return posts;
-	    }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-	    public void setPosts(List<Post> posts) {
-	        this.posts = posts;
-	    }
+    public String getEmail() {
+        return email;
+    }
 
-	    public List<Chat> getChats() {
-	        return chats;
-	    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	    public void setChats(List<Chat> chats) {
-	        this.chats = chats;
-	    }
+    public List<User> getFollowers() {
+        return followers;
+    }
 
-	    public PrivacyType getPrivacyType() {
-	        return privacyType;
-	    }
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
 
-	    public void setPrivacyType(PrivacyType privacyType) {
-	        this.privacyType = privacyType;
-	    }
+    public List<User> getFollowing() {
+        return following;
+    }
 
-	    public Status getStatus() {
-	        return status;
-	    }
+    public void setFollowing(List<User> following) {
+        this.following = following;
+    }
 
-	    public void setStatus(Status status) {
-	        this.status = status;
-	    }
+    public List<Post> getPosts() {
+        return posts;
+    }
 
-	    public Integer getLogins() {
-	        return logins;
-	    }
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 
-	    public void setLogins(Integer logins) {
-	        this.logins = logins;
-	    }
+    public List<Chat> getChats() {
+        return chats;
+    }
 
-	    public LocalDate getBlockedDate() {
-	        return blockedDate;
-	    }
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
+    }
 
-	    public void setBlockedDate(LocalDate blockedDate) {
-	        this.blockedDate = blockedDate;
-	    }
+    public PrivacyType getPrivacyType() {
+        return privacyType;
+    }
+
+    public void setPrivacyType(PrivacyType privacyType) {
+        this.privacyType = privacyType;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Integer getLogins() {
+        return logins;
+    }
+
+    public void setLogins(Integer logins) {
+        this.logins = logins;
+    }
+
+    public LocalDate getBlockedDate() {
+        return blockedDate;
+    }
+
+    public void setBlockedDate(LocalDate blockedDate) {
+        this.blockedDate = blockedDate;
+    }
 }
