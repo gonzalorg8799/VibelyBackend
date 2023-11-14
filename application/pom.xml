@@ -41,6 +41,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+        	<groupId>com.metrica.vibely</groupId>
+        	<artifactId>domain</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
