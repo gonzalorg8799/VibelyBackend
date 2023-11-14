@@ -21,6 +21,7 @@ public class PasswordHashing {
     public static final int SALT_SIZE_BYTES = 16;
     public static final int HASH_SIZE_BYTES = 32;
  
+    
     // <<-METHODS->>
     public static String hash(String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
         byte[] salt = new byte[SALT_SIZE_BYTES];
