@@ -67,13 +67,7 @@ public class CreateUserRequest {
     }
 
     public void setPassword(String password) {
-        try {
-			this.password = PasswordHashing.hash(password);
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+		this.password = PasswordHashing.hash(password);
     }
 
     public String getNickname() {
