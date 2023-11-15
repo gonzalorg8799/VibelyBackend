@@ -76,14 +76,29 @@ public class User {
     public User() {
     }
 
-    public User(UUID userId, String username, String password, String nickname, String email, Set<User> followers,
-            Set<User> following, Set<Chat> chats, Set<Post> posts, PrivacyType privacy, Status status, State state,
-            Integer logins, LocalDate blockedDate, LocalDateTime lastConnDate) {
+    public User(
+    		UUID userId,
+    		String username,
+    		String password, 
+    		String nickname, 
+    		String email, 
+    		String apiKey, 
+    		Set<User> followers,
+            Set<User> following, 
+            Set<Chat> chats, 
+            Set<Post> posts, 
+            PrivacyType privacy, 
+            Status status, 
+            State state,
+            Integer logins, 
+            LocalDate blockedDate, 
+            LocalDateTime lastConnDate) {
         this.setUserId(userId);
         this.setUsername(username);
         this.setPassword(password);
         this.setNickname(nickname);
         this.setEmail(email);
+        this.setApiKey(apiKey);
         this.setFollowers(followers);
         this.setFollowing(following);
         this.setPosts(posts);
