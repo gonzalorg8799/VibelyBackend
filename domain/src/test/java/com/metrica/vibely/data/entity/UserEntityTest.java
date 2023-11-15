@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.State;
 import com.metrica.vibely.data.model.enumerator.Status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
