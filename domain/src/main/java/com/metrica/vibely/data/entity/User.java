@@ -1,11 +1,12 @@
 package com.metrica.vibely.data.entity;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.State;
 import com.metrica.vibely.data.model.enumerator.Status;
 
 import jakarta.persistence.Column;
@@ -32,16 +33,31 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     private UUID userId;
-    private String username, password, nickname, email;
-
+    
+    private String username;
+    private String password;
+    private String nickname;
+    private String email;
+    
+    @Column(name = "api_key")
+    private String apiKey;
+    
     @Enumerated(value = EnumType.STRING)
-    private PrivacyType privacyType;
+    private PrivacyType privacy;
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
+    
+    @Enumerated(value = EnumType.STRING)
+    private State state;
 
-    private Integer logins;
+	private Integer logins;
+	
+	@Column(name = "blocked_date")
     private LocalDate blockedDate;
+	
+	@Column(name = "last_connection_date")
+    private LocalDateTime lastConnDate;
 
     // Relations
     @OneToMany
@@ -60,22 +76,39 @@ public class User {
     public User() {
     }
 
-    public User(UUID userId, String username, String password, String nickname, String email, Set<User> followers,
-            Set<User> following, Set<Chat> chats, Set<Post> posts, PrivacyType privacyType, Status status,
-            Integer logins, LocalDate blockedDate) {
+    public User(
+    		UUID userId,
+    		String username,
+    		String password, 
+    		String nickname, 
+    		String email, 
+    		String apiKey, 
+    		Set<User> followers,
+            Set<User> following, 
+            Set<Chat> chats, 
+            Set<Post> posts, 
+            PrivacyType privacy, 
+            Status status, 
+            State state,
+            Integer logins, 
+            LocalDate blockedDate, 
+            LocalDateTime lastConnDate) {
         this.setUserId(userId);
         this.setUsername(username);
         this.setPassword(password);
         this.setNickname(nickname);
         this.setEmail(email);
+        this.setApiKey(apiKey);
         this.setFollowers(followers);
         this.setFollowing(following);
         this.setPosts(posts);
         this.setChats(chats);
-        this.setPrivacyType(privacyType);
+        this.setPrivacy(privacy);
         this.setStatus(status);
+        this.setState(state);
         this.setLogins(logins);
         this.setBlockedDate(blockedDate);
+        this.setLastConnDate(lastConnDate);
     }
 
     // <<-GETTERS & SETTERS->>
@@ -83,11 +116,8 @@ public class User {
         return userId;
     }
 
-    public void generateUserId() {
-        this.setUserId(UUID.randomUUID());
-    }
-
     public void setUserId(UUID userId) {
+    	if(userId == null) { this.userId = UUID.randomUUID(); }
         this.userId = userId;
     }
 
@@ -155,19 +185,30 @@ public class User {
         this.chats = chats;
     }
 
-    public PrivacyType getPrivacyType() {
-        return privacyType;
+    public PrivacyType getPrivacy() {
+        return privacy;
     }
 
-    public void setPrivacyType(PrivacyType privacyType) {
-        this.privacyType = privacyType;
+    public void setPrivacy(PrivacyType privacy) {
+    	if(privacy == null) { this.privacy = PrivacyType.PUBLIC; }
+        this.privacy = privacy;
     }
 
     public Status getStatus() {
         return status;
     }
+    
+    public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		if(state == null) { this.state = State.ENABLED; }
+		this.state = state;
+	}
 
     public void setStatus(Status status) {
+    	if(status == null) { this.status = Status.OFFLINE; }
         this.status = status;
     }
 
@@ -176,6 +217,7 @@ public class User {
     }
 
     public void setLogins(Integer logins) {
+    	if(logins == null) { this.logins = 0; }
         this.logins = logins;
     }
 
@@ -186,4 +228,20 @@ public class User {
     public void setBlockedDate(LocalDate blockedDate) {
         this.blockedDate = blockedDate;
     }
+
+	public LocalDateTime getLastConnDate() {
+		return lastConnDate;
+	}
+
+	public void setLastConnDate(LocalDateTime lastConnDate) {
+		this.lastConnDate = lastConnDate;
+	}
+
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
 }
