@@ -39,8 +39,11 @@ public class User {
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
+    
+    @Enumerated(value = EnumType.STRING)
+    private State state;
 
-    private Integer logins;
+	private Integer logins;
     private LocalDate blockedDate;
 
     // Relations
@@ -166,6 +169,14 @@ public class User {
     public Status getStatus() {
         return status;
     }
+    
+    public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
 
     public void setStatus(Status status) {
         this.status = status;
