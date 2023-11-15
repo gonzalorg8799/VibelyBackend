@@ -33,7 +33,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     private UUID userId;
-    private String username, password, nickname, email;
+    
+    private String username;
+    private String password;
+    private String nickname;
+    private String email;
+    private LocalDate lastConnection;
+    
 
     @Enumerated(value = EnumType.STRING)
     private PrivacyType privacyType;
@@ -198,4 +204,12 @@ public class User {
     public void setBlockedDate(LocalDate blockedDate) {
         this.blockedDate = blockedDate;
     }
+
+	public LocalDate getLastConnection() {
+		return lastConnection;
+	}
+
+	public void setLastConnection(LocalDate lastConnection) {
+		this.lastConnection = lastConnection;
+	}
 }

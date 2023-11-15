@@ -19,6 +19,7 @@ public class UserDTO {
 	private String username;
 	private String password;
 	private String email;
+	private LocalDate lastConnection;
 	
 	private PrivacyType privacyType;
 	private Status status;
@@ -144,6 +145,14 @@ public class UserDTO {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public LocalDate getLastConnection() {
+		return lastConnection;
+	}
+
+	public void setLastConnection(LocalDate lastConnection) {
+		this.lastConnection = lastConnection;
 	}
 
 }
