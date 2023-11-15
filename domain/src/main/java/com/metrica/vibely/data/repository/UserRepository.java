@@ -18,7 +18,6 @@ import com.metrica.vibely.data.entity.User;
 public interface UserRepository extends JpaRepository<User, java.util.UUID> {
 	
 	/**
-	 * 
 	 * @param username
 	 * @return
 	 * @throws NoSuchElementException
@@ -26,7 +25,6 @@ public interface UserRepository extends JpaRepository<User, java.util.UUID> {
 	Optional<User> findByUsername(String username);
 	
 	/**
-	 * 
 	 * @param username
 	 * @throws NoSuchElementException
 	 */

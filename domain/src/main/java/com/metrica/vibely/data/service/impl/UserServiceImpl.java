@@ -1,5 +1,7 @@
 package com.metrica.vibely.data.service.impl;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,7 @@ public class UserServiceImpl implements UserService {
 		user.setState(State.ENABLED);
 		user.setStatus(Status.ONLINE);
 		user.setLogins(1);
+		user.setLastConnection(LocalDate.now());
 		user.setFollowers(null);
         user.setFollowing(null);
         user.setChats(null);

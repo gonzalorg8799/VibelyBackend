@@ -1,6 +1,7 @@
 package com.metrica.vibely.data.model.dto;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,11 +36,13 @@ public class UserDTO {
 	
 	private Set<Chat> chats;
 	
+	
 	public UserDTO() {
 	}
 	
 	public LocalDate getLastConnectionDate() {
-		return null;
+		if(status.equals("OFFLINE")) { return lastConnection; }
+		else { return LocalDate.now(); }
 	}
 	
 	public UUID getUserId() {
