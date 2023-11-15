@@ -15,6 +15,8 @@ import com.metrica.vibely.data.util.PasswordHashing;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -119,16 +121,66 @@ class DomainApplicationTests {
     }
 	
 	@Test
+	@Order(3)
     void userUpdateTest() {
-        UserDTO testUser = generateTestUser();
-        
+		UserDTO testUser = generateTestUser();
+		UserDTO createdUser = userService.create(testUser);
+		
+		//Basic
+		String newUsername = "New Username";
+	    createdUser.setUsername(newUsername);
+	    UserDTO updatedUser0 = userService.update(createdUser);
+	    assertEquals(newUsername, updatedUser0.getUsername());
+	    
+		String newNickname = "Updated Nickname";
+	    createdUser.setNickname(newNickname);
+	    UserDTO updatedUser1 = userService.update(createdUser);
+	    assertEquals(newNickname, updatedUser1.getNickname());
+
+	    createdUser.setState(State.INACTIVE);
+	    UserDTO updatedUser2 = userService.update(createdUser);
+	    assertEquals(State.INACTIVE, updatedUser2.getState());
+	    
+	    String newEmail = "newEmail@email.com";
+	    createdUser.setEmail(newEmail);
+	    UserDTO updatedUser3 = userService.update(createdUser);
+	    assertEquals(newEmail, updatedUser3.getEmail());
+	    
+	    //User not exist
+	    String notExistUsername = "UsernameTesting";
+	    UserDTO updatedUser4 = userService.update(createdUser);
+	    updatedUser4.setUsername(notExistUsername);
+	    assertThrows(NoSuchElementException.class, () -> userService.update(updatedUser4));
+	    
+	    //Lists
+	    Set<String> newFollowers = new HashSet<>(Arrays.asList("follower1", "follower2"));
+	    createdUser.setFollowers(newFollowers);
+	    UserDTO updatedUser5 = userService.update(createdUser);
+	    assertEquals(updatedUser5.getFollowers().size(), createdUser.getFollowers().size() + newFollowers.size());
+
+	    Set<String> newFollowing = new HashSet<>(Arrays.asList("following1", "following2"));
+	    createdUser.setFollowing(newFollowing);
+	    UserDTO updatedUser6 = userService.update(createdUser);
+	    assertEquals(updatedUser6.getFollowing().size(), createdUser.getFollowing().size() + newFollowing.size());
+
+	    Set<String> newChats = new HashSet<>(Arrays.asList("chat1", "chat2"));
+	    createdUser.setChats(newChats);
+	    UserDTO updatedUser7 = userService.update(createdUser);
+	    assertEquals(updatedUser7.getChats().size(), createdUser.getChats().size() + newChats.size());
+
+
     }
 	
 	@Test
+	@Order(4)
 	void userDeleteTest() {
         UserDTO testUser = generateTestUser();
+        UserDTO testUser2 = generateTestUser();
+        UserDTO createdUser = userService.create(testUser);
+
+        userService.deleteByUsername(createdUser.getUsername());
 	    
-        assertThrows(NoSuchElementException.class, () -> userService.deleteByUsername(testUser.getUsername()));
+        assertThrows(NoSuchElementException.class, () -> userService.deleteByUsername(testUser2.getUsername()));
 	}
 
 }
