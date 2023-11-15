@@ -1,9 +1,21 @@
 package com.metrica.vibely.model.request;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.util.PasswordHashing;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+/**
+ * 
+ * @since 2023-11-14
+ * @author 
+ * @version 1.0
+ */
 public class CreateUserRequest {
 
     // <<-FIELDS->>
@@ -28,7 +40,19 @@ public class CreateUserRequest {
     // <<-CONSTRUCTOR->>
     public CreateUserRequest() {
     }
+    
+    // <<--METHODS-->>
+    public static UserDTO toUserDTO(CreateUserRequest user) {
+        UserDTO userDto = new UserDTO();
 
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(user.getPassword());
+        userDto.setNickname(user.getNickname());
+        userDto.setEmail(user.getEmail());
+
+        return userDto;
+    }
+    
     // <<-GETTERS & SETTERS->>
     public String getUsername() {
         return username;
@@ -43,7 +67,13 @@ public class CreateUserRequest {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        try {
+			this.password = PasswordHashing.hash(password);
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
     }
 
     public String getNickname() {
