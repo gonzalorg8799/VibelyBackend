@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.State;
 import com.metrica.vibely.data.model.enumerator.Status;
 
 import jakarta.persistence.Column;

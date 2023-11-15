@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.enumerator.State;
 import com.metrica.vibely.data.model.enumerator.Status;
 import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.entity.User;
@@ -38,7 +39,8 @@ public class UserServiceImpl implements UserService {
 	public UserDTO create(UserDTO userParam) {
 		User user = UserMapper.toEntity(userParam);
 		
-		user.setStatus(Status.ENABLED);
+		user.setState(State.ENABLED);
+		user.setStatus(Status.ONLINE);
 		user.setLogins(1);
 		user.setFollowers(null);
         user.setFollowing(null);

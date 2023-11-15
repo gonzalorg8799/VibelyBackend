@@ -1,6 +1,5 @@
 package com.metrica.vibely.data.model.dto;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
@@ -38,6 +37,90 @@ public class UserDTO {
 	public UserDTO() {
 	}
 	
+	public LocalDate getLastConnectionDate() {
+		return null;
+	}
+	
+	public UUID getUserId() {
+		return userId;
+	}
+
+	public void setUserId(UUID userId) {
+		this.userId = userId;
+	}
+
+	public PrivacyType getPrivacyType() {
+		return privacyType;
+	}
+
+	public void setPrivacyType(PrivacyType privacyType) {
+		this.privacyType = privacyType;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public Integer getLogins() {
+		return logins;
+	}
+
+	public void setLogins(Integer logins) {
+		this.logins = logins;
+	}
+
+	public LocalDate getBlockedDate() {
+		return blockedDate;
+	}
+
+	public void setBlockedDate(LocalDate blockedDate) {
+		this.blockedDate = blockedDate;
+	}
+
+	public Set<User> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(Set<User> followers) {
+		this.followers = followers;
+	}
+
+	public Set<User> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(Set<User> following) {
+		this.following = following;
+	}
+
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
+	}
+
+	public Set<Chat> getChats() {
+		return chats;
+	}
+
+	public void setChats(Set<Chat> chats) {
+		this.chats = chats;
+	}
+
 	public String getNickname() {
 		return nickname;
 	}
@@ -63,9 +146,4 @@ public class UserDTO {
 		this.email = email;
 	}
 
-	public LocalDate getLastConnectionDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }
