@@ -1,7 +1,5 @@
 package com.metrica.vibely.data.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +8,7 @@ import com.metrica.vibely.data.model.enumerator.Status;
 import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
-import com.metrica.vibely.data.service.UserService;
-import com.metrica.vibely.data.util.PasswordHashing;
+import com.metrica.vibely.data.service.UserService;		
 
 /**
  * @since 2023-11-14
@@ -43,48 +40,34 @@ public class UserServiceImpl implements UserService {
 		
 		user.setStatus(Status.ENABLED);
 		user.setLogins(1);
-		user.setFollowers(new java.util.HashSet<>());
-        user.setFollowing(new java.util.HashSet<>());
-        user.setChats(new java.util.HashSet<>());
+		user.setFollowers(null);
+        user.setFollowing(null);
+        user.setChats(null);
+        user.setPassword(userParam.getPassword());
+		
+        userRepository.save(user);
         
-		try {
-			user.setPassword(PasswordHashing.hash(user.getPassword()));
-		} catch (Exception e) { // temporal
-			System.err.println("Error en el algoritmo de hasheo");
-		} 
-		return userRepository.save(user);
+		return UserMapper.toDTO(user);
 	}
 
 	@Override
 	public UserDTO update(UserDTO updatedUser) {
-	    // no permite cambiar el nombre de usuario
+	    // no permite cambiar el nombre de usuario 
 		String username = updatedUser.getUsername();
 		User user = userRepository.findByUsername(username).orElseThrow();
 		
-		try {
-			String password = PasswordHashing.hash(updatedUser.getPassword());
-			
-			if(!password.equals(user.getPassword())) { 
-				user.setPassword(password); 
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.err.println("Error en el algoritmo de hasheo");
-		} 
-		
+		String password = updatedUser.getPassword();
 		String nickname = updatedUser.getNickname();
 		String email = updatedUser.getEmail();
+
+		if(!username.equals(user.getUsername())) { user.setUsername(username); } 
+		if(!password.equals(user.getPassword())) { user.setPassword(password); }
+		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); }
+		if(!email.equals(user.getEmail())) { user.setEmail(email); }
 		
-		if(!email.equals(user.getEmail())) { 
-			user.setEmail(email); 
-		}
-		if(!nickname.equals(user.getNickname())) {
-			user.setNickname(nickname);
-		}
-		if(!username.equals(user.getUsername())) {
-			user.setUsername(username);
-		} 
-		return userRepository.save(user);
+		userRepository.save(user);
+		
+		return UserMapper.toDTO(user);
 	}
 	
 }
