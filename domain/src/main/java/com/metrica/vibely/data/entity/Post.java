@@ -1,6 +1,6 @@
 package com.metrica.vibely.data.entity;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -14,6 +14,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.ForeignKey;
 
+/**
+ * 
+ * @since 2023-11-13
+ * @version 1.0
+ */
 
 @Entity
 @Table(name = "post")
@@ -22,13 +27,13 @@ public class Post {
     // <<-FIELDS->>
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "postId", nullable = false)
+	@Column(nullable = false)
 	private UUID postId;
 	private String content;
 	private Integer likes, saved;
 	
     @OneToMany() //orphanRemoval -> para que si se elimina el post "padre" se eliminen de la base de datos los comentarios y no de error.
-	private List<Post> comments;
+	private Set<Post> comments;
     
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_post_user"))
@@ -43,7 +48,7 @@ public class Post {
             String content,
             Integer likes,
             Integer saved,
-            List<Post> comments,
+            Set<Post> comments,
             User user) {
         this.setPostId(postId);
         this.setContent(content);
@@ -90,11 +95,11 @@ public class Post {
         this.saved = saved == null ? 0 : saved;
     }
 
-    public List<Post> getComments() {
+    public Set<Post> getComments() {
         return comments;
     }
 
-    public void setComments(List<Post> comments) {
+    public void setComments(Set<Post> comments) {
         this.comments = comments;
     }
 

@@ -1,6 +1,6 @@
 package com.metrica.vibely.data.entity;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import com.metrica.vibely.data.model.enumerator.ChatType;
@@ -14,6 +14,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+/**
+ * 
+ * @since 2023-11-13
+ * @version 1.0
+ */
+
 @Entity
 public class Chat {
 	// <<-FIELDS->>
@@ -21,7 +27,7 @@ public class Chat {
 	// Basic
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "chatId", nullable = false)
+	@Column(nullable = false)
     private UUID chatId;
 	
 	@Enumerated(value = EnumType.STRING)
@@ -29,10 +35,10 @@ public class Chat {
 	
 	// Relations
 	@OneToMany(mappedBy = "participant_id")
-    private List<User> participants;
+    private Set<User> participants;
 	
 	@OneToMany(mappedBy = "message_id")
-    private List<Message> messages;
+    private Set<Message> messages;
     
     // <<-CONSTRUCTORS->>
     public Chat() {
@@ -41,8 +47,8 @@ public class Chat {
     public Chat(
             UUID chatId,
             ChatType type,
-            List<User> participants,
-            List<Message> messages) {
+            Set<User> participants,
+            Set<Message> messages) {
         this.setChatId(chatId);
         this.setType(type);
         this.setParticipants(participants);
@@ -66,22 +72,22 @@ public class Chat {
         this.type = type;
     }
 
-    public List<User> getParticipants() {
+    public Set<User> getParticipants() {
         return participants;
     }
 
     // add 1 participant
     
-    public void setParticipants(List<User> participants) {
-        if (participants == null) participants = new java.util.LinkedList<>();
+    public void setParticipants(Set<User> participants) {
+        if (participants == null) participants = new java.util.HashSet();
         else this.participants = participants;
     }
     
-    public List<Message> getMessages() {
+    public Set<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<Message> messages) {
+    public void setMessages(Set<Message> messages) {
         this.messages = messages;
     }
 }

@@ -10,15 +10,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 
+/***
+ * 
+ * @since 2023-11-13
+ * @version 1.0
+ */
+
 @Entity
 public class Message {
-    
     // <<-FIELDS->>	
 	
 	//Basic
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "messageId", nullable = false)
+	@Column(nullable = false)
 	private UUID messageId;
     private String srcUsername, content;
     

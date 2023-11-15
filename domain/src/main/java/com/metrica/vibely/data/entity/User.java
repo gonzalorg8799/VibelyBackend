@@ -30,7 +30,7 @@ public class User {
     // Basic
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "userId", nullable = false)
+    @Column(nullable = false)
     private UUID userId;
     private String username, password, nickname, email;
 
@@ -50,10 +50,10 @@ public class User {
     @OneToMany
     private Set<User> following;
 
-    @OneToMany(mappedBy = "post_id")
+    @OneToMany(mappedBy = "postId")
     private Set<Post> posts;
 
-    @OneToMany(mappedBy = "chat_id")
+    @OneToMany(mappedBy = "chatId")
     private Set<Chat> chats;
 
     // <<-CONSTRUCTORS->>
