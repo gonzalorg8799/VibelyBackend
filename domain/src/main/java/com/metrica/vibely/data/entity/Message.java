@@ -10,7 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 
-/**
+/***
  * 
  * @since 2023-11-13
  * @version 1.0
@@ -18,7 +18,6 @@ import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Message {
-    
     // <<-FIELDS->>	
 	
 	//Basic
