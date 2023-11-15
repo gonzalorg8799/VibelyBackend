@@ -1,4 +1,4 @@
-package com.metrica.vibely;
+package com.metrica.vibely.data;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
