@@ -1,7 +1,5 @@
 package com.metrica.vibely.model.request;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.util.PasswordHashing;

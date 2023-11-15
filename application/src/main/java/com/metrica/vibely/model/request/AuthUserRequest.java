@@ -16,7 +16,7 @@ public class AuthUserRequest {
     private String username;
     @NotNull
     @NotBlank
-    @Pattern(regexp = "") // implementar validación de la contraseña !!!
+    @Pattern(regexp = "^(?=.*[$@$!%*?&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d$@$!%*?&]{12,}$")
     private String password;
 
     // <<-CONSTRUCTOR->>
