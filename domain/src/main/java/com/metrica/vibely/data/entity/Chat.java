@@ -79,7 +79,7 @@ public class Chat {
     // add 1 participant
     
     public void setParticipants(Set<User> participants) {
-        if (participants == null) participants = new java.util.HashSet();
+        if (participants == null) participants = new java.util.HashSet<>();
         else this.participants = participants;
     }
     
