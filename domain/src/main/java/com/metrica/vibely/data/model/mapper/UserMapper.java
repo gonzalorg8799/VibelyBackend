@@ -3,6 +3,12 @@ package com.metrica.vibely.data.model.mapper;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.UserDTO;
 
+/**
+ * @since 2023-11-14
+ * @author Raul
+ * @version 1.0
+ *
+ */
 public class UserMapper {
 
 	public static User toEntity(UserDTO userdto) {
