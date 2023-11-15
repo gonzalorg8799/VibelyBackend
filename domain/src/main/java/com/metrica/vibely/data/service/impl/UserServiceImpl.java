@@ -28,26 +28,24 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User getByUsername(String username) {
-		return userRepository.findByUsername(username).orElseThrow();
+	public UserDTO getByUsername(String username) {
+		return UserMapper.toDTO(userRepository.findByUsername(username).orElseThrow());
 	}
 
 	@Override
 	public void deleteByUsername(String username) {
-	    // modify in the future
-		User user = userRepository.findByUsername(username).orElseThrow();
-		userRepository.delete(user);
+	    userRepository.deleteByUsername(username);
 	}
 
 	@Override
-	public User create(UserDTO userParam) {
+	public UserDTO create(UserDTO userParam) {
 		User user = UserMapper.toEntity(userParam);
 		
 		user.setStatus(Status.ENABLED);
 		user.setLogins(1);
-		user.setFollowers(List.of());
-        user.setFollowing(List.of());
-        user.setChats(List.of());
+		user.setFollowers(new java.util.HashSet<>());
+        user.setFollowing(new java.util.HashSet<>());
+        user.setChats(new java.util.HashSet<>());
         
 		try {
 			user.setPassword(PasswordHashing.hash(user.getPassword()));
@@ -58,14 +56,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User update(UserDTO updatedUser) {
+	public UserDTO update(UserDTO updatedUser) {
 	    // no permite cambiar el nombre de usuario
 		String username = updatedUser.getUsername();
 		User user = userRepository.findByUsername(username).orElseThrow();
 		
 		try {
-			String password;
-			password = PasswordHashing.hash(updatedUser.getPassword());
+			String password = PasswordHashing.hash(updatedUser.getPassword());
 			
 			if(!password.equals(user.getPassword())) { 
 				user.setPassword(password); 

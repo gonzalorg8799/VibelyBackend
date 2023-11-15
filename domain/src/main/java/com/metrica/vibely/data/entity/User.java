@@ -2,6 +2,7 @@ package com.metrica.vibely.data.entity;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
@@ -44,23 +45,23 @@ public class User {
 
     // Relations
     @OneToMany
-    private List<User> followers;
+    private Set<User> followers;
 
     @OneToMany
-    private List<User> following;
+    private Set<User> following;
 
     @OneToMany(mappedBy = "post_id")
-    private List<Post> posts;
+    private Set<Post> posts;
 
     @OneToMany(mappedBy = "chat_id")
-    private List<Chat> chats;
+    private Set<Chat> chats;
 
     // <<-CONSTRUCTORS->>
     public User() {
     }
 
-    public User(UUID userId, String username, String password, String nickname, String email, List<User> followers,
-            List<User> following, List<Chat> chats, List<Post> posts, PrivacyType privacyType, Status status,
+    public User(UUID userId, String username, String password, String nickname, String email, Set<User> followers,
+            Set<User> following, Set<Chat> chats, Set<Post> posts, PrivacyType privacyType, Status status,
             Integer logins, LocalDate blockedDate) {
         this.setUserId(userId);
         this.setUsername(username);
@@ -122,35 +123,35 @@ public class User {
         this.email = email;
     }
 
-    public List<User> getFollowers() {
+    public Set<User> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(List<User> followers) {
+    public void setFollowers(Set<User> followers) {
         this.followers = followers;
     }
 
-    public List<User> getFollowing() {
+    public Set<User> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<User> following) {
+    public void setFollowing(Set<User> following) {
         this.following = following;
     }
 
-    public List<Post> getPosts() {
+    public Set<Post> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<Post> posts) {
+    public void setPosts(Set<Post> posts) {
         this.posts = posts;
     }
 
-    public List<Chat> getChats() {
+    public Set<Chat> getChats() {
         return chats;
     }
 
-    public void setChats(List<Chat> chats) {
+    public void setChats(Set<Chat> chats) {
         this.chats = chats;
     }
 
