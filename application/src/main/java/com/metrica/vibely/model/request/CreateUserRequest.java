@@ -23,7 +23,7 @@ public class CreateUserRequest {
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^(?=.*[$@$!%*?&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d$@$!%*?&]{12,}$")
+    @Pattern(regexp = "^(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d@$!%^*#&]{12,}$")
     private String password;
 
     @Pattern(regexp = "[a-zA-Z_-\\d]*")
