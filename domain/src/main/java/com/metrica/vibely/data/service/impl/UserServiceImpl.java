@@ -1,6 +1,6 @@
 package com.metrica.vibely.data.service.impl;
-
-import java.time.LocalDate;
+	
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public UserDTO getByUsername(String username) {
-		return UserMapper.toDTO(userRepository.findByUsername(username).orElseThrow());
+		return UserMapper.toDTO(userRepository.findByUsername(username)
+											  .orElseThrow());
 	}
 
 	@Override
@@ -41,14 +42,14 @@ public class UserServiceImpl implements UserService {
 	public UserDTO create(UserDTO userParam) {
 		User user = UserMapper.toEntity(userParam);
 		
-		user.setState(State.ENABLED);
-		user.setStatus(Status.ONLINE);
-		user.setLogins(1);
-		user.setLastConnection(LocalDate.now());
-		user.setFollowers(null);
-        user.setFollowing(null);
-        user.setChats(null);
-        user.setPassword(userParam.getPassword());
+		user.setState		(State.ENABLED);
+		user.setStatus		(Status.ONLINE);
+		user.setLogins		(1);
+		user.setLastConnDate(LocalDateTime.now());
+		user.setFollowers	(null);
+        user.setFollowing	(null);
+        user.setChats		(null);
+        user.setPassword	(userParam.getPassword());
 		
         userRepository.save(user);
         
@@ -57,18 +58,20 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO update(UserDTO updatedUser) {
-	    // no permite cambiar el nombre de usuario 
+		//to do: pedir la apiKey en parametros
+		//utilizar dicha apiKey para comprobar si puede updatear los datos o no
+		
 		String username = updatedUser.getUsername();
-		User user = userRepository.findByUsername(username).orElseThrow();
+		User   user 	= userRepository.findByUsername(username).orElseThrow();
 		
 		String password = updatedUser.getPassword();
 		String nickname = updatedUser.getNickname();
-		String email = updatedUser.getEmail();
+		String email 	= updatedUser.getEmail();
 
 		if(!username.equals(user.getUsername())) { user.setUsername(username); } 
 		if(!password.equals(user.getPassword())) { user.setPassword(password); }
 		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); }
-		if(!email.equals(user.getEmail())) { user.setEmail(email); }
+		if(!email	.equals(user.getEmail())) 	 { user.setEmail(email); }
 		
 		userRepository.save(user);
 		
