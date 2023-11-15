@@ -15,10 +15,12 @@ import com.metrica.vibely.data.util.PasswordHashing;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -55,45 +57,78 @@ class DomainApplicationTests {
 	void contextLoads() {
 	}
 	
-	@Test
-	@Order(1)
-	void userCreationTest() {
-	    // Generate test user
-	    UserDTO testUser = new UserDTO();
+	private UserDTO generateTestUser() {
+        UserDTO testUser = new UserDTO();
+        
         testUser.setUsername(DEFAULT_USERNAME);
         testUser.setPassword(PasswordHashing.hash(DEFAULT_PASSWORD));
         testUser.setNickname(DEFAULT_NICKNAME);
         testUser.setEmail   (DEFAULT_EMAIL);
         
-        // Insert in database
+        return testUser;
+	}
+	
+	@Test
+	@Order(1)
+	void userCreationTest() {
+	    UserDTO testUser = generateTestUser();
 	    UserDTO databaseUser = userService.create(testUser);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+        assertNotNull(databaseUser.getUserId());
         assertEquals(LocalDate.now().format(formatter), databaseUser.getLastConnectionDate().format(formatter));
 	    assertTrue  (PasswordHashing.matches(DEFAULT_PASSWORD, databaseUser.getPassword()));
-        assertEquals(DEFAULT_USERNAME, databaseUser.getUsername());
-        assertEquals(DEFAULT_NICKNAME, databaseUser.getNickname());
-        assertEquals(DEFAULT_EMAIL,    databaseUser.getEmail());
-        assertEquals(State.ACTIVE,     databaseUser.getState());
-        assertEquals(Status.ONLINE,    databaseUser.getStatus());
-        assertEquals(1,                databaseUser.getLogins());
+        assertEquals(testUser.getUsername(), databaseUser.getUsername());
+        assertEquals(testUser.getNickname(), databaseUser.getNickname());
+        assertEquals(testUser.getEmail(),    databaseUser.getEmail());
+        assertEquals(State.ACTIVE,           databaseUser.getState());
+        assertEquals(Status.ONLINE,          databaseUser.getStatus());
+        assertEquals(1,                      databaseUser.getLogins());
         assertNull  (databaseUser.getBlockedDate());
-        assertInstanceOf(Set.class, databaseUser.getFollowers());
-        assertNull      (databaseUser.getFollowers());
-        assertInstanceOf(Set.class, databaseUser.getFollowing());
-        assertNull      (databaseUser.getFollowing());
-        assertInstanceOf(Set.class, databaseUser.getPosts());
-        assertNull      (databaseUser.getPosts());
-        assertInstanceOf(Set.class, databaseUser.getChats());
-        assertFalse     (databaseUser.getChats().isEmpty());
-        assertEquals    (1, databaseUser.getChats().size());
+        assertNull  (databaseUser.getFollowers());
+        assertNull  (databaseUser.getFollowing());
+        assertNull  (databaseUser.getPosts());
+        assertFalse (databaseUser.getChats().isEmpty());
+        assertEquals(1, databaseUser.getChats().size());
         
 	    assertEquals(testUser, databaseUser);
 	}
 	
 	@Test
-	void userReadTest() {
+    @Order(2)
+    void userReadTest() {
+        UserDTO testUser = generateTestUser();
+        UserDTO databaseUser = userService.create(testUser);
+        UserDTO searchedUser = userService.getByUsername(testUser.getUsername());
+        
+        assertEquals(databaseUser.getUserId(),      searchedUser.getUserId());
+        assertEquals(databaseUser.getUsername(),    searchedUser.getUsername());
+        assertEquals(databaseUser.getPassword(),    searchedUser.getPassword());
+        assertEquals(databaseUser.getNickname(),    searchedUser.getNickname());
+        assertEquals(databaseUser.getEmail(),       searchedUser.getEmail());
+        assertEquals(databaseUser.getState(),       searchedUser.getState());
+        assertEquals(databaseUser.getStatus(),      searchedUser.getStatus());
+        assertEquals(databaseUser.getLogins(),      searchedUser.getLogins());
+        assertEquals(databaseUser.getBlockedDate(), searchedUser.getBlockedDate());
+        assertEquals(databaseUser.getFollowers(),   searchedUser.getFollowers());
+        assertEquals(databaseUser.getFollowing(),   searchedUser.getFollowing());
+        assertEquals(databaseUser.getChats(),       searchedUser.getChats());
+
+        assertEquals(databaseUser, searchedUser);
+    }
+	
+	@Test
+    void userUpdateTest() {
+        UserDTO testUser = generateTestUser();
+        
+    }
+	
+	@Test
+	void userDeleteTest() {
+        UserDTO testUser = generateTestUser();
 	    
+        assertThrows(NoSuchElementException.class, () -> userService.deleteByUsername(testUser.getUsername()));
 	}
 
 }
