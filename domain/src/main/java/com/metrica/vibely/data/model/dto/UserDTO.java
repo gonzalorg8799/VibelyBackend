@@ -1,48 +1,47 @@
 package com.metrica.vibely.data.model.dto;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-import com.metrica.vibely.data.entity.Chat;
-import com.metrica.vibely.data.entity.Post;
-import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.State;
 import com.metrica.vibely.data.model.enumerator.Status;
 
+/**
+ * @since 2023-11-15
+ * @version 1.0 
+ * @author Raul
+ *
+ */
 public class UserDTO {
 	
-	private UUID userId;
+	private UUID 		  userId;
 	
-	private String nickname;
-	private String username;
-	private String password;
-	private String email;
-	private LocalDate lastConnection;
+	private String 		  nickname;
+	private String 		  username;
+	private String 		  password;
+	private String 		  email;
+	private String		  apiKey;
 	
-	private PrivacyType privacyType;
-	private Status status;
-	private State state;
+	private PrivacyType   privacy;
+	private Status 		  status;
+	private State  		  state;
 	
-	private Integer logins;
-	private LocalDate blockedDate;
+	private Integer 	  logins;
+	private LocalDate 	  blockedDate;
+	private LocalDateTime lastConnDate;
 	
-	private Set<User> followers;
-	private Set<User> following;
+	private Set<UUID> 	  followers;
+	private Set<UUID>     following;
 	
-	private Set<Post> posts;
+	private Set<UUID> 	  posts;
 	
-	private Set<Chat> chats;
+	private Set<UUID> 	  chats;
 	
 	
 	public UserDTO() {
-	}
-	
-	public LocalDate getLastConnectionDate() {
-		if(status.equals("OFFLINE")) { return lastConnection; }
-		else { return LocalDate.now(); }
 	}
 	
 	public UUID getUserId() {
@@ -53,12 +52,12 @@ public class UserDTO {
 		this.userId = userId;
 	}
 
-	public PrivacyType getPrivacyType() {
-		return privacyType;
+	public PrivacyType getPrivacy() {
+		return privacy;
 	}
 
-	public void setPrivacyType(PrivacyType privacyType) {
-		this.privacyType = privacyType;
+	public void setPrivacy(PrivacyType privacy) {
+		this.privacy = privacy;
 	}
 
 	public Status getStatus() {
@@ -93,35 +92,35 @@ public class UserDTO {
 		this.blockedDate = blockedDate;
 	}
 
-	public Set<User> getFollowers() {
+	public Set<UUID> getFollowers() {
 		return followers;
 	}
 
-	public void setFollowers(Set<User> followers) {
+	public void setFollowers(Set<UUID> followers) {
 		this.followers = followers;
 	}
 
-	public Set<User> getFollowing() {
+	public Set<UUID> getFollowing() {
 		return following;
 	}
 
-	public void setFollowing(Set<User> following) {
+	public void setFollowing(Set<UUID> following) {
 		this.following = following;
 	}
 
-	public Set<Post> getPosts() {
+	public Set<UUID> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(Set<Post> posts) {
+	public void setPosts(Set<UUID> posts) {
 		this.posts = posts;
 	}
 
-	public Set<Chat> getChats() {
+	public Set<UUID> getChats() {
 		return chats;
 	}
 
-	public void setChats(Set<Chat> chats) {
+	public void setChats(Set<UUID> chats) {
 		this.chats = chats;
 	}
 
@@ -150,12 +149,25 @@ public class UserDTO {
 		this.email = email;
 	}
 
-	public LocalDate getLastConnection() {
-		return lastConnection;
+	/**
+	 * returns users' last connection date
+	 * @return 
+	 */
+	public LocalDateTime getLastConnDate() {
+		if(status.equals(Status.OFFLINE)) { return lastConnDate; }
+		else { return LocalDateTime.now(); }
+	}
+	
+	public void setLastConnection(LocalDateTime lastConnDate) {
+		this.lastConnDate = lastConnDate;
 	}
 
-	public void setLastConnection(LocalDate lastConnection) {
-		this.lastConnection = lastConnection;
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
 	}
 
 }
