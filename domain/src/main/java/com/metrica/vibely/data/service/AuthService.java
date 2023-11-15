@@ -8,6 +8,12 @@ package com.metrica.vibely.data.service;
  */
 public interface AuthService {
     
+    /**
+     * @param username
+     * @param password
+     * @throws
+     * @return
+     */
     String authenticate(String username, String password);
 
 }

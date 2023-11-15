@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.service.UserService;
 import com.metrica.vibely.model.mapper.CreateUserMapper;
 import com.metrica.vibely.model.request.CreateUserRequest;
@@ -45,13 +46,13 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> crearUsuario(@RequestBody @Valid CreateUserRequest createUser,
+    public ResponseEntity<UserDTO> crearUsuario(@RequestBody @Valid CreateUserRequest createUser,
             BindingResult bindingResult) {
         if (!bindingResult.getAllErrors().isEmpty())
             return ResponseEntity.badRequest().build();
         UserDTO userDto = CreateUserMapper.toUserDTO(createUser);
         User user = this.userService.create(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toDTO(user));
     }
 
     @PutMapping("/{username}")

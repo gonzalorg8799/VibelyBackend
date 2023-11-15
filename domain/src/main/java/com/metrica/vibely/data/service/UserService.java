@@ -3,7 +3,7 @@ package com.metrica.vibely.data.service;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.UserDTO;
 
-public interface UserService  {
+public interface UserService {
 	
 	User getByUsername(String username);	
 	User create(UserDTO user); // subject to change

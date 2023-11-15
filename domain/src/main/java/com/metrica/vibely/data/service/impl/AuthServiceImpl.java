@@ -30,16 +30,20 @@ public class AuthServiceImpl implements AuthService {
     public String authenticate(String username, String password) {
         User user = userRepository.findByUsername(username).orElseThrow();
         
+        String apiKey = "";
         try {
             if (PasswordHashing.matches(password, user.getPassword())) {
                 user.setLogins(user.getLogins() + 1);
+                
                 // Generar una apikey !!!!
-                return null;
+                userRepository.save(user);
             }
         } catch (Exception e) {
             System.err.println("fallo en password hashing");
+            // throw exception
         }
-        return null;
+        
+        return apiKey;
     }
 
 }

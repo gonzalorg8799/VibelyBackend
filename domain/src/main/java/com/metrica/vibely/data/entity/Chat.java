@@ -18,7 +18,7 @@ import jakarta.persistence.OneToMany;
 public class Chat {
 	// <<-FIELDS->>
 	
-	//Basic
+	// Basic
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "chatId", nullable = false)
@@ -27,7 +27,7 @@ public class Chat {
 	@Enumerated(value = EnumType.STRING)
     private ChatType type;
 	
-	//Relations
+	// Relations
 	@OneToMany(mappedBy = "participant_id")
     private List<User> participants;
 	
@@ -70,8 +70,11 @@ public class Chat {
         return participants;
     }
 
+    // add 1 participant
+    
     public void setParticipants(List<User> participants) {
-        this.participants = participants;
+        if (participants == null) participants = new java.util.LinkedList<>();
+        else this.participants = participants;
     }
     
     public List<Message> getMessages() {

@@ -34,8 +34,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteByUsername(String username) {
+	    // modify in the future
 		User user = userRepository.findByUsername(username).orElseThrow();
-		userRepository.delete(user);	
+		userRepository.delete(user);
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
         
 		try {
 			user.setPassword(PasswordHashing.hash(user.getPassword()));
-		} catch (Exception e) {
+		} catch (Exception e) { // temporal
 			System.err.println("Error en el algoritmo de hasheo");
 		} 
 		return userRepository.save(user);
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User update(UserDTO updatedUser) {
+	    // no permite cambiar el nombre de usuario
 		String username = updatedUser.getUsername();
 		User user = userRepository.findByUsername(username).orElseThrow();
 		
