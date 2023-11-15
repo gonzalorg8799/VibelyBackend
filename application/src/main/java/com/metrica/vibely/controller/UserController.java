@@ -40,7 +40,7 @@ public class UserController {
 
     // <<-METHODS->>
     @GetMapping("/{username}")
-    public User getUserByUsername(@PathVariable String username) {
+    public UserDTO getUserByUsername(@PathVariable String username) {
         return this.userService.getByUsername(username);
     }
 
@@ -50,14 +50,14 @@ public class UserController {
         if (!bindingResult.getAllErrors().isEmpty())
             return ResponseEntity.badRequest().build();
         UserDTO userDto = CreateUserRequest.toUserDTO(createUser);
-        User user = this.userService.create(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toDTO(user));
+        UserDTO user = this.userService.create(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping("/{username}")
     public ResponseEntity<?> modifyUserByUsername(@RequestBody @Valid CreateUserRequest createUser, BindingResult bindingResult) {
         UserDTO userDto = CreateUserRequest.toUserDTO(createUser);
-        User user = this.userService.update(userDto);
+        UserDTO user = this.userService.update(userDto);
         return ResponseEntity.ok(user);
     }
 
