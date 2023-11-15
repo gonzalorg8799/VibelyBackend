@@ -1,7 +1,5 @@
 package com.metrica.vibely.model.request;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.util.PasswordHashing;
@@ -25,7 +23,7 @@ public class CreateUserRequest {
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z_-\\d]*")
+    @Pattern(regexp = "^(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d@$!%^*#&]{12,}$")
     private String password;
 
     @Pattern(regexp = "[a-zA-Z_-\\d]*")
