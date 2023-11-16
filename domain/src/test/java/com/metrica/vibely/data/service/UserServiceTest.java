@@ -2,10 +2,7 @@ package com.metrica.vibely.data.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Order;
@@ -29,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * 
  * @since 2023-11-15
  * @version 1.0
- * @author Alex, Adri
+ * @author Alex, Adri, Raul
  */
 public class UserServiceTest {
 
@@ -113,64 +110,120 @@ public class UserServiceTest {
     @Test
     @Order(3)
     void userUpdateTest() {
-        UserDTO testUser = generateTestUser();
-        UserDTO createdUser = userService.create(testUser);
+    	UserDTO createdUser 	= userService.create(generateTestUser());
+        UserDTO nonExistingUser = userService.create(generateTestUser());
+        UserDTO updatedUser 	= userService.create(generateTestUser());
         
+        UUID createdUserUUID 	 = createdUser.getUserId();
+        UUID nonExistingUserUUID = nonExistingUser.getUserId();
+        
+        String newUsername  	= "New Username";
+        String newNickname  	= "Updated Nickname";
+        String newEmail     	= "newEmail@email.com";
+        String newPassword  	= "NewPassword";
+        
+        updatedUser.setNickname (newUsername);
+        updatedUser.setUsername (newUsername);
+        updatedUser.setEmail	(newEmail);
+        updatedUser.setPassword (PasswordHashing.hash(newPassword));
+        
+        userService.updateNickname	(createdUser.getUserId(), newNickname);
+        userService.updateUsername	(createdUserUUID, 		  newUsername);
+        userService.updateEmail	  	(createdUserUUID, 		  newEmail);
+        userService.updatePassword	(createdUserUUID, 		  newPassword);
+        userService.deleteByUsername(nonExistingUser.getUsername());
+        
+
         //Basic
-        String newUsername = "New Username";
-        createdUser.setUsername(newUsername);
-        UserDTO updatedUser0 = userService.update(createdUser);
-        assertEquals(newUsername, updatedUser0.getUsername());
-        
-        String newNickname = "Updated Nickname";
-        createdUser.setNickname(newNickname);
-        UserDTO updatedUser1 = userService.update(createdUser);
-        assertEquals(newNickname, updatedUser1.getNickname());
+        assertEquals(newUsername, 						createdUser.getUsername());
+        assertEquals(newNickname, 						createdUser.getNickname());
+        assertEquals(newEmail, 							createdUser.getEmail());
+        assertEquals(PasswordHashing.hash(newPassword), createdUser.getPassword());
+        assertEquals(createdUser, 						updatedUser);
 
-        createdUser.setState(State.DISABLED);
-        UserDTO updatedUser2 = userService.update(createdUser);
-        assertEquals(State.DISABLED, updatedUser2.getState());
-        
-        String newEmail = "newEmail@email.com";
-        createdUser.setEmail(newEmail);
-        UserDTO updatedUser3 = userService.update(createdUser);
-        assertEquals(newEmail, updatedUser3.getEmail());
-        
         //User not exist
-        String notExistUsername = "UsernameTesting";
-        UserDTO updatedUser4 = userService.update(createdUser);
-        updatedUser4.setUsername(notExistUsername);
-        assertThrows(NoSuchElementException.class, () -> userService.update(updatedUser4));
-        
-        // Lists
-        Set<UUID> newFollowers = new HashSet<>(Arrays.asList("follower1", "follower2"));
-        createdUser.setFollowers(newFollowers);
-        UserDTO updatedUser5 = userService.update(createdUser);
-        assertEquals(updatedUser5.getFollowers().size(), createdUser.getFollowers().size() + newFollowers.size());
-
-        Set<UUID> newFollowing = new HashSet<>(Arrays.asList("following1", "following2"));
-        createdUser.setFollowing(newFollowing);
-        UserDTO updatedUser6 = userService.update(createdUser);
-        assertEquals(updatedUser6.getFollowing().size(), createdUser.getFollowing().size() + newFollowing.size());
-
-        Set<UUID> newChats = new HashSet<>(Arrays.asList("chat1", "chat2"));
-        createdUser.setChats(newChats);
-        UserDTO updatedUser7 = userService.update(createdUser);
-        assertEquals(updatedUser7.getChats().size(), createdUser.getChats().size() + newChats.size());
-
-
+        assertThrows(NoSuchElementException.class, () -> userService.updateUsername(nonExistingUserUUID, newUsername));
+        assertThrows(NoSuchElementException.class, () -> userService.updateNickname(nonExistingUserUUID, newNickname));
+        assertThrows(NoSuchElementException.class, () -> userService.updateEmail(nonExistingUserUUID, newEmail));
+        assertThrows(NoSuchElementException.class, () -> userService.updatePassword(nonExistingUserUUID, newPassword));
     }
     
     @Test
     @Order(4)
     void userDeleteTest() {
-        UserDTO testUser = generateTestUser();
-        UserDTO testUser2 = generateTestUser();
+        UserDTO testUser 	= generateTestUser();
+        UserDTO testUser2 	= generateTestUser();
         UserDTO createdUser = userService.create(testUser);
 
         userService.deleteByUsername(createdUser.getUsername());
         
         assertThrows(NoSuchElementException.class, () -> userService.deleteByUsername(testUser2.getUsername()));
+    }
+    
+    @Test
+    @Order(5)
+    void userFollowTest() {
+    	UserDTO createdUser 	= userService.create(generateTestUser());
+    	UserDTO follower1 		= userService.create(generateTestUser());
+    	UserDTO follower2 		= userService.create(generateTestUser());
+    	UserDTO follower3 		= userService.create(generateTestUser());
+    	
+    	// No followers
+    	assertEquals(0, createdUser.getFollowers().size());
+    	assertEquals(0, follower1  .getFollowers().size());
+    	assertEquals(0, follower1  .getFollowers().size());
+    	
+    	assertNull(createdUser.getFollowers());
+    	assertNull(follower1  .getFollowers());
+    	assertNull(follower2  .getFollowers());
+    	
+    	//No followed
+    	assertEquals(0, createdUser.getFollowing().size());
+    	assertEquals(0, follower1  .getFollowing().size());
+    	assertEquals(0, follower1  .getFollowing().size());
+    	
+    	assertNull(createdUser.getFollowing());
+    	assertNull(follower1  .getFollowing());
+    	assertNull(follower2  .getFollowing());
+    	
+    	//After following
+    	userService.followUser(follower2.getUserId(), createdUser.getUserId());
+    	userService.followUser(follower1.getUserId(), createdUser.getUserId());
+    	userService.followUser(follower1.getUserId(), follower2  .getUserId());
+    	userService.followUser(follower2.getUserId(), follower1  .getUserId());
+    	
+    	assertEquals(2, createdUser.getFollowers());
+    	assertEquals(0, createdUser.getFollowing());
+    	assertEquals(1, follower1  .getFollowing());
+    	assertEquals(1, follower1  .getFollowers());
+    	assertEquals(2, follower1  .getFollowing());
+    	assertEquals(2, follower2  .getFollowing());
+    	
+    	//After unfollowing
+    	userService.unfollowUser(follower1.getUserId(), follower2  .getUserId());
+    	userService.unfollowUser(follower2.getUserId(), follower1  .getUserId());
+    	userService.unfollowUser(follower1.getUserId(), createdUser.getUserId());
+    	
+    	assertEquals(0, follower2  .getFollowers());
+    	assertEquals(0, follower1  .getFollowers());
+    	assertEquals(1, createdUser.getFollowers());
+    	assertEquals(1, follower1  .getFollowing());
+    	assertEquals(1, follower2  .getFollowing());
+    	assertEquals(0, createdUser.getFollowing());
+    	
+    	//Following non existing user | Non existing user tries to follow
+    	userService.deleteByUsername(follower3.getUsername());
+    	assertThrows(NoSuchElementException.class, () -> userService.followUser(createdUser.getUserId(), follower3  .getUserId()));
+    	assertThrows(NoSuchElementException.class, () -> userService.unfollowUser(follower3.getUserId(), createdUser.getUserId()));
+    	
+    	//Following itself
+    	int compareFollowerSize = createdUser.getFollowers().size();
+    	int compareFollowingSize = createdUser.getFollowers().size();
+    	
+    	userService.followUser(createdUser.getUserId(), createdUser.getUserId());
+    	
+    	assertEquals(compareFollowerSize, createdUser.getFollowers().size());
+    	assertEquals(compareFollowingSize, createdUser.getFollowing().size());
     }
     
 }
