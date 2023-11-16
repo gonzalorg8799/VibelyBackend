@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.metrica.vibely.data.exception.HttpUnauthorizedException;
 import com.metrica.vibely.data.model.dto.UserDTO;
@@ -19,6 +20,7 @@ import com.metrica.vibely.data.util.PasswordHashing;
   * @author gonza
   *
   */
+@SpringBootTest
 public class AuthServiceTest {
 
     // <<-CONSTANTS->>
