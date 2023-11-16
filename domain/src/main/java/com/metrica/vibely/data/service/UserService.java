@@ -1,5 +1,7 @@
 package com.metrica.vibely.data.service;
 
+import java.util.UUID;
+
 import com.metrica.vibely.data.model.dto.UserDTO;
 
 /**
@@ -31,28 +33,38 @@ public interface UserService {
 	 * @param desired nickname, apiKey
 	 * @throws NoSuchElementException
 	 */
-	UserDTO updateNickname(String nickname, String apiKey);
+	UserDTO updateNickname(UUID userId, String nickname);
 	
 	/**
 	 * updates users' username
 	 * @param desired username, apiKey
 	 * @throws NoSuchElementException
 	 */
-	UserDTO updateUsername(String username, String apiKey);
+	UserDTO updateUsername(UUID userId, String username);
 	
 	/**
 	 * updates users' email
 	 * @param new email, apiKey
 	 * @throws NoSuchElementException
 	 */
-	UserDTO updateEmail(String email, String apiKey);
+	UserDTO updateEmail(UUID userId, String email);
 	
 	/**
 	 * updates users' password
 	 * @param desired password, apiKey
 	 * @throws NoSuchElementException
 	 */
-	UserDTO updatePassword(String password, String apiKey);
+	UserDTO updatePassword(UUID userId, String password);
+	
+	/**
+	 * 
+	 * @param userId 
+	 * @param follwedUserId
+	 * @param username
+	 * @return
+	 * @throws NoSuchElementException
+	 */
+	UserDTO followUser(UUID userId, UUID follwedUserId, String username);
 	
 	/**
 	 * deletes an user given its username
