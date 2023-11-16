@@ -43,7 +43,7 @@ public class PostEntityTest {
         PostVisibility visibility = PostVisibility.PUBLIC;
         String  content = "";
         Integer likes   = 0;
-        Integer saved   = 0;
+        Integer timesSaved   = 0;
         Set<Post> comments = new HashSet<>();
         Set<User> likedBy  = new HashSet<>();
         Set<User> savedBy  = new HashSet<>();
@@ -55,7 +55,7 @@ public class PostEntityTest {
         post.setVisibility(visibility);
         post.setContent   (content);
         post.setLikes     (likes);
-        post.setTimesSaved(saved);
+        post.setTimesSaved(timesSaved);
         post.setComments  (comments);
         post.setLikedBy   (likedBy);
         post.setSavedBy   (savedBy);
@@ -67,10 +67,25 @@ public class PostEntityTest {
         assertEquals(visibility, post.getVisibility());
         assertEquals(content,    post.getContent());
         assertEquals(likes,      post.getLikes());
-        assertEquals(saved,      post.getTimesSaved());
+        assertEquals(timesSaved,      post.getTimesSaved());
         assertEquals(comments,   post.getComments());
         assertEquals(likedBy,    post.getLikedBy());
         assertEquals(savedBy,    post.getSavedBy());
+        
+        Post testPost = new Post(
+                postId,
+                postDate,
+                status,
+                visibility,
+                content,
+                likes,
+                timesSaved,
+                owner,
+                comments,
+                likedBy,
+                savedBy);
+        
+        assertEquals(post, testPost);
     }
     
     @Test
@@ -140,6 +155,13 @@ public class PostEntityTest {
         testPost.setVisibility(PostVisibility.PUBLIC);
         
         assertNotEquals(testPost, post);
+    }
+    
+    @Test
+    void testBasicEquality() {
+        assertEquals(post, post);
+        assertNotEquals(post, null);
+        assertNotEquals(post, "");
     }
     
 }

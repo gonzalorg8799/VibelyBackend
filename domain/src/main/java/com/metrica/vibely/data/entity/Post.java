@@ -84,6 +84,7 @@ public class Post {
         this.setLikes(likes);
         this.setTimesSaved(timesSaved);
         this.setOwner(owner);
+        this.comments = new TreePost();
         this.setComments(comments);
         this.setLikedBy(likedBy);
         this.setSavedBy(savedBy);
