@@ -64,21 +64,19 @@ public interface UserService {
 	 * @return
 	 * @throws NoSuchElementException
 	 */
-	UserDTO followUser(UUID userId, UUID follwedUserId, String username);
+	UserDTO followUser(UUID userId, UUID follwedUserId);
 	
 	/**
 	 * 
 	 * @param userId
 	 * @param follwedUserId
-	 * @param username
 	 * @return
 	 * @throws NoSuchElementException
 	 */
-	UserDTO unfollowUser(UUID userId, UUID follwedUserId, String username);
+	UserDTO unfollowUser(UUID userId, UUID follwedUserId);
 	
 	/**
 	 * deletes an user given its username
-	 * @param username
 	 * @throws NoSuchElementException
 	 */
 	void deleteByUsername(String username);
