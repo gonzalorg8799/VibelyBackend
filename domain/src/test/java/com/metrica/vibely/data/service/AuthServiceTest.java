@@ -1,14 +1,16 @@
 package com.metrica.vibely.data.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.metrica.vibely.data.exception.HttpUnauthorizedException;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.util.PasswordHashing;
 
@@ -49,13 +51,18 @@ public class AuthServiceTest {
     void correctAuthenticationTest() {
         UserDTO testUser = generateTestUser();
         UserDTO testUser2 = generateTestUser();
-        assertNotNull(authService.authenticate(testUser.getUsername(), testUser.getPassword()));
-        assertFalse(authService.authenticate(testUser.getUsername(), testUser.getPassword())==authService.authenticate(testUser2.getUsername(), testUser2.getPassword()));
-        assertFalse(""==authService.authenticate(testUser.getUsername(), testUser.getPassword()));
+        assertTrue	 	(authService.authenticate(testUser.getUsername(), testUser.getPassword()) instanceof String);
+        assertNotNull	(authService.authenticate(testUser.getUsername(), testUser.getPassword()));
+        assertNotEquals	(authService.authenticate(testUser.getUsername(), testUser.getPassword()), authService.authenticate(testUser2.getUsername(), testUser2.getPassword()));
+        assertNotEquals ("",authService.authenticate(testUser.getUsername(), testUser.getPassword()));
         
     }
     @Test
     void failAuthenticationTest() {
-    	
+    	UserDTO testUser = generateTestUser();
+    	assertInstanceOf(String.class, authService.authenticate("", testUser.getPassword()));
+    	assertEquals 	("",authService.authenticate("", testUser.getPassword()));
+    	assertThrows 	(HttpUnauthorizedException.class,()-> authService.authenticate(testUser.getUsername(),""));
+    	assertNotNull	(authService.authenticate("", testUser.getPassword()));
     }
 }
