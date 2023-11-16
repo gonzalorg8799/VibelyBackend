@@ -1,7 +1,6 @@
 package com.metrica.vibely.data.service.impl;
 	
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,15 +91,26 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO followUser(UUID userId, UUID follwedUserId, String username) {
 		User user 		  = userRepository.findByUserId(userId).orElseThrow();
-		User followedUser = userRepository.findByUserId(follwedUserId).orElseThrow();
+		User followUser = userRepository.findByUserId(follwedUserId).orElseThrow();
 		
-		Set<User> userFollowed 		= user.getFollowing();
-		Set<User> followedUserFollowers = followedUser.getFollowers();
+		if(!followUser.getFollowers().contains(user)) {
+			followUser.getFollowers().add(user); 
+			user.getFollowing().add(followUser); 
+			userRepository.save(followUser);
+		} 
 		
-		if(!followedUser.getFollowers().contains(userId)) {
-			userFollowed.add(followedUser); 
-			followedUserFollowers.add(user); 
-			userRepository.save(followedUser);
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+
+	@Override
+	public UserDTO unfollowUser(UUID userId, UUID follwedUserId, String username) {
+		User user 		  = userRepository.findByUserId(userId).orElseThrow();
+		User followUser = userRepository.findByUserId(follwedUserId).orElseThrow();
+		
+		if(followUser.getFollowers().contains(user)) {
+			followUser.getFollowers().remove(user); 
+			user.getFollowing().remove(followUser); 
+			userRepository.save(followUser);
 		} 
 		
 		return UserMapper.toDTO(userRepository.save(user));
