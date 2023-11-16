@@ -1,6 +1,7 @@
 package com.metrica.vibely.data.repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -29,4 +30,12 @@ public interface UserRepository extends JpaRepository<User, java.util.UUID> {
 	 * @throws NoSuchElementException
 	 */
 	void deleteByUsername(String username);
+	
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws NoSuchElementException
+	 */
+	Optional<User> findByUserId(UUID userId);
 }
