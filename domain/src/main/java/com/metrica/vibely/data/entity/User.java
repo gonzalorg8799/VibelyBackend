@@ -52,9 +52,9 @@ public class User {
 	private LocalDate blockedDate;
 
     // Relations
-    @OneToMany
+    @OneToMany(mappedBy = "userId")
     private Set<User> followers;
-    @OneToMany
+    @OneToMany(mappedBy = "userId")
     private Set<User> following;
     @OneToMany(mappedBy = "postId")
     private Set<Post> posts;
