@@ -11,8 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
-import com.metrica.vibely.data.model.enumerator.State;
-import com.metrica.vibely.data.model.enumerator.Status;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -27,12 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public class UserEntityTest {
 
-    // <<-CONSTANTS->>
-    private static final String DEFAULT_USERNAME = "jdoe";
-    private static final String DEFAULT_PASSWORD = "jdoe";
-    private static final String DEFAULT_NICKNAME = "John Doe";
-    private static final String DEFAULT_EMAIL    = "johndoe@email.com";
-
     // <<-FIELD->>
     private User user;
 
@@ -46,12 +40,12 @@ public class UserEntityTest {
     void testGettersAndSetters() {
         UUID   userId   = UUID.randomUUID();
         String username = "jdoe";
-        String password = "jdoe";
+        String password = "12345";
         String nickname = "John Doe";
         String email    = "johndoe@email.com";
-        State  state    = State.ENABLED;
+        UserState   state   = UserState.ENABLED;
         PrivacyType privacy = PrivacyType.PUBLIC;
-        Status      status  = Status.ONLINE;
+        UserStatus  status  = UserStatus.ONLINE;
         Integer     logins  = 0;
         LocalDateTime lastConnDate = LocalDateTime.now();
         LocalDate     blockedDate  = LocalDate.now();
@@ -91,6 +85,24 @@ public class UserEntityTest {
         assertEquals(following,    user.getFollowing());
         assertEquals(posts,        user.getPosts());
         assertEquals(chats,        user.getChats());
+        
+        User testUser = new User(
+                userId,
+                username,
+                password,
+                nickname,
+                email,
+                state,
+                privacy,
+                logins,
+                status,
+                lastConnDate,
+                blockedDate,
+                followers,
+                following,
+                posts,
+                chats);
+        assertEquals(user, testUser);
     }
     
     @Test
@@ -122,9 +134,9 @@ public class UserEntityTest {
         user.setLogins      (null);
         
         assertEquals(currentDateTime.format(formatter), user.getLastConnDate().format(formatter));
-        assertEquals(State.ENABLED,      user.getState());
+        assertEquals(UserState.ENABLED,  user.getState());
         assertEquals(PrivacyType.PUBLIC, user.getPrivacy());
-        assertEquals(Status.OFFLINE,     user.getStatus());
+        assertEquals(UserStatus.OFFLINE, user.getStatus());
         assertEquals(0,                  user.getLogins());
     }
     
@@ -141,18 +153,30 @@ public class UserEntityTest {
     
     @Test
     void testUserIdNullEquality() {
-        user.setUsername(DEFAULT_USERNAME);
-        user.setPassword(DEFAULT_PASSWORD);
-        user.setNickname(DEFAULT_NICKNAME);
-        user.setEmail   (DEFAULT_EMAIL);
+        String username = "jdoe";
+        String password = "12345";
+        String nickname = "John Doe";
+        String email    = "johndoe@email.com";
+
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setNickname(nickname);
+        user.setEmail   (email);
         
         User excpectedUser = new User();
-        excpectedUser.setUsername(DEFAULT_USERNAME);
-        excpectedUser.setPassword(DEFAULT_PASSWORD);
-        excpectedUser.setNickname(DEFAULT_NICKNAME);
-        excpectedUser.setEmail   (DEFAULT_EMAIL);
+        excpectedUser.setUsername(username);
+        excpectedUser.setPassword(password);
+        excpectedUser.setNickname(nickname);
+        excpectedUser.setEmail   (email);
         
         assertNotEquals(excpectedUser, user);
+    }
+    
+    @Test
+    void testBasicEquality() {
+        assertEquals(user, user);
+        assertNotEquals(user, null);
+        assertNotEquals(user, "");
     }
     
 }

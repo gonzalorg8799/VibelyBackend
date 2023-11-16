@@ -1,6 +1,6 @@
 package com.metrica.vibely.data.model.enumerator;
 
-public enum State {
+public enum UserState {
 
 	ENABLED, DISABLED, BLOCKED
 	

@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
-import com.metrica.vibely.data.model.enumerator.State;
-import com.metrica.vibely.data.model.enumerator.Status;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
 
 /**
  * @since 2023-11-15
@@ -26,8 +26,8 @@ public class UserDTO {
 	private String		  apiKey;
 	
 	private PrivacyType   privacy;
-	private Status 		  status;
-	private State  		  state;
+	private UserStatus 		  status;
+	private UserState  		  state;
 	
 	private Integer 	  logins;
 	private LocalDate 	  blockedDate;
@@ -60,19 +60,19 @@ public class UserDTO {
 		this.privacy = privacy;
 	}
 
-	public Status getStatus() {
+	public UserStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(UserStatus status) {
 		this.status = status;
 	}
 
-	public State getState() {
+	public UserState getState() {
 		return state;
 	}
 
-	public void setState(State state) {
+	public void setState(UserState state) {
 		this.state = state;
 	}
 
@@ -154,7 +154,7 @@ public class UserDTO {
 	 * @return 
 	 */
 	public LocalDateTime getLastConnDate() {
-		if(status.equals(Status.OFFLINE)) { return lastConnDate; }
+		if(status.equals(UserStatus.OFFLINE)) { return lastConnDate; }
 		else { return LocalDateTime.now(); }
 	}
 	
