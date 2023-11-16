@@ -89,11 +89,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO followUser(final UUID userId,final UUID follwedUserId) {
+	public UserDTO followUser(final UUID userId,final UUID followedUserId) {
 		User user 		  = userRepository.findByUserId(userId).orElseThrow();
-		User followUser = userRepository.findByUserId(follwedUserId).orElseThrow();
+		User followUser = userRepository.findByUserId(followedUserId).orElseThrow();
 		
-		if(!followUser.getFollowers().contains(user)) {
+		if(!followUser.getFollowers().contains(user) && userId != followedUserId) {
 			followUser.getFollowers().add(user); 
 			user.getFollowing().add(followUser); 
 			userRepository.save(followUser);
@@ -103,11 +103,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO unfollowUser(final UUID userId, final UUID follwedUserId) {
+	public UserDTO unfollowUser(final UUID userId, final UUID followedUserId) {
 		User user 		  = userRepository.findByUserId(userId).orElseThrow();
-		User followUser = userRepository.findByUserId(follwedUserId).orElseThrow();
+		User followUser = userRepository.findByUserId(followedUserId).orElseThrow();
 		
-		if(followUser.getFollowers().contains(user)) {
+		if(followUser.getFollowers().contains(user) && userId != followedUserId) {
 			followUser.getFollowers().remove(user); 
 			user.getFollowing().remove(followUser); 
 			userRepository.save(followUser);
