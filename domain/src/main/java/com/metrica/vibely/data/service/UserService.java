@@ -64,7 +64,7 @@ public interface UserService {
 	 * @return
 	 * @throws NoSuchElementException
 	 */
-	UserDTO followUser(UUID userId, UUID follwedUserId);
+	UserDTO followUser(UUID userId, UUID followedUserId);
 	
 	/**
 	 * 
@@ -73,7 +73,7 @@ public interface UserService {
 	 * @return
 	 * @throws NoSuchElementException
 	 */
-	UserDTO unfollowUser(UUID userId, UUID follwedUserId);
+	UserDTO unfollowUser(UUID userId, UUID followedUserId);
 	
 	/**
 	 * deletes an user given its username
