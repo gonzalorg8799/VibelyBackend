@@ -24,23 +24,23 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	public UserServiceImpl(UserRepository userRepostory) {
+	public UserServiceImpl(final UserRepository userRepostory) {
 		this.userRepository = userRepostory;
 	}
 	
 	@Override
-	public UserDTO getByUsername(String username) {
+	public UserDTO getByUsername(final String username) {
 		return UserMapper.toDTO(userRepository.findByUsername(username)
 											  .orElseThrow());
 	}
 
 	@Override
-	public void deleteByUsername(String username) {
+	public void deleteByUsername(final String username) {
 	    userRepository.deleteByUsername(username);
 	}
 
 	@Override
-	public UserDTO create(UserDTO userParam) {
+	public UserDTO create(final UserDTO userParam) {
 		User user = UserMapper.toEntity(userParam);
 		
 		user.setState		(State.ENABLED);
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO updateUsername(UUID userId, String username) {
+	public UserDTO updateUsername(final UUID userId, final String username) {
 		User user = userRepository.findByUserId(userId).orElseThrow();
 
 		if(!username.equals(user.getUsername())) { user.setUsername(username); } 
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 		return UserMapper.toDTO(userRepository.save(user));
 	}
 	
-	public UserDTO updateNickname(UUID userId, String nickname) {
+	public UserDTO updateNickname(final UUID userId, final String nickname) {
 		User user = userRepository.findByUserId(userId).orElseThrow();
 
 		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); } 
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
 		return UserMapper.toDTO(userRepository.save(user));
 	}
 	
-	public UserDTO updateEmail(UUID userId, String email) {
+	public UserDTO updateEmail(final UUID userId, final String email) {
 		User user = userRepository.findByUserId(userId).orElseThrow();
 
 		if(!email.equals(user.getEmail())) { user.setEmail(email); } 
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 		return UserMapper.toDTO(userRepository.save(user));
 	}
 	
-	public UserDTO updatePassword(UUID userId, String password) {
+	public UserDTO updatePassword(final UUID userId, final String password) {
 		User user = userRepository.findByUserId(userId).orElseThrow();
 
 		if(!password.equals(user.getPassword())) { user.setPassword(password); } 
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO followUser(UUID userId, UUID follwedUserId, String username) {
+	public UserDTO followUser(final UUID userId,final UUID follwedUserId) {
 		User user 		  = userRepository.findByUserId(userId).orElseThrow();
 		User followUser = userRepository.findByUserId(follwedUserId).orElseThrow();
 		
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO unfollowUser(UUID userId, UUID follwedUserId, String username) {
+	public UserDTO unfollowUser(final UUID userId, final UUID follwedUserId) {
 		User user 		  = userRepository.findByUserId(userId).orElseThrow();
 		User followUser = userRepository.findByUserId(follwedUserId).orElseThrow();
 		
