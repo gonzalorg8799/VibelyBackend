@@ -19,7 +19,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.ForeignKey;
 
 /**
- * <h1>Post Entity </h1>
+ * <h1>Post Entity</h1>
  * 
  * @since 2023-11-13
  * @version 1.0
