@@ -67,6 +67,16 @@ public interface UserService {
 	UserDTO followUser(UUID userId, UUID follwedUserId, String username);
 	
 	/**
+	 * 
+	 * @param userId
+	 * @param follwedUserId
+	 * @param username
+	 * @return
+	 * @throws NoSuchElementException
+	 */
+	UserDTO unfollowUser(UUID userId, UUID follwedUserId, String username);
+	
+	/**
 	 * deletes an user given its username
 	 * @param username
 	 * @throws NoSuchElementException
