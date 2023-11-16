@@ -64,7 +64,7 @@ public class User {
     // <<-CONSTRUCTORS->>
     public User() {
         this.setUserId(null);
-//        this.posts = new Post.TreePost();
+        this.posts = new Post.TreePost();
     }
 
     public User(
@@ -97,6 +97,7 @@ public class User {
         this.setBlockedDate(blockedDate);
         this.setFollowers(followers);
         this.setFollowing(following);
+        this.posts = new Post.TreePost();
         this.setPosts(posts);
         this.setChats(chats);
     }
