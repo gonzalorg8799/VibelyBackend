@@ -30,12 +30,4 @@ public interface UserRepository extends JpaRepository<User, java.util.UUID> {
 	 * @throws NoSuchElementException
 	 */
 	void deleteByUsername(String username);
-	
-	/**
-	 * 
-	 * @param userId
-	 * @return
-	 * @throws NoSuchElementException
-	 */
-	Optional<User> findByUserId(UUID userId);
 }
