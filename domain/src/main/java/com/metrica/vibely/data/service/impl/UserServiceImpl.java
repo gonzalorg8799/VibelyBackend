@@ -57,7 +57,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO updateUsername(final UUID userId, final String username) {
-		User user = userRepository.findByUserId(userId).orElseThrow();
+		User user = userRepository.findByUserId(userId)
+								  .orElseThrow();
 
 		if(!username.equals(user.getUsername())) { user.setUsername(username); } 
 
@@ -65,7 +66,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public UserDTO updateNickname(final UUID userId, final String nickname) {
-		User user = userRepository.findByUserId(userId).orElseThrow();
+		User user = userRepository.findByUserId(userId)
+								  .orElseThrow();
 
 		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); } 
 		
@@ -73,7 +75,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public UserDTO updateEmail(final UUID userId, final String email) {
-		User user = userRepository.findByUserId(userId).orElseThrow();
+		User user = userRepository.findByUserId(userId)
+								  .orElseThrow();
 
 		if(!email.equals(user.getEmail())) { user.setEmail(email); } 
 		
@@ -81,7 +84,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public UserDTO updatePassword(final UUID userId, final String password) {
-		User user = userRepository.findByUserId(userId).orElseThrow();
+		User user = userRepository.findByUserId(userId)
+								  .orElseThrow();
 
 		if(!password.equals(user.getPassword())) { user.setPassword(password); } 
 		
@@ -90,13 +94,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO followUser(final UUID userId,final UUID followedUserId) {
-		User user 		  = userRepository.findByUserId(userId).orElseThrow();
-		User followUser = userRepository.findByUserId(followedUserId).orElseThrow();
+		User user 		  = userRepository.findByUserId(userId)
+										  .orElseThrow();
+		User followedUser = userRepository.findByUserId(followedUserId)
+										  .orElseThrow();
 		
-		if(!followUser.getFollowers().contains(user) && userId != followedUserId) {
-			followUser.getFollowers().add(user); 
-			user.getFollowing().add(followUser); 
-			userRepository.save(followUser);
+		if(!followedUser.getFollowers().contains(user) && userId != followedUserId) {
+			followedUser.getFollowers().add     (user); 
+			user		.getFollowing().add		(followedUser); 
+			userRepository			   .save	(followedUser);
 		} 
 		
 		return UserMapper.toDTO(userRepository.save(user));
@@ -104,13 +110,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO unfollowUser(final UUID userId, final UUID followedUserId) {
-		User user 		  = userRepository.findByUserId(userId).orElseThrow();
-		User followUser = userRepository.findByUserId(followedUserId).orElseThrow();
+		User user 		  	= userRepository.findByUserId(userId)
+											.orElseThrow();
+		User unFollowedUser = userRepository.findByUserId(followedUserId)
+											.orElseThrow();
 		
-		if(followUser.getFollowers().contains(user) && userId != followedUserId) {
-			followUser.getFollowers().remove(user); 
-			user.getFollowing().remove(followUser); 
-			userRepository.save(followUser);
+		if( unFollowedUser.getFollowers().contains(user) && userId != followedUserId) {
+			unFollowedUser.getFollowers().remove  (user); 
+			user		  .getFollowing().remove  (unFollowedUser); 
+			userRepository				 .save	  (unFollowedUser);
 		} 
 		
 		return UserMapper.toDTO(userRepository.save(user));
