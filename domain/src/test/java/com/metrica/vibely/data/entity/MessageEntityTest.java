@@ -6,15 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.metrica.vibely.data.model.enumerator.ChatStatus;
-import com.metrica.vibely.data.model.enumerator.ChatType;
 import com.metrica.vibely.data.model.enumerator.MessageStatus;
 
 /**
