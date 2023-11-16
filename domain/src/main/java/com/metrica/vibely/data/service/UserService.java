@@ -25,14 +25,34 @@ public interface UserService {
 	 * @throws NoSuchElementException
 	 */
 	UserDTO create(UserDTO userDTO); 
-	
+		
 	/**
-	 * updates nickname, username, email or password
-	 * @param userDTO
-	 * @return userDTO
+	 * updates users' nickname
+	 * @param desired nickname, apiKey
 	 * @throws NoSuchElementException
 	 */
-	UserDTO update(UserDTO userDTO);  
+	UserDTO updateNickname(String nickname, String apiKey);
+	
+	/**
+	 * updates users' username
+	 * @param desired username, apiKey
+	 * @throws NoSuchElementException
+	 */
+	UserDTO updateUsername(String username, String apiKey);
+	
+	/**
+	 * updates users' email
+	 * @param new email, apiKey
+	 * @throws NoSuchElementException
+	 */
+	UserDTO updateEmail(String email, String apiKey);
+	
+	/**
+	 * updates users' password
+	 * @param desired password, apiKey
+	 * @throws NoSuchElementException
+	 */
+	UserDTO updatePassword(String password, String apiKey);
 	
 	/**
 	 * deletes an user given its username
