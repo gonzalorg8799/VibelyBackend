@@ -1,6 +1,8 @@
 package com.metrica.vibely.data.service.impl;
 	
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,32 +52,58 @@ public class UserServiceImpl implements UserService {
         user.setFollowing	(null);
         user.setChats		(null);
         user.setPassword	(userParam.getPassword());
-		
-        userRepository.save(user);
         
-		return UserMapper.toDTO(user);
+		return UserMapper.toDTO(userRepository.save(user));
 	}
 
 	@Override
-	public UserDTO update(UserDTO updatedUser) {
-		//to do: pedir la apiKey en parametros
-		//utilizar dicha apiKey para comprobar si puede updatear los datos o no
-		
-		String username = updatedUser.getUsername();
-		User   user 	= userRepository.findByUsername(username).orElseThrow();
-		
-		String password = updatedUser.getPassword();
-		String nickname = updatedUser.getNickname();
-		String email 	= updatedUser.getEmail();
+	public UserDTO updateUsername(UUID userId, String username) {
+		User user = userRepository.findByUserId(userId).orElseThrow();
 
 		if(!username.equals(user.getUsername())) { user.setUsername(username); } 
-		if(!password.equals(user.getPassword())) { user.setPassword(password); }
-		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); }
-		if(!email	.equals(user.getEmail())) 	 { user.setEmail(email); }
+
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+	
+	public UserDTO updateNickname(UUID userId, String nickname) {
+		User user = userRepository.findByUserId(userId).orElseThrow();
+
+		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); } 
 		
-		userRepository.save(user);
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+	
+	public UserDTO updateEmail(UUID userId, String email) {
+		User user = userRepository.findByUserId(userId).orElseThrow();
+
+		if(!email.equals(user.getEmail())) { user.setEmail(email); } 
 		
-		return UserMapper.toDTO(user);
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+	
+	public UserDTO updatePassword(UUID userId, String password) {
+		User user = userRepository.findByUserId(userId).orElseThrow();
+
+		if(!password.equals(user.getPassword())) { user.setPassword(password); } 
+		
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+
+	@Override
+	public UserDTO followUser(UUID userId, UUID follwedUserId, String username) {
+		User user 		  = userRepository.findByUserId(userId).orElseThrow();
+		User followedUser = userRepository.findByUserId(follwedUserId).orElseThrow();
+		
+		Set<User> userFollowed 		= user.getFollowing();
+		Set<User> followedUserFollowers = followedUser.getFollowers();
+		
+		if(!followedUser.getFollowers().contains(userId)) {
+			userFollowed.add(followedUser); 
+			followedUserFollowers.add(user); 
+			userRepository.save(followedUser);
+		} 
+		
+		return UserMapper.toDTO(userRepository.save(user));
 	}
 	
 }
