@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.metrica.vibely.data.model.dto.UserDTO;
-import com.metrica.vibely.data.model.enumerator.State;
-import com.metrica.vibely.data.model.enumerator.Status;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.util.PasswordHashing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,8 +74,8 @@ public class UserServiceTest {
         assertEquals(testUser.getUsername(), databaseUser.getUsername());
         assertEquals(testUser.getNickname(), databaseUser.getNickname());
         assertEquals(testUser.getEmail(),    databaseUser.getEmail());
-        assertEquals(State.ENABLED,           databaseUser.getState());
-        assertEquals(Status.ONLINE,          databaseUser.getStatus());
+        assertEquals(UserState.ENABLED,           databaseUser.getState());
+        assertEquals(UserStatus.ONLINE,          databaseUser.getStatus());
         assertEquals(1,                      databaseUser.getLogins());
         assertNull  (databaseUser.getBlockedDate());
         assertNull  (databaseUser.getFollowers());
@@ -127,9 +127,9 @@ public class UserServiceTest {
         UserDTO updatedUser1 = userService.update(createdUser);
         assertEquals(newNickname, updatedUser1.getNickname());
 
-        createdUser.setState(State.DISABLED);
+        createdUser.setState(UserState.DISABLED);
         UserDTO updatedUser2 = userService.update(createdUser);
-        assertEquals(State.DISABLED, updatedUser2.getState());
+        assertEquals(UserState.DISABLED, updatedUser2.getState());
         
         String newEmail = "newEmail@email.com";
         createdUser.setEmail(newEmail);

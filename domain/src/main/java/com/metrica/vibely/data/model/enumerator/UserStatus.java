@@ -1,6 +1,6 @@
 package com.metrica.vibely.data.model.enumerator;
 
-public enum Status {
+public enum UserStatus {
     
     OFFLINE, ONLINE, IDLE, INVISIBLE
 

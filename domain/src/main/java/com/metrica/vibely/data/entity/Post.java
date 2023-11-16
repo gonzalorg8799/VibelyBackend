@@ -1,7 +1,12 @@
 package com.metrica.vibely.data.entity;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+
+import com.metrica.vibely.data.model.enumerator.PostStatus;
+import com.metrica.vibely.data.model.enumerator.PostVisibility;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,66 +14,149 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.ForeignKey;
 
 /**
+ * <h1>Post Entity</h1>
  * 
  * @since 2023-11-13
  * @version 1.0
+ * @author Adrian, Alex
  */
-
 @Entity
-@Table(name = "post")
 public class Post {
     
     // <<-FIELDS->>
+    
+    // Basics
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(nullable = false)
 	private UUID postId;
+	@Column(name = "post_date")
+	private LocalDateTime postDate;
+	private PostStatus status;
+	private PostVisibility visibility;
 	private String content;
-	private Integer likes, saved;
+	private Integer likes;
+    @Column(name = "times_saved")
+	private Integer timesSaved;
 	
-    @OneToMany() //orphanRemoval -> para que si se elimina el post "padre" se eliminen de la base de datos los comentarios y no de error.
+	// Relations
+	@OneToOne(optional = false)
+    @JoinColumn(
+            name = "owner_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_post_user"))
+    private User owner;
+    @OneToMany()
 	private Set<Post> comments;
+    @OneToMany()
+    private Set<User> likedBy;
+    @OneToMany()
+    private Set<User> savedBy;
     
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_post_user"))
-	private User user;
-
     // <<-CONSTRUCTORS->>
 	public Post() {
+	    this.setPostId(null);
+	    this.comments = new TreePost();
 	}
-	
+
     public Post(
             UUID postId,
+            LocalDateTime postDate,
+            PostStatus status,
+            PostVisibility visibility,
             String content,
             Integer likes,
-            Integer saved,
+            Integer timesSaved,
+            User owner,
             Set<Post> comments,
-            User user) {
+            Set<User> likedBy,
+            Set<User> savedBy
+    ) {
         this.setPostId(postId);
+        this.setPostDate(postDate);
+        this.setStatus(status);
+        this.setVisibility(visibility);
         this.setContent(content);
         this.setLikes(likes);
-        this.setSaved(saved);
+        this.setTimesSaved(timesSaved);
+        this.setOwner(owner);
+        this.comments = new TreePost();
         this.setComments(comments);
-        this.setUser(user);
+        this.setLikedBy(likedBy);
+        this.setSavedBy(savedBy);
     }
 
-    // <<-GETTERS & SETTERS->>
-	public UUID getPostId() {
-		return postId;
-	}
-	
-    public void setPostId() {
-    	this.setPostId(UUID.randomUUID());
+    // <<-METHODS->>
+    @Override
+    public int hashCode() {
+        return Objects.hash(postId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Post other = (Post) obj;
+        return Objects.equals(this.postId, other.postId);
     }
     
+    // <<-GETTERS & SETTERS->>
+    public UUID getPostId() {
+        return postId;
+    }
+
     public void setPostId(UUID postId) {
-        this.postId = postId;
+        if (postId == null) {
+            this.postId = UUID.randomUUID();
+        } else {
+            this.postId = postId;
+        }
+        // Another way
+        // this.postId = (postId == null) ? UUID.randomUUID() : postId;
+    }
+
+    public LocalDateTime getPostDate() {
+        return postDate;
+    }
+
+    public void setPostDate(LocalDateTime postDate) {
+        if (postDate == null) {
+            this.postDate = LocalDateTime.now();
+        } else {
+            this.postDate = postDate;
+        }
+    }
+
+    public PostStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PostStatus status) {
+        if (status == null) {
+            this.status = PostStatus.ACTIVE;
+        } else {
+            this.status = status;
+        }
+    }
+
+    public PostVisibility getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(PostVisibility visibility) {
+        if (visibility == null) {
+            this.visibility = PostVisibility.PUBLIC;
+        } else {
+            this.visibility = visibility;
+        }
     }
 
     public String getContent() {
@@ -76,7 +164,11 @@ public class Post {
     }
 
     public void setContent(String content) {
-        this.content = content;
+        if (content == null) {
+            this.content = "";
+        } else {
+            this.content = content;
+        }
     }
 
     public Integer getLikes() {
@@ -84,15 +176,31 @@ public class Post {
     }
 
     public void setLikes(Integer likes) {
-        this.likes = likes == null ? 0 : likes;
+        if (likes == null) {
+            this.likes = 0;
+        } else {
+            this.likes = likes;
+        }
     }
 
-    public Integer getSaved() {
-        return saved;
+    public Integer getTimesSaved() {
+        return timesSaved;
     }
 
-    public void setSaved(Integer saved) {
-        this.saved = saved == null ? 0 : saved;
+    public void setTimesSaved(Integer timesSaved) {
+        if (timesSaved == null) {
+            this.timesSaved = 0;
+        } else {
+            this.timesSaved = timesSaved;
+        }
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public Set<Post> getComments() {
@@ -100,15 +208,37 @@ public class Post {
     }
 
     public void setComments(Set<Post> comments) {
-        this.comments = comments;
+        this.comments.addAll(comments);
     }
 
-    public User getUser() {
-        return user;
+    public Set<User> getLikedBy() {
+        return likedBy;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setLikedBy(Set<User> likedBy) {
+        this.likedBy = likedBy;
+    }
+
+    public Set<User> getSavedBy() {
+        return savedBy;
+    }
+
+    public void setSavedBy(Set<User> savedBy) {
+        this.savedBy = savedBy;
+    }
+    
+    // <<-CLASS->>
+    static class TreePost extends java.util.TreeSet<Post> {
+        
+        // <<-CONSTANT->>
+        private static final long serialVersionUID = 1L;
+
+        // <<-CONSTRUCTOR->>
+        public TreePost() {
+            // The argument is a Comparator
+            super((p1, p2) -> p1.getPostDate().compareTo(p2.getPostDate()));
+        }
+        
     }
     
 }
