@@ -113,64 +113,59 @@ public class UserServiceTest {
     @Test
     @Order(3)
     void userUpdateTest() {
-        UserDTO testUser = generateTestUser();
-        UserDTO createdUser = userService.create(testUser);
+    	UserDTO createdUser 	= userService.create(generateTestUser());
+        UserDTO nonExistingUser = userService.create(generateTestUser());
+        UserDTO updatedUser 	= userService.create(generateTestUser());
         
+        UUID createdUserUUID 	 = createdUser.getUserId();
+        UUID nonExistingUserUUID = nonExistingUser.getUserId();
+        
+        String newUsername  	= "New Username";
+        String newNickname  	= "Updated Nickname";
+        String newEmail     	= "newEmail@email.com";
+        String newPassword  	= "NewPassword";
+        
+        updatedUser.setNickname (newUsername);
+        updatedUser.setUsername (newUsername);
+        updatedUser.setEmail	(newEmail);
+        updatedUser.setPassword (PasswordHashing.hash(newPassword));
+        
+        userService.updateNickname	(createdUser.getUserId(), newNickname);
+        userService.updateUsername	(createdUserUUID, newUsername);
+        userService.updateEmail	  	(createdUserUUID, newEmail);
+        userService.updatePassword	(createdUserUUID, newPassword);
+        userService.deleteByUsername(nonExistingUser.getUsername());
+
         //Basic
-        String newUsername = "New Username";
-        createdUser.setUsername(newUsername);
-        UserDTO updatedUser0 = userService.update(createdUser);
-        assertEquals(newUsername, updatedUser0.getUsername());
-        
-        String newNickname = "Updated Nickname";
-        createdUser.setNickname(newNickname);
-        UserDTO updatedUser1 = userService.update(createdUser);
-        assertEquals(newNickname, updatedUser1.getNickname());
+        assertEquals(newUsername, createdUser.getUsername());
+        assertEquals(newNickname, createdUser.getNickname());
+        assertEquals(newEmail, createdUser.getEmail());
+        assertEquals(PasswordHashing.hash(newPassword), createdUser.getPassword());
+        assertEquals(createdUser, updatedUser);
 
-        createdUser.setState(State.DISABLED);
-        UserDTO updatedUser2 = userService.update(createdUser);
-        assertEquals(State.DISABLED, updatedUser2.getState());
-        
-        String newEmail = "newEmail@email.com";
-        createdUser.setEmail(newEmail);
-        UserDTO updatedUser3 = userService.update(createdUser);
-        assertEquals(newEmail, updatedUser3.getEmail());
-        
         //User not exist
-        String notExistUsername = "UsernameTesting";
-        UserDTO updatedUser4 = userService.update(createdUser);
-        updatedUser4.setUsername(notExistUsername);
-        assertThrows(NoSuchElementException.class, () -> userService.update(updatedUser4));
-        
-        // Lists
-        Set<UUID> newFollowers = new HashSet<>(Arrays.asList("follower1", "follower2"));
-        createdUser.setFollowers(newFollowers);
-        UserDTO updatedUser5 = userService.update(createdUser);
-        assertEquals(updatedUser5.getFollowers().size(), createdUser.getFollowers().size() + newFollowers.size());
-
-        Set<UUID> newFollowing = new HashSet<>(Arrays.asList("following1", "following2"));
-        createdUser.setFollowing(newFollowing);
-        UserDTO updatedUser6 = userService.update(createdUser);
-        assertEquals(updatedUser6.getFollowing().size(), createdUser.getFollowing().size() + newFollowing.size());
-
-        Set<UUID> newChats = new HashSet<>(Arrays.asList("chat1", "chat2"));
-        createdUser.setChats(newChats);
-        UserDTO updatedUser7 = userService.update(createdUser);
-        assertEquals(updatedUser7.getChats().size(), createdUser.getChats().size() + newChats.size());
-
-
+        assertThrows(NoSuchElementException.class, () -> userService.updateUsername(nonExistingUserUUID, newUsername));
+        assertThrows(NoSuchElementException.class, () -> userService.updateNickname(nonExistingUserUUID, newNickname));
+        assertThrows(NoSuchElementException.class, () -> userService.updateEmail(nonExistingUserUUID, newEmail));
+        assertThrows(NoSuchElementException.class, () -> userService.updatePassword(nonExistingUserUUID, newPassword));
     }
     
     @Test
     @Order(4)
     void userDeleteTest() {
-        UserDTO testUser = generateTestUser();
-        UserDTO testUser2 = generateTestUser();
+        UserDTO testUser 	= generateTestUser();
+        UserDTO testUser2 	= generateTestUser();
         UserDTO createdUser = userService.create(testUser);
 
         userService.deleteByUsername(createdUser.getUsername());
         
         assertThrows(NoSuchElementException.class, () -> userService.deleteByUsername(testUser2.getUsername()));
+    }
+    
+    @Test
+    @Order(5)
+    void userFollowTest() {
+    	
     }
     
 }
