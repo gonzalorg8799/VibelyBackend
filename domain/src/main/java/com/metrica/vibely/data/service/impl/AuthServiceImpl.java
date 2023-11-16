@@ -1,11 +1,16 @@
 package com.metrica.vibely.data.service.impl;
 
+import java.security.SecureRandom;
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.metrica.vibely.data.entity.User;
+import com.metrica.vibely.data.exception.HttpUnauthorizedException;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.AuthService;
+import com.metrica.vibely.data.util.ApiKeyGenerator;
 import com.metrica.vibely.data.util.PasswordHashing;
 
 /**
@@ -29,19 +34,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String authenticate(String username, String password) {
         User user = userRepository.findByUsername(username).orElseThrow();
-        
         String apiKey = "";
-        try {
             if (PasswordHashing.matches(password, user.getPassword())) {
                 user.setLogins(user.getLogins() + 1);
-                
-                // Generar una apikey !!!!
+                apiKey=ApiKeyGenerator.generate();
                 userRepository.save(user);
             }
-        } catch (Exception e) {
-            System.err.println("fallo en password hashing");
-            // throw exception
-        }
+            else throw new HttpUnauthorizedException();
         
         return apiKey;
     }
