@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO updateUsername(final UUID userId, final String username) {
-		User user = userRepository.findByUserId(userId)
+		User user = userRepository.findById(userId)
 								  .orElseThrow();
 
 		if(!username.equals(user.getUsername())) { user.setUsername(username); } 
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public UserDTO updateNickname(final UUID userId, final String nickname) {
-		User user = userRepository.findByUserId(userId)
+		User user = userRepository.findById(userId)
 								  .orElseThrow();
 
 		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); } 
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public UserDTO updateEmail(final UUID userId, final String email) {
-		User user = userRepository.findByUserId(userId)
+		User user = userRepository.findById(userId)
 								  .orElseThrow();
 
 		if(!email.equals(user.getEmail())) { user.setEmail(email); } 
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public UserDTO updatePassword(final UUID userId, final String password) {
-		User user = userRepository.findByUserId(userId)
+		User user = userRepository.findById(userId)
 								  .orElseThrow();
 
 		if(!password.equals(user.getPassword())) { user.setPassword(password); } 
@@ -94,9 +94,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO followUser(final UUID userId,final UUID followedUserId) {
-		User user 		  = userRepository.findByUserId(userId)
+		User user 		  = userRepository.findById(userId)
 										  .orElseThrow();
-		User followedUser = userRepository.findByUserId(followedUserId)
+		User followedUser = userRepository.findById(followedUserId)
 										  .orElseThrow();
 		
 		if(!followedUser.getFollowers().contains(user) && userId != followedUserId) {
@@ -110,9 +110,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO unfollowUser(final UUID userId, final UUID followedUserId) {
-		User user 		  	= userRepository.findByUserId(userId)
+		User user 		  	= userRepository.findById(userId)
 											.orElseThrow();
-		User unFollowedUser = userRepository.findByUserId(followedUserId)
+		User unFollowedUser = userRepository.findById(followedUserId)
 											.orElseThrow();
 		
 		if( unFollowedUser.getFollowers().contains(user) && userId != followedUserId) {
