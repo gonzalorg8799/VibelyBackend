@@ -63,6 +63,7 @@ public class AuthServiceTest {
     void failAuthenticationTest() {
     	UserDTO testUser = generateTestUser();
     	assertInstanceOf(String.class, authService.authenticate("", testUser.getPassword()));
+    	//arreglar excepcion para username
     	assertEquals 	("",authService.authenticate("", testUser.getPassword()));
     	assertThrows 	(HttpUnauthorizedException.class,()-> authService.authenticate(testUser.getUsername(),""));
     	assertNotNull	(authService.authenticate("", testUser.getPassword()));
