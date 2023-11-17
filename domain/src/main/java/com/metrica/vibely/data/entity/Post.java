@@ -219,7 +219,7 @@ public class Post {
     }
 
     public User getOwner() {
-        return this.owner;
+        return new User(this.owner);
     }
 
     public void setOwner(final User owner) {
