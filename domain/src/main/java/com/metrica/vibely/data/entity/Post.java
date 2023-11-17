@@ -1,9 +1,11 @@
 package com.metrica.vibely.data.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.metrica.vibely.data.model.enumerator.PostStatus;
 import com.metrica.vibely.data.model.enumerator.PostVisibility;
@@ -33,6 +35,7 @@ public class Post {
     // Basics
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "post_id")
 	private UUID postId;
 	@Column(name = "post_date")
 	private LocalDateTime postDate;
@@ -51,17 +54,19 @@ public class Post {
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_post_user"))
     private User owner;
-    @OneToMany()
+    @OneToMany(mappedBy = "postId")
 	private Set<Post> comments;
-    @OneToMany()
+    @OneToMany(mappedBy = "userId")
     private Set<User> likedBy;
-    @OneToMany()
+    @OneToMany(mappedBy = "userId")
     private Set<User> savedBy;
     
     // <<-CONSTRUCTORS->>
 	public Post() {
 	    this.setPostId(null);
-	    this.comments = new TreePost();
+	    this.setComments(null);
+        this.setLikedBy(null);
+        this.setSavedBy(null);
 	}
 
     public Post(
@@ -75,8 +80,7 @@ public class Post {
             User owner,
             Set<Post> comments,
             Set<User> likedBy,
-            Set<User> savedBy
-    ) {
+            Set<User> savedBy) {
         this.setPostId(postId);
         this.setPostDate(postDate);
         this.setStatus(status);
@@ -85,16 +89,34 @@ public class Post {
         this.setLikes(likes);
         this.setTimesSaved(timesSaved);
         this.setOwner(owner);
-        this.comments = new TreePost();
         this.setComments(comments);
         this.setLikedBy(likedBy);
         this.setSavedBy(savedBy);
+    }
+    
+    /**
+     * Constructs a copy of the given entity.
+     * 
+     * @param post the post to copy
+     */
+    public Post(Post post) {
+        this.setPostId    (post.getPostId());
+        this.setPostDate  (post.getPostDate());
+        this.setStatus    (post.getStatus());
+        this.setVisibility(post.getVisibility());
+        this.setContent   (post.getContent());
+        this.setLikes     (post.getLikes());
+        this.setTimesSaved(post.getTimesSaved());
+        this.setOwner     (post.getOwner());
+        this.setComments  (post.getComments());
+        this.setLikedBy   (post.getLikedBy());
+        this.setSavedBy   (post.getSavedBy());
     }
 
     // <<-METHODS->>
     @Override
     public int hashCode() {
-        return Objects.hash(postId);
+        return Objects.hash(this.postId);
     }
 
     @Override
@@ -103,7 +125,7 @@ public class Post {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (this.getClass() != obj.getClass())
             return false;
         Post other = (Post) obj;
         return Objects.equals(this.postId, other.postId);
@@ -111,10 +133,10 @@ public class Post {
     
     // <<-GETTERS & SETTERS->>
     public UUID getPostId() {
-        return postId;
+        return this.postId;
     }
 
-    public void setPostId(UUID postId) {
+    public void setPostId(final UUID postId) {
         if (postId == null) {
             this.postId = UUID.randomUUID();
         } else {
@@ -125,10 +147,10 @@ public class Post {
     }
 
     public LocalDateTime getPostDate() {
-        return postDate;
+        return this.postDate;
     }
 
-    public void setPostDate(LocalDateTime postDate) {
+    public void setPostDate(final LocalDateTime postDate) {
         if (postDate == null) {
             this.postDate = LocalDateTime.now();
         } else {
@@ -137,10 +159,10 @@ public class Post {
     }
 
     public PostStatus getStatus() {
-        return status;
+        return this.status;
     }
 
-    public void setStatus(PostStatus status) {
+    public void setStatus(final PostStatus status) {
         if (status == null) {
             this.status = PostStatus.ACTIVE;
         } else {
@@ -149,10 +171,10 @@ public class Post {
     }
 
     public PostVisibility getVisibility() {
-        return visibility;
+        return this.visibility;
     }
 
-    public void setVisibility(PostVisibility visibility) {
+    public void setVisibility(final PostVisibility visibility) {
         if (visibility == null) {
             this.visibility = PostVisibility.PUBLIC;
         } else {
@@ -161,10 +183,10 @@ public class Post {
     }
 
     public String getContent() {
-        return content;
+        return this.content;
     }
 
-    public void setContent(String content) {
+    public void setContent(final String content) {
         if (content == null) {
             this.content = "";
         } else {
@@ -173,10 +195,10 @@ public class Post {
     }
 
     public Integer getLikes() {
-        return likes;
+        return this.likes;
     }
 
-    public void setLikes(Integer likes) {
+    public void setLikes(final Integer likes) {
         if (likes == null) {
             this.likes = 0;
         } else {
@@ -185,10 +207,10 @@ public class Post {
     }
 
     public Integer getTimesSaved() {
-        return timesSaved;
+        return this.timesSaved;
     }
 
-    public void setTimesSaved(Integer timesSaved) {
+    public void setTimesSaved(final Integer timesSaved) {
         if (timesSaved == null) {
             this.timesSaved = 0;
         } else {
@@ -197,35 +219,56 @@ public class Post {
     }
 
     public User getOwner() {
-        return owner;
+        return this.owner;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwner(final User owner) {
+        this.owner = new User(owner);
     }
 
     public Set<Post> getComments() {
-        return comments;
+        return this.comments.stream()
+                .map(Post::new)
+                .collect(Collectors.toSet());
     }
 
-    public void setComments(Set<Post> comments) {
-        this.comments.addAll(comments);
+    public void setComments(final Set<Post> comments) {
+        this.comments = new TreePost();
+        if (comments != null) {
+            this.comments.addAll(comments.stream()
+                    .map(Post::new)
+                    .collect(Collectors.toSet()));
+        }
     }
 
     public Set<User> getLikedBy() {
-        return likedBy;
+        return this.likedBy.stream()
+                .map(User::new)
+                .collect(Collectors.toSet());
     }
 
-    public void setLikedBy(Set<User> likedBy) {
-        this.likedBy = likedBy;
+    public void setLikedBy(final Set<User> likedBy) {
+        this.likedBy = new HashSet<>();
+        if (likedBy != null) {
+            this.likedBy.addAll(likedBy.stream()
+                    .map(User::new)
+                    .collect(Collectors.toSet()));
+        }
     }
 
     public Set<User> getSavedBy() {
-        return savedBy;
+        return this.savedBy.stream()
+                .map(User::new)
+                .collect(Collectors.toSet());
     }
 
-    public void setSavedBy(Set<User> savedBy) {
+    public void setSavedBy(final Set<User> savedBy) {
         this.savedBy = savedBy;
+        if (savedBy != null) {
+            this.savedBy.addAll(savedBy.stream()
+                    .map(User::new)
+                    .collect(Collectors.toSet()));
+        }
     }
     
     // <<-CLASS->>
