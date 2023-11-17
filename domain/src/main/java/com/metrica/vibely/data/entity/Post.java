@@ -47,6 +47,7 @@ public class Post {
 	@OneToOne(optional = false)
     @JoinColumn(
             name = "owner_id",
+            unique = true,
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_post_user"))
     private User owner;

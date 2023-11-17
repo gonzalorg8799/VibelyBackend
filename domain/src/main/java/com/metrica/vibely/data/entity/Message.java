@@ -40,12 +40,14 @@ public class Message {
     @OneToOne(optional = false)
     @JoinColumn(
             name = "sender_id",
+            unique = true,
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_chat_user"))
     private User sender;
     @OneToOne(optional = false)
 	@JoinColumn(
 	        name = "chat_id",
+	        unique = true,
 	        nullable = false,
 	        foreignKey = @ForeignKey(name = "fk_chat_message"))
     private Chat chat;

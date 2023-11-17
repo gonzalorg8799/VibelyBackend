@@ -5,13 +5,13 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.ForeignKey;
 
 /**
- * <h1>Admin Entity</h1>
+ * <h1>Administrator Entity</h1>
  * 
  * @since 2023-11-13
  * @version 1.0
  * @author Adrian, Alex
  */
-public class Admin{
+public class Admin {
 	
     // <<-FIELDS->>
     
