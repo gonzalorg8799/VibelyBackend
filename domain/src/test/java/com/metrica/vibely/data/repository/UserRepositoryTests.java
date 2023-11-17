@@ -82,10 +82,10 @@ public class UserRepositoryTests {
     	
     	//crear tests assertEquals
     	userRepository.saveAllAndFlush(collection);
-    	assertEquals(testUser1, userRepository.findByUsername(testUser1));
-    	assertEquals(testUser2, userRepository.findByUsername(testUser2));
-    	assertEquals(testUser3, userRepository.findByUsername(testUser3));
-    	assertEquals(testUser4, userRepository.findByUsername(testUser4));
+    	assertEquals(testUser1, userRepository.findByUsername(testUser1.getUsername()));
+    	assertEquals(testUser2, userRepository.findByUsername(testUser2.getUsername()));
+    	assertEquals(testUser3, userRepository.findByUsername(testUser3.getUsername()));
+    	assertEquals(testUser4, userRepository.findByUsername(testUser4.getUsername()));
     	userRepository.deleteByUsername(testUser1.getUsername());
         assertTrue(userRepository.findByUsername(testUser1.getUsername()).isEmpty());
     	userRepository.deleteAll(collection);
