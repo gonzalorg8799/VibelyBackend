@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
@@ -31,7 +33,7 @@ import com.metrica.vibely.data.util.PasswordHashing;
  * @version 1.0
  * @author Daniel
  */
-
+@SpringBootTest
 public class UserRepositoryTests {
 
     // <<-FIELD->>
@@ -79,6 +81,7 @@ public class UserRepositoryTests {
     	collection.add(testUser3);
     	collection.add(testUser4);
     	
+    	//crear tests assertEquals
     	userRepository.saveAllAndFlush(collection);
     	assertNotNull(userRepository.findByUsername(testUser1.getUsername()));
     	assertNotNull(userRepository.findByUsername(testUser2.getUsername()));
@@ -115,6 +118,6 @@ public class UserRepositoryTests {
         assertEquals(user.getChats(),       searchedUser.getChats());
         
         userRepository.delete(user);
-        assertNull(userRepository.findByUsername(user.getUsername()));
+        assertTrue(userRepository.findByUsername(user.getUsername()).isEmpty());
     }
 }
