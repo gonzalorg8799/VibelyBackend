@@ -38,7 +38,6 @@ public class UserRepositoryTests {
 
     // <<-FIELD->>
     private UserRepository userRepository;
-    private User user = initializeUser("jdoe", "jdoe", "Jhon Doe", "johndoe@email.com");
     
     // <<-CONSTRUCTOR->>
     @Autowired
@@ -71,7 +70,7 @@ public class UserRepositoryTests {
     @Test
     @Order(1)
     void saveFlushDeleteTest() {
-    	User testUser1 = user;
+    	User testUser1 = initializeUser("jdoe", "jdoe", "Jhon Doe", "johndoe@email.com");
     	userRepository.saveAndFlush(testUser1);
     	User testUser2 = initializeUser("test2", "testing2", "Test Account2", "irrelevant@email.com");
     	User testUser3 = initializeUser("test3", "testing3", "Test Account3", "notimportant@email.com");
@@ -83,21 +82,22 @@ public class UserRepositoryTests {
     	
     	//crear tests assertEquals
     	userRepository.saveAllAndFlush(collection);
-    	assertNotNull(userRepository.findByUsername(testUser1.getUsername()));
-    	assertNotNull(userRepository.findByUsername(testUser2.getUsername()));
-    	assertNotNull(userRepository.findByUsername(testUser3.getUsername()));
-    	assertNotNull(userRepository.findByUsername(testUser4.getUsername()));
+    	assertEquals(testUser1, userRepository.findByUsername(testUser1));
+    	assertEquals(testUser2, userRepository.findByUsername(testUser2));
+    	assertEquals(testUser3, userRepository.findByUsername(testUser3));
+    	assertEquals(testUser4, userRepository.findByUsername(testUser4));
     	userRepository.deleteByUsername(testUser1.getUsername());
-    	assertNull(userRepository.findByUsername(testUser1.getUsername()));
+        assertTrue(userRepository.findByUsername(testUser1.getUsername()).isEmpty());
     	userRepository.deleteAll(collection);
-    	assertNotNull(userRepository.findByUsername(testUser2.getUsername()));
-    	assertNotNull(userRepository.findByUsername(testUser3.getUsername()));
-    	assertNotNull(userRepository.findByUsername(testUser4.getUsername()));
+        assertTrue(userRepository.findByUsername(testUser2.getUsername()).isEmpty());
+        assertTrue(userRepository.findByUsername(testUser3.getUsername()).isEmpty());
+        assertTrue(userRepository.findByUsername(testUser4.getUsername()).isEmpty());
     }
     
     @Test
     @Order(2)
     void findByUsernameTest() {
+    	User user = initializeUser("jdoe", "jdoe", "Jhon Doe", "johndoe@email.com");
     	userRepository.saveAndFlush(user);
     	
     	Optional<User> result = userRepository.findByUsername(user.getUsername());
