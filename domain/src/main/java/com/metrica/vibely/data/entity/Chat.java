@@ -1,9 +1,11 @@
 package com.metrica.vibely.data.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
@@ -24,24 +26,24 @@ import jakarta.persistence.OneToMany;
  * @version 1.0
  * @author Adrian, Alex
  */
-
 @Entity
 public class Chat {
     
 	// <<-FIELDS->>
 	
 	// Basic
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "chat_id")
     private UUID chatId;
-	@Column(name = "creation_date")
-	private LocalDateTime creationDate;
-	@Enumerated(value = EnumType.STRING)
+    @Column(name = "creation_date")
+    private LocalDateTime creationDate;
+    @Enumerated(value = EnumType.STRING)
     private ChatType type;
     private ChatStatus status;
-	private String title;
+    private String title;
     @Column(name = "last_activity")
-	private LocalDateTime lastActivity;
+    private LocalDateTime lastActivity;
 	
 	// Relations
 	@OneToMany(mappedBy = "userId")
@@ -52,6 +54,8 @@ public class Chat {
     // <<-CONSTRUCTORS->>
     public Chat() {
         this.setChatId(null);
+        this.setParticipants(null);
+        this.setMessages(null);
     }
 
     public Chat(
@@ -62,8 +66,7 @@ public class Chat {
             String title,
             LocalDateTime creationDate,
             Set<User> participants,
-            Set<Message> messages
-    ) {
+            Set<Message> messages) {
         this.setChatId(chatId);
         this.setLastActivity(lastActivity);
         this.setType(type);
@@ -74,10 +77,39 @@ public class Chat {
         this.setMessages(messages);
     }
     
+    /**
+     * Constructs a copy of the given entity.
+     * 
+     * @param chat the chat to copy
+     */
+    public Chat(Chat chat) {
+        this.setChatId      (chat.getChatId());
+        this.setLastActivity(chat.getLastActivity());
+        this.setType        (chat.getType());
+        this.setStatus      (chat.getStatus());
+        this.setTitle       (chat.getTitle());
+        this.setCreationDate(chat.getCreationDate());
+        this.setParticipants(chat.getParticipants());
+        this.setMessages    (chat.getMessages());
+    }
+    
     // <<-METHODS->>
+    /**
+     * Add a new participant to the chat.
+     * 
+     * @param participant the new user
+     */
+    public boolean addParticipant(final User participant) {
+        boolean inserted = false;
+        if (participant != null) {
+            inserted = this.participants.add(new User(participant));
+        }
+        return inserted;
+    }
+    
     @Override
     public int hashCode() {
-        return Objects.hash(chatId);
+        return Objects.hash(this.chatId);
     }
 
     @Override
@@ -86,7 +118,7 @@ public class Chat {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (this.getClass() != obj.getClass())
             return false;
         Chat other = (Chat) obj;
         return Objects.equals(this.chatId, other.chatId);
@@ -94,10 +126,10 @@ public class Chat {
 
     // <<-GETTERS & SETTERS->>
     public UUID getChatId() {
-        return chatId;
+        return this.chatId;
     }
 
-    public void setChatId(UUID chatId) {
+    public void setChatId(final UUID chatId) {
         if (chatId == null) {
             this.chatId = UUID.randomUUID();
         } else {
@@ -106,10 +138,10 @@ public class Chat {
     }
 
     public LocalDateTime getCreationDate() {
-        return creationDate;
+        return this.creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(final LocalDateTime creationDate) {
         if (creationDate == null) {
             this.creationDate = LocalDateTime.now();
         } else {
@@ -118,10 +150,10 @@ public class Chat {
     }
 
     public ChatType getType() {
-        return type;
+        return this.type;
     }
 
-    public void setType(ChatType type) {
+    public void setType(final ChatType type) {
         if (type == null) {
             this.type = ChatType.DIRECT_MESSAGE;
         } else {
@@ -130,10 +162,10 @@ public class Chat {
     }
 
     public ChatStatus getStatus() {
-        return status;
+        return this.status;
     }
 
-    public void setStatus(ChatStatus status) {
+    public void setStatus(final ChatStatus status) {
         if (status == null) {
             this.status = ChatStatus.ACTIVE;
         } else {
@@ -142,18 +174,18 @@ public class Chat {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
     public LocalDateTime getLastActivity() {
-        return lastActivity;
+        return this.lastActivity;
     }
 
-    public void setLastActivity(LocalDateTime lastActivity) {
+    public void setLastActivity(final LocalDateTime lastActivity) {
         if (lastActivity == null) {
             this.lastActivity = LocalDateTime.now();
         } else {
@@ -162,19 +194,33 @@ public class Chat {
     }
 
     public Set<User> getParticipants() {
-        return participants;
+        return this.participants.stream()
+                .map(User::new)
+                .collect(Collectors.toSet());
     }
 
-    public void setParticipants(Set<User> participants) {
-        this.participants = participants;
+    public void setParticipants(final Set<User> participants) {
+        this.participants = new HashSet<>();
+        if (participants != null) {
+            this.participants.addAll(participants.stream()
+                    .map(User::new)
+                    .collect(Collectors.toSet()));
+        }
     }
 
     public Set<Message> getMessages() {
-        return messages;
+        return this.messages.stream()
+                .map(Message::new)
+                .collect(Collectors.toSet());
     }
 
-    public void setMessages(Set<Message> messages) {
-        this.messages = messages;
+    public void setMessages(final Set<Message> messages) {
+        this.messages = new HashSet<>();
+        if (messages != null) {
+            this.messages.addAll(messages.stream()
+                    .map(Message::new)
+                    .collect(Collectors.toSet()));
+        }
     }
     
 }
