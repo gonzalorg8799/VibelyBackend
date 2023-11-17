@@ -2,9 +2,11 @@ package com.metrica.vibely.data.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
@@ -34,17 +36,18 @@ public class User {
     // Basic
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "user_id")
     private UUID userId;
     private String username;
     private String password;
     private String nickname;
     private String email;
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = EnumType.ORDINAL)
     private UserState state;
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = EnumType.ORDINAL)
     private PrivacyType privacy;
     private Integer logins;
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = EnumType.ORDINAL)
     private UserStatus status;
 	@Column(name = "last_connection_date")
     private LocalDateTime lastConnDate;
@@ -64,7 +67,10 @@ public class User {
     // <<-CONSTRUCTORS->>
     public User() {
         this.setUserId(null);
-        this.posts = new Post.TreePost();
+        this.setFollowers(null);
+        this.setFollowing(null);
+        this.setPosts(null);
+        this.setChats(null);
     }
 
     public User(
@@ -82,8 +88,7 @@ public class User {
             Set<User> followers,
             Set<User> following,
             Set<Post> posts,
-            Set<Chat> chats
-     ) {
+            Set<Chat> chats) {
         this.setUserId(userId);
         this.setUsername(username);
         this.setPassword(password);
@@ -97,9 +102,31 @@ public class User {
         this.setBlockedDate(blockedDate);
         this.setFollowers(followers);
         this.setFollowing(following);
-        this.posts = new Post.TreePost();
         this.setPosts(posts);
         this.setChats(chats);
+    }
+    
+    /**
+     * Constructs a copy of the given entity.
+     * 
+     * @param user the user to copy
+     */
+    public User(User user) {
+        this.setUserId  (user.getUserId());
+        this.setUsername(user.getUsername());
+        this.setPassword(user.getPassword());
+        this.setNickname(user.getNickname());
+        this.setEmail   (user.getEmail());
+        this.setState   (user.getState());
+        this.setPrivacy (user.getPrivacy());
+        this.setLogins  (user.getLogins());
+        this.setStatus  (user.getStatus());
+        this.setLastConnDate(user.getLastConnDate());
+        this.setBlockedDate (user.getBlockedDate());
+        this.setFollowers   (user.getFollowers());
+        this.setFollowing   (user.getFollowing());
+        this.setPosts       (user.getPosts());
+        this.setChats       (user.getChats());
     }
 
     // <<-METHODS->>
@@ -114,7 +141,7 @@ public class User {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (this.getClass() != obj.getClass())
             return false;
         User other = (User) obj;
         return Objects.equals(this.userId, other.userId);
@@ -122,10 +149,10 @@ public class User {
     
     // <<-GETTERS & SETTERS->>
     public UUID getUserId() {
-        return userId;
+        return this.userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(final UUID userId) {
     	if (userId == null) {
     	    this.userId = UUID.randomUUID();
     	} else {
@@ -136,42 +163,42 @@ public class User {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
     public String getNickname() {
-        return nickname;
+        return this.nickname;
     }
 
-    public void setNickname(String nickname) {
+    public void setNickname(final String nickname) {
         this.nickname = nickname;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
     public UserState getState() {
-        return state;
+        return this.state;
     }
 
-    public void setState(UserState state) {
+    public void setState(final UserState state) {
         if (state == null) {
             this.state = UserState.ENABLED;
         } else {
@@ -180,10 +207,10 @@ public class User {
     }
 
     public PrivacyType getPrivacy() {
-        return privacy;
+        return this.privacy;
     }
 
-    public void setPrivacy(PrivacyType privacy) {
+    public void setPrivacy(final PrivacyType privacy) {
         if (privacy == null) {
             this.privacy = PrivacyType.PUBLIC;
         } else {
@@ -192,10 +219,10 @@ public class User {
     }
 
     public Integer getLogins() {
-        return logins;
+        return this.logins;
     }
 
-    public void setLogins(Integer logins) {
+    public void setLogins(final Integer logins) {
         if (logins == null) {
             this.logins = 0;
         } else {
@@ -204,10 +231,10 @@ public class User {
     }
 
     public UserStatus getStatus() {
-        return status;
+        return this.status;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(final UserStatus status) {
         if (status == null) {
             this.status = UserStatus.OFFLINE;
         } else {
@@ -216,10 +243,10 @@ public class User {
     }
 
     public LocalDateTime getLastConnDate() {
-        return lastConnDate;
+        return this.lastConnDate;
     }
 
-    public void setLastConnDate(LocalDateTime lastConnDate) {
+    public void setLastConnDate(final LocalDateTime lastConnDate) {
         if (lastConnDate == null) {
             this.lastConnDate = LocalDateTime.now();
         } else {
@@ -228,43 +255,71 @@ public class User {
     }
 
     public LocalDate getBlockedDate() {
-        return blockedDate;
+        return this.blockedDate;
     }
 
-    public void setBlockedDate(LocalDate blockedDate) {
+    public void setBlockedDate(final LocalDate blockedDate) {
         this.blockedDate = blockedDate;
     }
 
     public Set<User> getFollowers() {
-        return followers;
+        return this.followers.stream()
+                .map(User::new)
+                .collect(Collectors.toSet());
     }
 
-    public void setFollowers(Set<User> followers) {
-        this.followers = followers;
+    public void setFollowers(final Set<User> followers) {
+        this.followers = new HashSet<>();
+        if (followers != null) {
+            this.followers.addAll(followers.stream()
+                    .map(User::new)
+                    .collect(Collectors.toSet()));
+        }
     }
 
     public Set<User> getFollowing() {
-        return following;
+        return this.following.stream()
+                .map(User::new)
+                .collect(Collectors.toSet());
     }
 
-    public void setFollowing(Set<User> following) {
-        this.following = following;
+    public void setFollowing(final Set<User> following) {
+        this.following = new HashSet<>();
+        if (following != null) {
+            this.following.addAll(following.stream()
+                    .map(User::new)
+                    .collect(Collectors.toSet()));
+        }
     }
 
     public Set<Post> getPosts() {
-        return posts;
+        return this.posts.stream()
+                .map(Post::new)
+                .collect(Collectors.toSet());
     }
 
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
+    public void setPosts(final Set<Post> posts) {
+        this.posts = new Post.TreePost();
+        if (posts != null) {
+            this.posts.addAll(posts.stream()
+                    .map(Post::new)
+                    .collect(Collectors.toSet()));
+        }
     }
 
     public Set<Chat> getChats() {
-        return chats;
+        return this.chats.stream()
+            .map(Chat::new)
+            .collect(Collectors.toSet());
     }
 
-    public void setChats(Set<Chat> chats) {
-        this.chats = chats;
+    public void setChats(final Set<Chat> chats) {
+        this.chats = new HashSet<>();
+        if (chats != null) {
+            this.chats.addAll(chats.stream()
+                    .map(Chat::new)
+                    .collect(Collectors.toSet()));
+        }
     }
     
 }
