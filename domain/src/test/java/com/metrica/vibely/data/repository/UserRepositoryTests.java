@@ -34,12 +34,6 @@ import com.metrica.vibely.data.util.PasswordHashing;
 
 public class UserRepositoryTests {
 
-	// <<-CONSTANTS->>
-    private static final String DEFAULT_USERNAME = "jdoe";
-    private static final String DEFAULT_PASSWORD = "jdoe";
-    private static final String DEFAULT_NICKNAME = "John Doe";
-    private static final String DEFAULT_EMAIL    = "johndoe@email.com";
-
     // <<-FIELD->>
     private UserRepository userRepository;
     private User user = initializeUser("jdoe", "jdoe", "Jhon Doe", "johndoe@email.com");
@@ -55,10 +49,10 @@ public class UserRepositoryTests {
     private User initializeUser(String username, String password, String nickname, String email) {
     	User user = new User();
     	user.setUserId		(null);
-    	user.setUsername	(DEFAULT_USERNAME);
-    	user.setPassword	(PasswordHashing.hash(DEFAULT_PASSWORD));
-    	user.setNickname	(DEFAULT_NICKNAME);
-    	user.setEmail   	(DEFAULT_EMAIL);
+    	user.setUsername	(username);
+    	user.setPassword	(PasswordHashing.hash(password));
+    	user.setNickname	(nickname);
+    	user.setEmail   	(email);
     	user.setState       (State.ENABLED);
         user.setPrivacy     (PrivacyType.PUBLIC);
         user.setStatus      (Status.ONLINE);
@@ -103,7 +97,7 @@ public class UserRepositoryTests {
     void findByUsernameTest() {
     	userRepository.saveAndFlush(user);
     	
-    	Optional<User> result = userRepository.findByUsername(DEFAULT_USERNAME);
+    	Optional<User> result = userRepository.findByUsername(user.getUsername());
     	User searchedUser = result.get();
     	
     	assertInstanceOf(User.class, result.get());
@@ -121,6 +115,6 @@ public class UserRepositoryTests {
         assertEquals(user.getChats(),       searchedUser.getChats());
         
         userRepository.delete(user);
-        assertNull(userRepository.findByUsername(DEFAULT_USERNAME));
+        assertNull(userRepository.findByUsername(user.getUsername()));
     }
 }
