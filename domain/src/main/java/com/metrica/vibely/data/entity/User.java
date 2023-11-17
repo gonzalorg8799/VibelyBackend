@@ -112,15 +112,15 @@ public class User {
      * @param user the user to copy
      */
     public User(User user) {
-        this.setUserId  (user.getUserId());
-        this.setUsername(user.getUsername());
-        this.setPassword(user.getPassword());
-        this.setNickname(user.getNickname());
-        this.setEmail   (user.getEmail());
-        this.setState   (user.getState());
-        this.setPrivacy (user.getPrivacy());
-        this.setLogins  (user.getLogins());
-        this.setStatus  (user.getStatus());
+        this.setUserId      (user.getUserId());
+        this.setUsername    (user.getUsername());
+        this.setPassword    (user.getPassword());
+        this.setNickname    (user.getNickname());
+        this.setEmail       (user.getEmail());
+        this.setState       (user.getState());
+        this.setPrivacy     (user.getPrivacy());
+        this.setLogins      (user.getLogins());
+        this.setStatus      (user.getStatus());
         this.setLastConnDate(user.getLastConnDate());
         this.setBlockedDate (user.getBlockedDate());
         this.setFollowers   (user.getFollowers());
@@ -130,6 +130,11 @@ public class User {
     }
 
     // <<-METHODS->>
+    @Override
+    public Object clone() {
+        return new Object();
+    }
+    
     @Override
     public int hashCode() {
         return Objects.hash(this.userId);
