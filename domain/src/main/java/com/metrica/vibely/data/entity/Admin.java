@@ -1,8 +1,6 @@
 package com.metrica.vibely.data.entity;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.ForeignKey;
+import jakarta.persistence.Entity;
 
 /**
  * <h1>Administrator Entity</h1>
@@ -11,17 +9,6 @@ import jakarta.persistence.ForeignKey;
  * @version 1.0
  * @author Adrian, Alex
  */
-public class Admin {
-	
-    // <<-FIELDS->>
-    
-    // Relations
-	@OneToOne(optional = false)
-	@JoinColumn(
-	        name = "user_id",
-	        unique = true,
-	        nullable = false,
-	        foreignKey = @ForeignKey(name = "fk_admin_user"))
-	private User user;
-    
+@Entity
+public class Admin extends User {
 }
