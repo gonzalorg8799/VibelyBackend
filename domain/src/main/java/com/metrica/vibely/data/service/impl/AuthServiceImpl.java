@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
 
 	// <<-METHODS->>
 	@Override
-	public String authenticate(String username, String password) {
+	public String authenticate(final String username, final String password) {
 		User user = userRepository.findByUsername(username).orElseThrow(() -> new InvalidCredentialsException());
 		if (PasswordHashing.matches(password, user.getPassword())) {
 			user.setLogins(user.getLogins() + 1);
