@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.metrica.vibely.data.exception.HttpUnauthorizedException;
+import com.metrica.vibely.data.exception.InvalidCredentialsException;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.util.PasswordHashing;
 
@@ -53,19 +53,22 @@ public class AuthServiceTest {
     void correctAuthenticationTest() {
         UserDTO testUser = generateTestUser();
         UserDTO testUser2 = generateTestUser();
-        assertTrue	 	(authService.authenticate(testUser.getUsername(), testUser.getPassword()) instanceof String);
+        assertInstanceOf(String.class, authService.authenticate(testUser.getUsername(), testUser.getPassword()));
         assertNotNull	(authService.authenticate(testUser.getUsername(), testUser.getPassword()));
-        assertNotEquals	(authService.authenticate(testUser.getUsername(), testUser.getPassword()), authService.authenticate(testUser2.getUsername(), testUser2.getPassword()));
         assertNotEquals ("",authService.authenticate(testUser.getUsername(), testUser.getPassword()));
+        assertNotEquals	(authService.authenticate(testUser.getUsername(), testUser.getPassword()), 
+        				 authService.authenticate(testUser2.getUsername(), testUser2.getPassword()));
+        
+        assertEquals	(authService.authenticate(testUser.getUsername(), testUser.getPassword()),
+        			 	 authService.authenticate(testUser.getUsername(), testUser.getPassword()));
+        
         
     }
     @Test
     void failAuthenticationTest() {
     	UserDTO testUser = generateTestUser();
-    	assertInstanceOf(String.class, authService.authenticate("", testUser.getPassword()));
-    	//arreglar excepcion para username
-    	assertEquals 	("",authService.authenticate("", testUser.getPassword()));
-    	assertThrows 	(HttpUnauthorizedException.class,()-> authService.authenticate(testUser.getUsername(),""));
-    	assertNotNull	(authService.authenticate("", testUser.getPassword()));
+    	assertThrows 	(InvalidCredentialsException.class,() -> authService.authenticate("", testUser.getPassword()));
+    	assertThrows 	(InvalidCredentialsException.class,() -> authService.authenticate(testUser.getUsername(),""));
+    	assertThrows 	(InvalidCredentialsException.class,() -> authService.authenticate("",""));
     }
 }
