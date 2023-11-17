@@ -30,6 +30,7 @@ public class Message {
 	// Basic
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "message_id")
 	private UUID messageId;
 	@Column(name = "creation_timestamp")
 	private LocalDateTime creationTimestamp;
@@ -63,8 +64,7 @@ public class Message {
             MessageStatus status,
             String content,
             User sender,
-            Chat chat
-    ) {
+            Chat chat) {
         this.setMessageId(messageId);
         this.setCreationTimestamp(creationTimestamp);
         this.setStatus(status);
@@ -72,11 +72,25 @@ public class Message {
         this.setSender(sender);
         this.setChat(chat);
     }
+    
+    /**
+     * Constructs a copy of the given entity.
+     * 
+     * @param message the message to copy
+     */
+    public Message(Message message) {
+        this.setMessageId        (message.getMessageId());
+        this.setCreationTimestamp(message.getCreationTimestamp());
+        this.setStatus           (message.getStatus());
+        this.setContent          (message.getContent());
+        this.setSender           (message.getSender());
+        this.setChat             (message.getChat());
+    }
 
     // <<-METHODS->>
     @Override
     public int hashCode() {
-        return Objects.hash(messageId);
+        return Objects.hash(this.messageId);
     }
 
     @Override
@@ -85,7 +99,7 @@ public class Message {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (this.getClass() != obj.getClass())
             return false;
         Message other = (Message) obj;
         return Objects.equals(this.messageId, other.messageId);
@@ -93,10 +107,10 @@ public class Message {
     
     // <<-GETTERS & SETTERS->>
     public UUID getMessageId() {
-        return messageId;
+        return this.messageId;
     }
 
-    public void setMessageId(UUID messageId) {
+    public void setMessageId(final UUID messageId) {
         if (messageId == null) {
             this.messageId = UUID.randomUUID();
         } else {
@@ -105,10 +119,10 @@ public class Message {
     }
 
     public LocalDateTime getCreationTimestamp() {
-        return creationTimestamp;
+        return this.creationTimestamp;
     }
 
-    public void setCreationTimestamp(LocalDateTime creationTimestamp) {
+    public void setCreationTimestamp(final LocalDateTime creationTimestamp) {
         if (creationTimestamp == null) {
             this.creationTimestamp = LocalDateTime.now();
         } else {
@@ -117,10 +131,10 @@ public class Message {
     }
 
     public MessageStatus getStatus() {
-        return status;
+        return this.status;
     }
 
-    public void setStatus(MessageStatus status) {
+    public void setStatus(final MessageStatus status) {
         if (status == null) {
             this.status = MessageStatus.PENDING;
         } else {
@@ -129,27 +143,27 @@ public class Message {
     }
 
     public String getContent() {
-        return content;
+        return this.content;
     }
 
-    public void setContent(String content) {
+    public void setContent(final String content) {
         this.content = content;
     }
 
     public User getSender() {
-        return sender;
+        return new User(this.sender);
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setSender(final User sender) {
+        this.sender = new User(sender);
     }
 
     public Chat getChat() {
-        return chat;
+        return new Chat(this.chat);
     }
 
-    public void setChat(Chat chat) {
-        this.chat = chat;
+    public void setChat(final Chat chat) {
+        this.chat = new Chat(chat);
     }
     
 }
