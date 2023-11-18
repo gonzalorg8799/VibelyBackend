@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.AuthService;
-import com.metrica.vibely.data.util.PasswordHashing;
+import com.metrica.vibely.data.util.PasswordHasher;
 
 /**
  * 
@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
         
         String apiKey = "";
         try {
-            if (PasswordHashing.matches(password, user.getPassword())) {
+            if (PasswordHasher.matches(password, user.getPassword())) {
                 user.setLogins(user.getLogins() + 1);
                 
                 // Generar una apikey !!!!
