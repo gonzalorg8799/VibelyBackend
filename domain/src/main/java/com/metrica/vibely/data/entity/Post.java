@@ -5,13 +5,16 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.metrica.vibely.data.model.enumerator.PostStatus;
 import com.metrica.vibely.data.model.enumerator.PostVisibility;
+import com.metrica.vibely.data.util.Copyable;
+import com.metrica.vibely.data.util.DeepCopyGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,7 +31,7 @@ import jakarta.persistence.ForeignKey;
  * @author Adrian, Alex
  */
 @Entity
-public class Post {
+public class Post implements Copyable<Post> {
     
     // <<-FIELDS->>
     
@@ -39,7 +42,9 @@ public class Post {
 	private UUID postId;
 	@Column(name = "post_date")
 	private LocalDateTime postDate;
+	@Enumerated(value = EnumType.ORDINAL)
 	private PostStatus status;
+    @Enumerated(value = EnumType.ORDINAL)
 	private PostVisibility visibility;
 	private String content;
 	private Integer likes;
@@ -63,10 +68,11 @@ public class Post {
     
     // <<-CONSTRUCTORS->>
 	public Post() {
-	    this.setPostId(null);
+	    this.setPostId  (null);
+        this.setOwner   (null);
 	    this.setComments(null);
-        this.setLikedBy(null);
-        this.setSavedBy(null);
+        this.setLikedBy (null);
+        this.setSavedBy (null);
 	}
 
     public Post(
@@ -81,39 +87,39 @@ public class Post {
             Set<Post> comments,
             Set<User> likedBy,
             Set<User> savedBy) {
-        this.setPostId(postId);
-        this.setPostDate(postDate);
-        this.setStatus(status);
+        this.setPostId    (postId);
+        this.setPostDate  (postDate);
+        this.setStatus    (status);
         this.setVisibility(visibility);
-        this.setContent(content);
-        this.setLikes(likes);
+        this.setContent   (content);
+        this.setLikes     (likes);
         this.setTimesSaved(timesSaved);
-        this.setOwner(owner);
-        this.setComments(comments);
-        this.setLikedBy(likedBy);
-        this.setSavedBy(savedBy);
+        this.setOwner     (owner);
+        this.setComments  (comments);
+        this.setLikedBy   (likedBy);
+        this.setSavedBy   (savedBy);
     }
     
-    /**
-     * Constructs a copy of the given entity.
-     * 
-     * @param post the post to copy
-     */
-    public Post(Post post) {
-        this.setPostId    (post.getPostId());
-        this.setPostDate  (post.getPostDate());
-        this.setStatus    (post.getStatus());
-        this.setVisibility(post.getVisibility());
-        this.setContent   (post.getContent());
-        this.setLikes     (post.getLikes());
-        this.setTimesSaved(post.getTimesSaved());
-        this.setOwner     (post.getOwner());
-        this.setComments  (post.getComments());
-        this.setLikedBy   (post.getLikedBy());
-        this.setSavedBy   (post.getSavedBy());
-    }
-
     // <<-METHODS->>
+    @Override
+    public Post deepCopy() {
+        Post copy = new Post();
+        
+        copy.setPostId    (this.postId);
+        copy.setPostDate  (this.postDate);
+        copy.setStatus    (this.status);
+        copy.setVisibility(this.visibility);
+        copy.setContent   (this.content);
+        copy.setLikes     (this.likes);
+        copy.setTimesSaved(this.timesSaved);
+        copy.setOwner     (this.owner);
+        copy.setComments  (this.comments);
+        copy.setLikedBy   (this.likedBy);
+        copy.setSavedBy   (this.savedBy);
+        
+        return copy;
+    }
+    
     @Override
     public int hashCode() {
         return Objects.hash(this.postId);
@@ -219,55 +225,46 @@ public class Post {
     }
 
     public User getOwner() {
-        return new User(this.owner);
+        return this.owner.deepCopy();
     }
 
     public void setOwner(final User owner) {
-        this.owner = new User(owner);
+        this.owner = new User();
+        if (owner != null) {
+            this.owner = owner.deepCopy();
+        }
     }
 
     public Set<Post> getComments() {
-        return this.comments.stream()
-                .map(Post::new)
-                .collect(Collectors.toSet());
+        return DeepCopyGenerator.generateCopy(this.comments);
     }
 
     public void setComments(final Set<Post> comments) {
         this.comments = new TreePost();
         if (comments != null) {
-            this.comments.addAll(comments.stream()
-                    .map(Post::new)
-                    .collect(Collectors.toSet()));
+            this.comments.addAll(DeepCopyGenerator.generateCopy(comments));
         }
     }
 
     public Set<User> getLikedBy() {
-        return this.likedBy.stream()
-                .map(User::new)
-                .collect(Collectors.toSet());
+        return DeepCopyGenerator.generateCopy(this.likedBy);
     }
 
     public void setLikedBy(final Set<User> likedBy) {
         this.likedBy = new HashSet<>();
         if (likedBy != null) {
-            this.likedBy.addAll(likedBy.stream()
-                    .map(User::new)
-                    .collect(Collectors.toSet()));
+            this.likedBy.addAll(DeepCopyGenerator.generateCopy(likedBy));
         }
     }
 
     public Set<User> getSavedBy() {
-        return this.savedBy.stream()
-                .map(User::new)
-                .collect(Collectors.toSet());
+        return DeepCopyGenerator.generateCopy(this.savedBy);
     }
 
     public void setSavedBy(final Set<User> savedBy) {
         this.savedBy = savedBy;
         if (savedBy != null) {
-            this.savedBy.addAll(savedBy.stream()
-                    .map(User::new)
-                    .collect(Collectors.toSet()));
+            this.savedBy.addAll(DeepCopyGenerator.generateCopy(savedBy));
         }
     }
     
