@@ -5,10 +5,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
+import com.metrica.vibely.data.util.Copyable;
+import com.metrica.vibely.data.util.DeepCopyGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,7 +28,7 @@ import jakarta.persistence.OneToMany;
  * @author Adrian, Alex
  */
 @Entity
-public class Chat {
+public class Chat implements Copyable<Chat> {
     
 	// <<-FIELDS->>
 	
@@ -38,8 +39,9 @@ public class Chat {
     private UUID chatId;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = EnumType.ORDINAL)
     private ChatType type;
+    @Enumerated(value = EnumType.ORDINAL)
     private ChatStatus status;
     private String title;
     @Column(name = "last_activity")
@@ -53,9 +55,9 @@ public class Chat {
     
     // <<-CONSTRUCTORS->>
     public Chat() {
-        this.setChatId(null);
+        this.setChatId      (null);
         this.setParticipants(null);
-        this.setMessages(null);
+        this.setMessages    (null);
     }
 
     public Chat(
@@ -67,30 +69,14 @@ public class Chat {
             LocalDateTime creationDate,
             Set<User> participants,
             Set<Message> messages) {
-        this.setChatId(chatId);
+        this.setChatId      (chatId);
         this.setLastActivity(lastActivity);
-        this.setType(type);
-        this.setStatus(status);
-        this.setTitle(title);
+        this.setType        (type);
+        this.setStatus      (status);
+        this.setTitle       (title);
         this.setCreationDate(creationDate);
         this.setParticipants(participants);
-        this.setMessages(messages);
-    }
-    
-    /**
-     * Constructs a copy of the given entity.
-     * 
-     * @param chat the chat to copy
-     */
-    public Chat(Chat chat) {
-        this.setChatId      (chat.getChatId());
-        this.setLastActivity(chat.getLastActivity());
-        this.setType        (chat.getType());
-        this.setStatus      (chat.getStatus());
-        this.setTitle       (chat.getTitle());
-        this.setCreationDate(chat.getCreationDate());
-        this.setParticipants(chat.getParticipants());
-        this.setMessages    (chat.getMessages());
+        this.setMessages    (messages);
     }
     
     // <<-METHODS->>
@@ -102,9 +88,38 @@ public class Chat {
     public boolean addParticipant(final User participant) {
         boolean inserted = false;
         if (participant != null) {
-            inserted = this.participants.add(new User(participant));
+            inserted = this.participants.add(participant.deepCopy());
         }
         return inserted;
+    }
+    
+    /**
+     * Remove a participant from the chat.
+     * 
+     * @param participant the user to remove
+     */
+    public boolean removeParticipant(final User participant) {
+        boolean inserted = false;
+        if (participant != null) {
+            inserted = this.participants.remove(participant.deepCopy());
+        }
+        return inserted;
+    }
+    
+    @Override
+    public Chat deepCopy() {
+        Chat copy = new Chat();
+        
+        copy.setChatId      (this.chatId);
+        copy.setLastActivity(this.lastActivity);
+        copy.setType        (this.type);
+        copy.setStatus      (this.status);
+        copy.setTitle       (this.title);
+        copy.setCreationDate(this.creationDate);
+        copy.setParticipants(this.participants);
+        copy.setMessages    (this.messages);
+        
+        return copy;
     }
     
     @Override
@@ -194,32 +209,24 @@ public class Chat {
     }
 
     public Set<User> getParticipants() {
-        return this.participants.stream()
-                .map(User::new)
-                .collect(Collectors.toSet());
+        return DeepCopyGenerator.generateCopy(this.participants);
     }
 
     public void setParticipants(final Set<User> participants) {
         this.participants = new HashSet<>();
         if (participants != null) {
-            this.participants.addAll(participants.stream()
-                    .map(User::new)
-                    .collect(Collectors.toSet()));
+            this.participants.addAll(DeepCopyGenerator.generateCopy(participants));
         }
     }
 
     public Set<Message> getMessages() {
-        return this.messages.stream()
-                .map(Message::new)
-                .collect(Collectors.toSet());
+        return DeepCopyGenerator.generateCopy(this.messages);
     }
 
     public void setMessages(final Set<Message> messages) {
         this.messages = new HashSet<>();
         if (messages != null) {
-            this.messages.addAll(messages.stream()
-                    .map(Message::new)
-                    .collect(Collectors.toSet()));
+            this.messages.addAll(DeepCopyGenerator.generateCopy(messages));
         }
     }
     
