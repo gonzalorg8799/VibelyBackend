@@ -161,9 +161,9 @@ public class UserEntityTest {
     
     @Test
     @Tag("Equality")
-    void equalityWithDeepCopyTest() {
+    void equalityByIdAndHashCodeTest() {
         User user1 = new User();
-        User user2 = user1.deepCopy();
+        User user2 = new User();
         
         // Both have the same ID
         UUID userId = UUID.randomUUID();
@@ -176,9 +176,9 @@ public class UserEntityTest {
     
     @Test
     @Tag("Equality")
-    void equalityByIdAndHashCodeTest() {
+    void equalityWithDeepCopyTest() {
         User user1 = new User();
-        User user2 = new User();
+        User user2 = user1.deepCopy();
         
         // Both have the same ID
         UUID userId = UUID.randomUUID();
