@@ -6,11 +6,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
+import com.metrica.vibely.data.util.Copyable;
+import com.metrica.vibely.data.util.DeepCopyGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +30,7 @@ import jakarta.persistence.OneToMany;
  * @author Adrian, Alex
  */
 @Entity
-public class User {
+public class User implements Copyable<User> {
     
     // <<-FIELDS->>
 
@@ -66,11 +67,11 @@ public class User {
 
     // <<-CONSTRUCTORS->>
     public User() {
-        this.setUserId(null);
+        this.setUserId   (null);
         this.setFollowers(null);
         this.setFollowing(null);
-        this.setPosts(null);
-        this.setChats(null);
+        this.setPosts    (null);
+        this.setChats    (null);
     }
 
     public User(
@@ -89,50 +90,45 @@ public class User {
             Set<User> following,
             Set<Post> posts,
             Set<Chat> chats) {
-        this.setUserId(userId);
-        this.setUsername(username);
-        this.setPassword(password);
-        this.setNickname(nickname);
-        this.setEmail(email);
-        this.setState(state);
-        this.setPrivacy(privacy);
-        this.setLogins(logins);
-        this.setStatus(status);
+        this.setUserId      (userId);
+        this.setUsername    (username);
+        this.setPassword    (password);
+        this.setNickname    (nickname);
+        this.setEmail       (email);
+        this.setState       (state);
+        this.setPrivacy     (privacy);
+        this.setLogins      (logins);
+        this.setStatus      (status);
         this.setLastConnDate(lastConnDate);
-        this.setBlockedDate(blockedDate);
-        this.setFollowers(followers);
-        this.setFollowing(following);
-        this.setPosts(posts);
-        this.setChats(chats);
+        this.setBlockedDate (blockedDate);
+        this.setFollowers   (followers);
+        this.setFollowing   (following);
+        this.setPosts       (posts);
+        this.setChats       (chats);
     }
     
-    /**
-     * Constructs a copy of the given entity.
-     * 
-     * @param user the user to copy
-     */
-    public User(User user) {
-        this.setUserId      (user.getUserId());
-        this.setUsername    (user.getUsername());
-        this.setPassword    (user.getPassword());
-        this.setNickname    (user.getNickname());
-        this.setEmail       (user.getEmail());
-        this.setState       (user.getState());
-        this.setPrivacy     (user.getPrivacy());
-        this.setLogins      (user.getLogins());
-        this.setStatus      (user.getStatus());
-        this.setLastConnDate(user.getLastConnDate());
-        this.setBlockedDate (user.getBlockedDate());
-        this.setFollowers   (user.getFollowers());
-        this.setFollowing   (user.getFollowing());
-        this.setPosts       (user.getPosts());
-        this.setChats       (user.getChats());
-    }
-
     // <<-METHODS->>
     @Override
-    public Object clone() {
-        return new Object();
+    public User deepCopy() {
+        User copy = new User();
+        
+        copy.setUserId      (this.userId);
+        copy.setUsername    (this.username);
+        copy.setPassword    (this.password);
+        copy.setNickname    (this.nickname);
+        copy.setEmail       (this.email);
+        copy.setState       (this.state);
+        copy.setPrivacy     (this.privacy);
+        copy.setLogins      (this.logins);
+        copy.setStatus      (this.status);
+        copy.setLastConnDate(this.lastConnDate);
+        copy.setBlockedDate (this.blockedDate);
+        copy.setFollowers   (this.followers);
+        copy.setFollowing   (this.following);
+        copy.setPosts       (this.posts);
+        copy.setChats       (this.chats);
+        
+        return copy;
     }
     
     @Override
@@ -268,62 +264,46 @@ public class User {
     }
 
     public Set<User> getFollowers() {
-        return this.followers.stream()
-                .map(User::new)
-                .collect(Collectors.toSet());
+        return DeepCopyGenerator.generateCopy(this.followers);
     }
 
     public void setFollowers(final Set<User> followers) {
         this.followers = new HashSet<>();
         if (followers != null) {
-            this.followers.addAll(followers.stream()
-                    .map(User::new)
-                    .collect(Collectors.toSet()));
+            this.followers.addAll(DeepCopyGenerator.generateCopy(followers));
         }
     }
 
     public Set<User> getFollowing() {
-        return this.following.stream()
-                .map(User::new)
-                .collect(Collectors.toSet());
+        return DeepCopyGenerator.generateCopy(this.following);
     }
 
     public void setFollowing(final Set<User> following) {
         this.following = new HashSet<>();
         if (following != null) {
-            this.following.addAll(following.stream()
-                    .map(User::new)
-                    .collect(Collectors.toSet()));
+            this.following.addAll(DeepCopyGenerator.generateCopy(following));
         }
     }
 
     public Set<Post> getPosts() {
-        return this.posts.stream()
-                .map(Post::new)
-                .collect(Collectors.toSet());
+        return DeepCopyGenerator.generateCopy(this.posts);
     }
 
     public void setPosts(final Set<Post> posts) {
         this.posts = new Post.TreePost();
         if (posts != null) {
-            this.posts.addAll(posts.stream()
-                    .map(Post::new)
-                    .collect(Collectors.toSet()));
+            this.posts.addAll(DeepCopyGenerator.generateCopy(posts));
         }
     }
 
     public Set<Chat> getChats() {
-        return this.chats.stream()
-            .map(Chat::new)
-            .collect(Collectors.toSet());
+        return DeepCopyGenerator.generateCopy(this.chats);
     }
 
     public void setChats(final Set<Chat> chats) {
         this.chats = new HashSet<>();
         if (chats != null) {
-            this.chats.addAll(chats.stream()
-                    .map(Chat::new)
-                    .collect(Collectors.toSet()));
+            this.chats.addAll(DeepCopyGenerator.generateCopy(chats));
         }
     }
     
