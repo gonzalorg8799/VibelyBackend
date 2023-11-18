@@ -99,11 +99,11 @@ public class Chat implements Copyable<Chat> {
      * @param participant the user to remove
      */
     public boolean removeParticipant(final User participant) {
-        boolean inserted = false;
+        boolean removed = false;
         if (participant != null) {
-            inserted = this.participants.remove(participant.deepCopy());
+            removed = this.participants.remove(participant.deepCopy());
         }
-        return inserted;
+        return removed;
     }
     
     @Override
