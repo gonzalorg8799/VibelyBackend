@@ -229,8 +229,9 @@ public class Post implements Copyable<Post> {
     }
 
     public void setOwner(final User owner) {
-        this.owner = new User();
-        if (owner != null) {
+        if (owner == null) {
+            this.owner = new User();
+        } else {
             this.owner = owner.deepCopy();
         }
     }
