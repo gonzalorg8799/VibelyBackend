@@ -20,7 +20,7 @@ import jakarta.persistence.Entity;
  */
 @Entity
 public class Admin extends User {
-    
+
     // <<-CONSTRUCTORS->>
     public Admin() {
         super();

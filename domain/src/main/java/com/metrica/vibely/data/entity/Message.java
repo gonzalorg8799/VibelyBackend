@@ -25,19 +25,19 @@ import jakarta.persistence.OneToOne;
  */
 @Entity
 public class Message implements Copyable<Message> {
-    
-    // <<-FIELDS->>	
-	
-	// Basic
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "message_id")
-	private UUID messageId;
-	@Column(name = "creation_timestamp")
-	private LocalDateTime creationTimestamp;
-	private MessageStatus status;
+
+    // <<-FIELDS->>
+
+    // Basic
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "message_id")
+    private UUID messageId;
+    @Column(name = "creation_timestamp")
+    private LocalDateTime creationTimestamp;
+    private MessageStatus status;
     private String content;
-    
+
     // Relations
     @OneToOne(optional = false)
     @JoinColumn(

@@ -29,10 +29,10 @@ import jakarta.persistence.OneToMany;
  */
 @Entity
 public class Chat implements Copyable<Chat> {
-    
-	// <<-FIELDS->>
-	
-	// Basic
+
+    // <<-FIELDS->>
+
+    // Basic
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "chat_id")
@@ -46,11 +46,11 @@ public class Chat implements Copyable<Chat> {
     private String title;
     @Column(name = "last_activity")
     private LocalDateTime lastActivity;
-	
-	// Relations
-	@OneToMany(mappedBy = "userId")
+
+    // Relations
+    @OneToMany(mappedBy = "userId")
     private Set<User> participants;
-	@OneToMany(mappedBy = "messageId")
+    @OneToMany(mappedBy = "messageId")
     private Set<Message> messages;
     
     // <<-CONSTRUCTORS->>

@@ -31,7 +31,7 @@ import jakarta.persistence.OneToMany;
  */
 @Entity
 public class User implements Copyable<User> {
-    
+
     // <<-FIELDS->>
 
     // Basic
@@ -50,10 +50,10 @@ public class User implements Copyable<User> {
     private Integer logins;
     @Enumerated(value = EnumType.ORDINAL)
     private UserStatus status;
-	@Column(name = "last_connection_date")
+    @Column(name = "last_connection_date")
     private LocalDateTime lastConnDate;
-	@Column(name = "blocked_date")
-	private LocalDate blockedDate;
+    @Column(name = "blocked_date")
+    private LocalDate blockedDate;
 
     // Relations
     @OneToMany(mappedBy = "userId")

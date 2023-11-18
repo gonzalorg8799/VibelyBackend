@@ -32,27 +32,27 @@ import jakarta.persistence.ForeignKey;
  */
 @Entity
 public class Post implements Copyable<Post> {
-    
+
     // <<-FIELDS->>
     
     // Basics
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "post_id")
-	private UUID postId;
-	@Column(name = "post_date")
-	private LocalDateTime postDate;
-	@Enumerated(value = EnumType.ORDINAL)
-	private PostStatus status;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "post_id")
+    private UUID postId;
+    @Column(name = "post_date")
+    private LocalDateTime postDate;
     @Enumerated(value = EnumType.ORDINAL)
-	private PostVisibility visibility;
-	private String content;
-	private Integer likes;
+    private PostStatus status;
+    @Enumerated(value = EnumType.ORDINAL)
+    private PostVisibility visibility;
+    private String content;
+    private Integer likes;
     @Column(name = "times_saved")
-	private Integer timesSaved;
+    private Integer timesSaved;
 	
 	// Relations
-	@OneToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(
             name = "owner_id",
             unique = true,
@@ -60,20 +60,20 @@ public class Post implements Copyable<Post> {
             foreignKey = @ForeignKey(name = "fk_post_user"))
     private User owner;
     @OneToMany(mappedBy = "postId")
-	private Set<Post> comments;
+    private Set<Post> comments;
     @OneToMany(mappedBy = "userId")
     private Set<User> likedBy;
     @OneToMany(mappedBy = "userId")
     private Set<User> savedBy;
     
     // <<-CONSTRUCTORS->>
-	public Post() {
-	    this.setPostId  (null);
+    public Post() {
+        this.setPostId  (null);
         this.setOwner   (null);
-	    this.setComments(null);
+        this.setComments(null);
         this.setLikedBy (null);
         this.setSavedBy (null);
-	}
+    }
 
     public Post(
             UUID postId,
