@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.metrica.vibely.data.model.enumerator.MessageStatus;
+import com.metrica.vibely.data.util.Copyable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ import jakarta.persistence.OneToOne;
  * @author Adrian, Alex
  */
 @Entity
-public class Message {
+public class Message implements Copyable<Message> {
     
     // <<-FIELDS->>	
 	
@@ -40,22 +41,24 @@ public class Message {
     // Relations
     @OneToOne(optional = false)
     @JoinColumn(
+            name = "chat_id",
+            unique = true,
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_chat_message"))
+    private Chat chat;
+    @OneToOne(optional = false)
+    @JoinColumn(
             name = "sender_id",
             unique = true,
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_chat_user"))
     private User sender;
-    @OneToOne(optional = false)
-	@JoinColumn(
-	        name = "chat_id",
-	        unique = true,
-	        nullable = false,
-	        foreignKey = @ForeignKey(name = "fk_chat_message"))
-    private Chat chat;
     
     // <<-CONSTRUCTORS->>
     public Message() {
         this.setMessageId(null);
+        this.setChat     (null);
+        this.setSender   (null);
     }
 
     public Message(
@@ -63,31 +66,31 @@ public class Message {
             LocalDateTime creationTimestamp,
             MessageStatus status,
             String content,
-            User sender,
-            Chat chat) {
-        this.setMessageId(messageId);
+            Chat chat,
+            User sender) {
+        this.setMessageId        (messageId);
         this.setCreationTimestamp(creationTimestamp);
-        this.setStatus(status);
-        this.setContent(content);
-        this.setSender(sender);
-        this.setChat(chat);
+        this.setStatus           (status);
+        this.setContent          (content);
+        this.setChat             (chat);
+        this.setSender           (sender);
     }
     
-    /**
-     * Constructs a copy of the given entity.
-     * 
-     * @param message the message to copy
-     */
-    public Message(Message message) {
-        this.setMessageId        (message.getMessageId());
-        this.setCreationTimestamp(message.getCreationTimestamp());
-        this.setStatus           (message.getStatus());
-        this.setContent          (message.getContent());
-        this.setSender           (message.getSender());
-        this.setChat             (message.getChat());
-    }
-
     // <<-METHODS->>
+    @Override
+    public Message deepCopy() {
+        Message copy = new Message();
+        
+        copy.setMessageId        (this.messageId);
+        copy.setCreationTimestamp(this.creationTimestamp);
+        copy.setStatus           (this.status);
+        copy.setContent          (this.content);
+        copy.setChat             (this.chat);
+        copy.setSender           (this.sender);
+        
+        return copy;
+    }
+    
     @Override
     public int hashCode() {
         return Objects.hash(this.messageId);
@@ -150,20 +153,28 @@ public class Message {
         this.content = content;
     }
 
-    public User getSender() {
-        return new User(this.sender);
-    }
-
-    public void setSender(final User sender) {
-        this.sender = new User(sender);
-    }
-
     public Chat getChat() {
-        return new Chat(this.chat);
+        return this.chat.deepCopy();
     }
 
     public void setChat(final Chat chat) {
-        this.chat = new Chat(chat);
+        if (chat == null) {
+            this.chat = new Chat();
+        } else {
+            this.chat = chat.deepCopy();
+        }
+    }
+
+    public User getSender() {
+        return this.sender.deepCopy();
+    }
+
+    public void setSender(final User sender) {
+        if (sender == null) {
+            this.sender = new User();
+        } else {
+            this.sender = sender.deepCopy();
+        }
     }
     
 }

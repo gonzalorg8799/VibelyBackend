@@ -1,17 +1,17 @@
 package com.metrica.vibely.data.entity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import com.metrica.vibely.data.model.enumerator.MessageStatus;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import com.metrica.vibely.data.model.enumerator.MessageStatus;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * <h1>Message Entity Test</h1>
@@ -22,112 +22,130 @@ import com.metrica.vibely.data.model.enumerator.MessageStatus;
  */
 public class MessageEntityTest {
 
-    // <<-FIELD->>
-    private Message message;
+    // <<-CONSTANTS->>
+    private static final String CONTENT = "content";
+    private static final MessageStatus STATUS = MessageStatus.PENDING;
+    private static final LocalDateTime CREATION_TIMESTAMP = LocalDateTime.now();
 
     // <<-METHODS->>
-    @BeforeEach
-    void setUp() {
-        message = new Message();
-    }
-    
     @Test
-    void testGettersAndSetters() {
+    @Tag("Constructors")
+    void voidConstructorTest() {
         UUID messageId = UUID.randomUUID();
-        LocalDateTime creationTimestamp = LocalDateTime.now();
-        MessageStatus status = MessageStatus.PENDING;
-        String content = "test message";
-        User sender = new User();
         Chat chat = new Chat();
+        User sender = new User();
         
-        message.setMessageId(messageId);
-        message.setCreationTimestamp(creationTimestamp);
-        message.setStatus(status);
-        message.setContent(content);
-        message.setSender(sender);
-        message.setChat(chat);
+        Message message = new Message();
 
-        assertEquals(messageId,         message.getMessageId());
-        assertEquals(creationTimestamp, message.getCreationTimestamp());
-        assertEquals(status,            message.getStatus());
-        assertEquals(content,           message.getContent());
-        assertEquals(sender,            message.getSender());
-        assertEquals(chat,              message.getChat());
+        message.setMessageId        (messageId);
+        message.setCreationTimestamp(CREATION_TIMESTAMP);
+        message.setStatus           (STATUS);
+        message.setContent          (CONTENT);
+        message.setChat             (chat);
+        message.setSender           (sender);
+
+        assertEquals(messageId,          message.getMessageId());
+        assertEquals(CREATION_TIMESTAMP, message.getCreationTimestamp());
+        assertEquals(STATUS,             message.getStatus());
+        assertEquals(CONTENT,            message.getContent());
+        assertEquals(chat,               message.getChat());
+        assertEquals(sender,             message.getSender());
+    }
+    
+    @Test
+    @Tag("Constructors")
+    void fullArgsConstructorTest() {
+        UUID messageId = UUID.randomUUID();
+        Chat chat = new Chat();
+        User sender = new User();
         
-        Message testMessage = new Message(
+        Message message = new Message(
                 messageId,
-                creationTimestamp,
-                status,
-                content,
-                sender,
-                chat);
-        
-        assertEquals(message, testMessage);
-    }
-    
-    @Test
-    void testNotNullableFields() {
-        message.setMessageId(null);
-        message.setCreationTimestamp(null);
-        message.setStatus(null);
+                CREATION_TIMESTAMP,
+                STATUS,
+                CONTENT,
+                chat,
+                sender);
 
-        assertNotNull(message.getMessageId());
-        assertNotNull(message.getCreationTimestamp());
-        assertNotNull(message.getStatus());
+        assertEquals(messageId,          message.getMessageId());
+        assertEquals(CREATION_TIMESTAMP, message.getCreationTimestamp());
+        assertEquals(STATUS,             message.getStatus());
+        assertEquals(CONTENT,            message.getContent());
+        assertEquals(chat,               message.getChat());
+        assertEquals(sender,             message.getSender());
     }
-    
+
     @Test
-    void testDefaultValues() {
+    @Tag("Default values")
+    void notNullableFieldsAndDefaultValuesTest() {
+        Message message = new Message();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime now = LocalDateTime.now();
-        
+
+        message.setMessageId        (null);
         message.setCreationTimestamp(null);
-        message.setStatus(null);
-        
+        message.setStatus           (null);
+
+        assertNotNull(message.getMessageId());
         assertEquals(now.format(formatter), message.getCreationTimestamp().format(formatter));
-        assertEquals(MessageStatus.PENDING, message.getStatus());
+        assertEquals(MessageStatus.PENDING,  message.getStatus());
+    }
+
+    @Test
+    @Tag("Equality")
+    void basicEqualityTest() {
+        Message message = new Message();
+        
+        assertEquals   (message, message);
+        assertNotEquals(message, null);
+        assertNotEquals(message, "");
     }
     
     @Test
-    void testIdEquality() {
+    @Tag("Equality")
+    void equalityByIdAndHashCodeTest() {
+        Message message1 = new Message();
+        Message message2 = new Message();
+        
+        // Both have the same ID
         UUID messageId = UUID.randomUUID();
-        message.setMessageId(messageId);
+        message1.setMessageId(messageId);
+        message2.setMessageId(messageId);
         
-        Message testChat = new Message();
-        testChat.setMessageId(messageId);
+        assertEquals(message1, message2);
+        assertEquals(message1.hashCode(), message2.hashCode());
+    }
+    
+    @Test
+    @Tag("Equality")
+    void equalityWithDeepCopyTest() {
+        Message message1 = new Message();
+        Message message2 = message1.deepCopy();
         
-        assertEquals(testChat, message);
+        // Both have the same ID
+        UUID messageId = UUID.randomUUID();
+        message1.setMessageId(messageId);
+        message2.setMessageId(messageId);
+        
+        assertEquals(message1, message2);
+        assertEquals(message1.hashCode(), message2.hashCode());
     }
     
     @Test
     void testIdNullEquality() {
-        LocalDateTime now = LocalDateTime.now();
-        String content = "test title";
-        User sender = new User();
-        Chat chat = new Chat();
+        Message message1 = new Message();
+        Message message2 = new Message();
         
-        message.setCreationTimestamp(now);
-        message.setStatus(MessageStatus.PENDING);
-        message.setContent(content);
-        message.setSender(sender);
-        message.setChat(chat);
+        message1.setCreationTimestamp(CREATION_TIMESTAMP);
+        message1.setStatus(STATUS);
+        message1.setContent(CONTENT);
         
         
-        Message testMessage = new Message();
-        testMessage.setCreationTimestamp(now);
-        testMessage.setStatus(MessageStatus.PENDING);
-        testMessage.setContent(content);
-        testMessage.setSender(sender);
-        testMessage.setChat(chat);
+        message2.setCreationTimestamp(CREATION_TIMESTAMP);
+        message2.setStatus(STATUS);
+        message2.setContent(CONTENT);
         
-        assertNotEquals(testMessage, message);
-    }
-    
-    @Test
-    void testBasicEquality() {
-        assertEquals(message, message);
-        assertNotEquals(message, null);
-        assertNotEquals(message, "");
+        assertNotEquals(message1, message2);
     }
     
 }
