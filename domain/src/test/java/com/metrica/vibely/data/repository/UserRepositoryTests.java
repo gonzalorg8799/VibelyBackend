@@ -18,8 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
-import com.metrica.vibely.data.model.enumerator.State;
-import com.metrica.vibely.data.model.enumerator.Status;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.util.PasswordHashing;
 
 /**
@@ -50,9 +50,9 @@ public class UserRepositoryTests {
     	user.setPassword	(PasswordHashing.hash(password));
     	user.setNickname	(nickname);
     	user.setEmail   	(email);
-    	user.setState       (State.ENABLED);
+    	user.setState       (UserState.ENABLED);
         user.setPrivacy     (PrivacyType.PUBLIC);
-        user.setStatus      (Status.ONLINE);
+        user.setStatus      (UserStatus.ONLINE);
         user.setLogins      (0);
         user.setLastConnDate(LocalDateTime.now());
         user.setBlockedDate (LocalDate.now());
