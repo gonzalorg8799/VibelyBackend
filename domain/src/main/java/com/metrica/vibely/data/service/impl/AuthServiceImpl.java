@@ -8,7 +8,7 @@ import com.metrica.vibely.data.exception.InvalidCredentialsException;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.AuthService;
 import com.metrica.vibely.data.util.ApiKeyGenerator;
-import com.metrica.vibely.data.util.PasswordHashing;
+import com.metrica.vibely.data.util.PasswordHasher;
 
 /**
  * 
@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public String authenticate(final String username, final String password) {
 		User user = userRepository.findByUsername(username).orElseThrow(() -> new InvalidCredentialsException());
-		if (PasswordHashing.matches(password, user.getPassword())) {
+		if (PasswordHasher.matches(password, user.getPassword())) {
 			user.setLogins(user.getLogins() + 1);
 			userRepository.save(user);
 			return ApiKeyGenerator.generate();

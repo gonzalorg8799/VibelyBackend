@@ -16,7 +16,7 @@ import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.repository.UserRepository;
 
-import com.metrica.vibely.data.util.PasswordHashing;
+import com.metrica.vibely.data.util.PasswordHasher;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -58,7 +58,7 @@ public class UserServiceTest {
         UserDTO testUser = new UserDTO();
         
         testUser.setUsername(DEFAULT_USERNAME);
-        testUser.setPassword(PasswordHashing.hash(DEFAULT_PASSWORD));
+        testUser.setPassword(PasswordHasher.hash(DEFAULT_PASSWORD));
         testUser.setNickname(DEFAULT_NICKNAME);
         testUser.setEmail   (DEFAULT_EMAIL);
         
@@ -75,7 +75,7 @@ public class UserServiceTest {
         
         assertNotNull(databaseUser.getUserId());
         assertEquals(LocalDate.now().format(formatter), databaseUser.getLastConnDate().format(formatter));
-        assertTrue  (PasswordHashing.matches(DEFAULT_PASSWORD, databaseUser.getPassword()));
+        assertTrue  (PasswordHasher.matches(DEFAULT_PASSWORD, databaseUser.getPassword()));
         assertEquals(testUser.getUsername(), databaseUser.getUsername());
         assertEquals(testUser.getNickname(), databaseUser.getNickname());
         assertEquals(testUser.getEmail(),    databaseUser.getEmail());
@@ -141,12 +141,12 @@ public class UserServiceTest {
         assertEquals(newUsername, 						updatedUser.getUsername());
         assertEquals(newNickname, 						updatedUser.getNickname());
         assertEquals(newEmail, 							updatedUser.getEmail());
-        assertEquals(PasswordHashing.hash(newPassword), updatedUser.getPassword());
+        assertEquals(PasswordHasher.hash(newPassword), updatedUser.getPassword());
         
         assertNotEquals(newUsername, 						createdUser.getUsername());
         assertNotEquals(newNickname, 						createdUser.getNickname());
         assertNotEquals(newEmail, 							createdUser.getEmail());
-        assertNotEquals(PasswordHashing.hash(newPassword),  createdUser.getPassword());
+        assertNotEquals(PasswordHasher.hash(newPassword),  createdUser.getPassword());
         
         //User not exist
         assertThrows(NoSuchElementException.class, () -> userService.updateUsername(nonExistingUserUUID, newUsername));

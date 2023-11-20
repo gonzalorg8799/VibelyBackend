@@ -20,7 +20,7 @@ import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
-import com.metrica.vibely.data.util.PasswordHashing;
+import com.metrica.vibely.data.util.PasswordHasher;
 
 /**
  * <h1>User Entity Test</h1>
@@ -47,7 +47,7 @@ public class UserRepositoryTests {
     	User user = new User();
     	user.setUserId		(null);
     	user.setUsername	(username);
-    	user.setPassword	(PasswordHashing.hash(password));
+    	user.setPassword	(PasswordHasher.hash(password));
     	user.setNickname	(nickname);
     	user.setEmail   	(email);
     	user.setState       (UserState.ENABLED);

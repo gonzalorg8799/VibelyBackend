@@ -2,7 +2,7 @@ package com.metrica.vibely.model.request;
 
 
 import com.metrica.vibely.data.model.dto.UserDTO;
-import com.metrica.vibely.data.util.PasswordHashing;
+import com.metrica.vibely.data.util.PasswordHasher;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -65,7 +65,7 @@ public class CreateUserRequest {
     }
 
     public void setPassword(String password) {
-		this.password = PasswordHashing.hash(password);
+		this.password = PasswordHasher.hash(password);
     }
 
     public String getNickname() {

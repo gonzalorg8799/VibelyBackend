@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.metrica.vibely.data.exception.InvalidCredentialsException;
 import com.metrica.vibely.data.model.dto.UserDTO;
-import com.metrica.vibely.data.util.PasswordHashing;
+import com.metrica.vibely.data.util.PasswordHasher;
 
 /**
   * @since 2023-11-16
@@ -43,7 +43,7 @@ public class AuthServiceTest {
         UserDTO testUser = new UserDTO();
         
         testUser.setUsername(DEFAULT_USERNAME);
-        testUser.setPassword(PasswordHashing.hash(DEFAULT_PASSWORD));
+        testUser.setPassword(PasswordHasher.hash(DEFAULT_PASSWORD));
         testUser.setNickname(DEFAULT_NICKNAME);
         testUser.setEmail   (DEFAULT_EMAIL);
         
