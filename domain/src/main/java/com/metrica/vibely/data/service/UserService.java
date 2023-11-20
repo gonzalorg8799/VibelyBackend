@@ -28,42 +28,8 @@ public interface UserService {
 	 */
 	UserDTO create(UserDTO userDTO); 
 		
-	/**
-	 * updates users' nickname
-	 * @param desired nickname, apiKey
-	 * @throws NoSuchElementException
-	 */
-	UserDTO updateNickname(UUID userId, String nickname);
+	UserDTO update(UserDTO UserDTO);
 	
-	/**
-	 * updates users' username
-	 * @param desired username, apiKey
-	 * @throws NoSuchElementException
-	 */
-	UserDTO updateUsername(UUID userId, String username);
-	
-	/**
-	 * updates users' email
-	 * @param new email, apiKey
-	 * @throws NoSuchElementException
-	 */
-	UserDTO updateEmail(UUID userId, String email);
-	
-	/**
-	 * updates users' password
-	 * @param desired password, apiKey
-	 * @throws NoSuchElementException
-	 */
-	UserDTO updatePassword(UUID userId, String password);
-	
-	/**
-	 * 
-	 * @param userId 
-	 * @param follwedUserId
-	 * @param username
-	 * @return
-	 * @throws NoSuchElementException
-	 */
 	UserDTO followUser(UUID userId, UUID followedUserId);
 	
 	/**
