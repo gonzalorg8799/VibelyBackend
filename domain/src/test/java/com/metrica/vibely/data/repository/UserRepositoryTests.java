@@ -2,18 +2,14 @@ package com.metrica.vibely.data.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -80,7 +76,6 @@ public class UserRepositoryTests {
     	collection.add(testUser3);
     	collection.add(testUser4);
     	
-    	//crear tests assertEquals
     	userRepository.saveAllAndFlush(collection);
     	assertEquals(testUser1, userRepository.findByUsername(testUser1.getUsername()));
     	assertEquals(testUser2, userRepository.findByUsername(testUser2.getUsername()));
