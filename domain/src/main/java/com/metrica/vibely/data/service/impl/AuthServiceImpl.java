@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.metrica.vibely.data.entity.User;
+import com.metrica.vibely.data.exception.InvalidCredentialsException;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.AuthService;
+import com.metrica.vibely.data.util.ApiKeyGenerator;
 import com.metrica.vibely.data.util.PasswordHashing;
 
 /**
@@ -16,34 +18,26 @@ import com.metrica.vibely.data.util.PasswordHashing;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    // <<-FIELD->>
-    private UserRepository userRepository;
+	// <<-FIELD->>
+	private UserRepository userRepository;
 
-    // <<-CONSTRUCTOR->>
-    @Autowired
-    public AuthServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	// <<-CONSTRUCTOR->>
+	@Autowired
+	public AuthServiceImpl(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
-    // <<-METHODS->>
-    @Override
-    public String authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username).orElseThrow();
-        
-        String apiKey = "";
-        try {
-            if (PasswordHashing.matches(password, user.getPassword())) {
-                user.setLogins(user.getLogins() + 1);
-                
-                // Generar una apikey !!!!
-                userRepository.save(user);
-            }
-        } catch (Exception e) {
-            System.err.println("fallo en password hashing");
-            // throw exception
-        }
-        
-        return apiKey;
-    }
+	// <<-METHODS->>
+	@Override
+	public String authenticate(final String username, final String password) {
+		User user = userRepository.findByUsername(username).orElseThrow(() -> new InvalidCredentialsException());
+		if (PasswordHashing.matches(password, user.getPassword())) {
+			user.setLogins(user.getLogins() + 1);
+			userRepository.save(user);
+			return ApiKeyGenerator.generate();
+		} 
+		else throw new InvalidCredentialsException();
+
+	}
 
 }

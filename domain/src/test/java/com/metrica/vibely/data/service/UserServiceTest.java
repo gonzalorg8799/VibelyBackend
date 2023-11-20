@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.CodeGenerationException;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.enumerator.State;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @version 1.0
  * @author Alex, Adri, Raul
  */
+@SpringBootTest
 public class UserServiceTest {
 
     // <<-CONSTANTS->>
