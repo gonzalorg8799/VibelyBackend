@@ -8,14 +8,18 @@ import java.util.UUID;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.CodeGenerationException;
 
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.enumerator.State;
 import com.metrica.vibely.data.model.enumerator.Status;
+import com.metrica.vibely.data.model.mapper.UserMapper;
+import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.util.PasswordHashing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,11 +42,13 @@ public class UserServiceTest {
 
     // <<-FIELD->>
     private UserService userService;
+    private UserRepository userRepository;
     
     // <<-CONSTRUCTOR->>
     @Autowired
-    public UserServiceTest(UserService userService) {
-        this.userService = userService;
+    public UserServiceTest(UserService userService, UserRepository userRepository) {
+        this.userService 	= userService;
+        this.userRepository = userRepository;
     }
     
     // <<-METHODS->>
@@ -112,7 +118,6 @@ public class UserServiceTest {
     void userUpdateTest() {
     	UserDTO createdUser 	= userService.create(generateTestUser());
         UserDTO nonExistingUser = userService.create(generateTestUser());
-        UserDTO updatedUser 	= userService.create(generateTestUser());
         
         UUID createdUserUUID 	 = createdUser.getUserId();
         UUID nonExistingUserUUID = nonExistingUser.getUserId();
@@ -122,24 +127,24 @@ public class UserServiceTest {
         String newEmail     	= "newEmail@email.com";
         String newPassword  	= "NewPassword";
         
-        updatedUser.setNickname (newUsername);
-        updatedUser.setUsername (newUsername);
-        updatedUser.setEmail	(newEmail);
-        updatedUser.setPassword (PasswordHashing.hash(newPassword));
-        
         userService.updateNickname	(createdUser.getUserId(), newNickname);
         userService.updateUsername	(createdUserUUID, 		  newUsername);
         userService.updateEmail	  	(createdUserUUID, 		  newEmail);
         userService.updatePassword	(createdUserUUID, 		  newPassword);
         userService.deleteByUsername(nonExistingUser.getUsername());
         
-
+        UserDTO updatedUser = UserMapper.toDTO(userRepository.findByUsername(createdUser.getUsername()).get());
+        
         //Basic
-        assertEquals(newUsername, 						createdUser.getUsername());
-        assertEquals(newNickname, 						createdUser.getNickname());
-        assertEquals(newEmail, 							createdUser.getEmail());
-        assertEquals(PasswordHashing.hash(newPassword), createdUser.getPassword());
-        assertEquals(createdUser, 						updatedUser);
+        assertEquals(newUsername, 						updatedUser.getUsername());
+        assertEquals(newNickname, 						updatedUser.getNickname());
+        assertEquals(newEmail, 							updatedUser.getEmail());
+        assertEquals(PasswordHashing.hash(newPassword), updatedUser.getPassword());
+        
+        assertNotEquals(newUsername, 						createdUser.getUsername());
+        assertNotEquals(newNickname, 						createdUser.getNickname());
+        assertNotEquals(newEmail, 							createdUser.getEmail());
+        assertNotEquals(PasswordHashing.hash(newPassword),  createdUser.getPassword());
 
         //User not exist
         assertThrows(NoSuchElementException.class, () -> userService.updateUsername(nonExistingUserUUID, newUsername));
@@ -192,35 +197,47 @@ public class UserServiceTest {
     	userService.followUser(follower1.getUserId(), follower2  .getUserId());
     	userService.followUser(follower2.getUserId(), follower1  .getUserId());
     	
-    	assertEquals(2, createdUser.getFollowers());
-    	assertEquals(0, createdUser.getFollowing());
-    	assertEquals(1, follower1  .getFollowing());
-    	assertEquals(1, follower1  .getFollowers());
-    	assertEquals(2, follower1  .getFollowing());
-    	assertEquals(2, follower2  .getFollowing());
+    	createdUser = UserMapper.toDTO(userRepository.findById(createdUser.getUserId()).get());
+    	follower1 	= UserMapper.toDTO(userRepository.findById(follower1  .getUserId()).get());
+    	follower2 	= UserMapper.toDTO(userRepository.findById(follower2  .getUserId()).get());
+    	
+    	assertEquals(2, createdUser.getFollowers().size());
+    	assertEquals(0, createdUser.getFollowing().size());
+    	assertEquals(1, follower1  .getFollowing().size());
+    	assertEquals(1, follower1  .getFollowers().size());
+    	assertEquals(2, follower1  .getFollowing().size());
+    	assertEquals(2, follower2  .getFollowing().size());
     	
     	//After unfollowing
     	userService.unfollowUser(follower1.getUserId(), follower2  .getUserId());
     	userService.unfollowUser(follower2.getUserId(), follower1  .getUserId());
     	userService.unfollowUser(follower1.getUserId(), createdUser.getUserId());
     	
-    	assertEquals(0, follower2  .getFollowers());
-    	assertEquals(0, follower1  .getFollowers());
-    	assertEquals(1, createdUser.getFollowers());
-    	assertEquals(1, follower1  .getFollowing());
-    	assertEquals(1, follower2  .getFollowing());
-    	assertEquals(0, createdUser.getFollowing());
+    	createdUser = UserMapper.toDTO(userRepository.findById(createdUser.getUserId()).get());
+    	follower1 	= UserMapper.toDTO(userRepository.findById(follower1  .getUserId()).get());
+    	follower2 	= UserMapper.toDTO(userRepository.findById(follower2  .getUserId()).get());
     	
+    	assertEquals(0, follower2  .getFollowers().size());
+    	assertEquals(0, follower1  .getFollowers().size());
+    	assertEquals(1, createdUser.getFollowers().size());
+    	assertEquals(1, follower1  .getFollowing().size());
+    	assertEquals(1, follower2  .getFollowing().size());
+    	assertEquals(0, createdUser.getFollowing().size());
+
     	//Following non existing user | Non existing user tries to follow
+    	UserDTO existingUser = userService.create(generateTestUser());
+    	
     	userService.deleteByUsername(follower3.getUsername());
-    	assertThrows(NoSuchElementException.class, () -> userService.followUser(createdUser.getUserId(), follower3  .getUserId()));
-    	assertThrows(NoSuchElementException.class, () -> userService.unfollowUser(follower3.getUserId(), createdUser.getUserId()));
+    	assertThrows(NoSuchElementException.class, () -> userService.followUser(existingUser.getUserId(), follower3   .getUserId()));
+    	assertThrows(NoSuchElementException.class, () -> userService.unfollowUser(follower3 .getUserId(), existingUser.getUserId()));
     	
     	//Following itself
     	int compareFollowerSize = createdUser.getFollowers().size();
     	int compareFollowingSize = createdUser.getFollowers().size();
     	
     	userService.followUser(createdUser.getUserId(), createdUser.getUserId());
+    	
+    	createdUser = UserMapper.toDTO(userRepository.findById(createdUser.getUserId()).get());
     	
     	assertEquals(compareFollowerSize, createdUser.getFollowers().size());
     	assertEquals(compareFollowingSize, createdUser.getFollowing().size());
