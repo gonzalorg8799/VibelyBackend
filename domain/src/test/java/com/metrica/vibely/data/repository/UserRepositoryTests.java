@@ -23,7 +23,7 @@ import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.util.PasswordHasher;
 
 /**
- * <h1>User Entity Test</h1>
+ * <h1>User Repository Test</h1>
  * 
  * @since 2023-11-16
  * @version 1.0
