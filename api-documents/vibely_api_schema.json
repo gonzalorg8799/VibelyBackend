@@ -310,6 +310,381 @@
                 }
                 
             }
+        },
+        "/chat/chat": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "ChatId",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Chat unique identifier"
+                }
+            ],
+            "get": {
+                "tags": ["CHAT"],
+                "summary": "Get Chat information",
+                "description": "Retrieve information from a specific Chat identifier",
+                "responses": {
+                    "200": {
+                        "description": "Chat information retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "ChatName": "chating",
+                                    "ChatMembers": "John Doe, Jhon Doe2, Jhon Doe3",
+                                    "Messages": "John Doe: Hello There, Jhon Doe2: Hello World, Jhon Doe3: Hello Chat"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Desired Chat was not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["CHAT"],
+                "summary": "Modifies Chat information",
+                "description": "Modifies Chat name or members",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "API Key"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "required": [
+                                            "password"
+                                        ],
+                                        "properties": {
+                                            "username": {
+                                                "type": "string",
+                                                "description": "Users' name"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "description": "Users' password"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "description": "Users' email"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "example": {
+                                    "username": "newUsername",
+                                    "password": "newPassword",
+                                    "email": "newEmail@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Credentials modification was successful"
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Invalid request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["CHAT"],
+                "summary": "",
+                "description": "Deletes an user from Vibely",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "API Key"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User was deleted successfully"
+                    },
+                    "404": {
+                        "description": "Desired user was not found"
+                    }
+                }
+            }
+        },
+        "/chat/message": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "ChatId",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Chat unique identifier"
+                }
+            ],
+            "get": {
+                "tags": ["MESSAGE"],
+                "summary": "Get Chat information",
+                "description": "Retrieve information from a specific Chat identifier",
+                "responses": {
+                    "200": {
+                        "description": "Chat information retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "ChatName": "chating",
+                                    "ChatMembers": "John Doe, Jhon Doe2, Jhon Doe3",
+                                    "Messages": "John Doe: Hello There, Jhon Doe2: Hello World, Jhon Doe3: Hello Chat"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Desired Chat was not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["MESSAGE"],
+                "summary": "Modifies Chat information",
+                "description": "Modifies Chat name or members",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "API Key"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "required": [
+                                            "password"
+                                        ],
+                                        "properties": {
+                                            "username": {
+                                                "type": "string",
+                                                "description": "Users' name"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "description": "Users' password"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "description": "Users' email"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "example": {
+                                    "username": "newUsername",
+                                    "password": "newPassword",
+                                    "email": "newEmail@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Credentials modification was successful"
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Invalid request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["MESSAGE"],
+                "summary": "",
+                "description": "Deletes an MESSAGE from Chat",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "API Key"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Message was deleted successfully"
+                    },
+                    "404": {
+                        "description": "Desired message was not found"
+                    }
+                }
+            }
+        },
+        "/post/post": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "ChatId",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Chat unique identifier"
+                }
+            ],
+            "get": {
+                "tags": ["POST"],
+                "summary": "Get POST information",
+                "description": "Retrieve information from a specific Chat identifier",
+                "responses": {
+                    "200": {
+                        "description": "Chat information retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "ChatName": "chating",
+                                    "ChatMembers": "John Doe, Jhon Doe2, Jhon Doe3",
+                                    "Messages": "John Doe: Hello There, Jhon Doe2: Hello World, Jhon Doe3: Hello Chat"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Desired Chat was not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["POST"],
+                "summary": "Modifies POST information",
+                "description": "Modifies Chat name or members",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "API Key"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "required": [
+                                            "password"
+                                        ],
+                                        "properties": {
+                                            "username": {
+                                                "type": "string",
+                                                "description": "Users' name"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "description": "Users' password"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "description": "Users' email"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "example": {
+                                    "username": "newUsername",
+                                    "password": "newPassword",
+                                    "email": "newEmail@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Credentials modification was successful"
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "message": "Invalid request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["POST"],
+                "summary": "",
+                "description": "Deletes a POST",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "API Key"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Message was deleted successfully"
+                    },
+                    "404": {
+                        "description": "Desired message was not found"
+                    }
+                }
+            }
         }
     },
     "components": {
