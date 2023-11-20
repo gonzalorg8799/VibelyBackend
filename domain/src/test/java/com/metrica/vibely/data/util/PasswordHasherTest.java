@@ -23,8 +23,8 @@ public class PasswordHasherTest {
      */
     @Test
     void differentHashesTest() {
-        String hashedPassword1 = PasswordHasher.hash(PASSWORD);
-        String hashedPassword2 = PasswordHasher.hash(PASSWORD);
+        String hashedPassword1 = PasswordHashing.hash(PASSWORD);
+        String hashedPassword2 = PasswordHashing.hash(PASSWORD);
         
         assertNotEquals(hashedPassword1, hashedPassword2);
     }
@@ -35,11 +35,11 @@ public class PasswordHasherTest {
      */
     @Test
     void matchesTest() {
-        String hashedPassword1 = PasswordHasher.hash(PASSWORD);
-        String hashedPassword2 = PasswordHasher.hash(PASSWORD);
+        String hashedPassword1 = PasswordHashing.hash(PASSWORD);
+        String hashedPassword2 = PasswordHashing.hash(PASSWORD);
         
-        assertTrue(PasswordHasher.matches(PASSWORD, hashedPassword1));
-        assertTrue(PasswordHasher.matches(PASSWORD, hashedPassword2));
+        assertTrue(PasswordHashing.matches(PASSWORD, hashedPassword1));
+        assertTrue(PasswordHashing.matches(PASSWORD, hashedPassword2));
     }
     
     /**
@@ -48,8 +48,8 @@ public class PasswordHasherTest {
      */
     @RepeatedTest(5)
     void oneWayHashingTest() {
-        String firstTime  = PasswordHasher.hash(PASSWORD);
-        String secondTime = PasswordHasher.hash(firstTime);
+        String firstTime  = PasswordHashing.hash(PASSWORD);
+        String secondTime = PasswordHashing.hash(firstTime);
         
         assertNotEquals(PASSWORD, secondTime);
     }

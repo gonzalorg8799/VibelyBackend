@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
-import com.metrica.vibely.data.util.PasswordHasher;
+import com.metrica.vibely.data.util.PasswordHashing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -53,7 +53,7 @@ public class UserServiceTest {
         UserDTO testUser = new UserDTO();
         
         testUser.setUsername(DEFAULT_USERNAME);
-        testUser.setPassword(PasswordHasher.hash(DEFAULT_PASSWORD));
+        testUser.setPassword(PasswordHashing.hash(DEFAULT_PASSWORD));
         testUser.setNickname(DEFAULT_NICKNAME);
         testUser.setEmail   (DEFAULT_EMAIL);
         
@@ -70,7 +70,7 @@ public class UserServiceTest {
         
         assertNotNull(databaseUser.getUserId());
         assertEquals(LocalDate.now().format(formatter), databaseUser.getLastConnDate().format(formatter));
-        assertTrue  (PasswordHasher.matches(DEFAULT_PASSWORD, databaseUser.getPassword()));
+        assertTrue  (PasswordHashing.matches(DEFAULT_PASSWORD, databaseUser.getPassword()));
         assertEquals(testUser.getUsername(), databaseUser.getUsername());
         assertEquals(testUser.getNickname(), databaseUser.getNickname());
         assertEquals(testUser.getEmail(),    databaseUser.getEmail());

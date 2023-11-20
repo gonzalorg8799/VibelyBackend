@@ -16,7 +16,7 @@ import javax.crypto.spec.PBEKeySpec;
 * @version 2.0
 * @author juanagui, Q
 */
-public class PasswordHasher {
+public class PasswordHashing {
 
     // <<-CONSTANTS->>
     private static final int SALT_SIZE_BYTES = 16;
