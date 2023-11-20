@@ -1,6 +1,7 @@
 package com.metrica.vibely.data.service.impl;
 	
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,23 +24,23 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	public UserServiceImpl(UserRepository userRepostory) {
+	public UserServiceImpl(final UserRepository userRepostory) {
 		this.userRepository = userRepostory;
 	}
 	
 	@Override
-	public UserDTO getByUsername(String username) {
+	public UserDTO getByUsername(final String username) {
 		return UserMapper.toDTO(userRepository.findByUsername(username)
 											  .orElseThrow());
 	}
 
 	@Override
-	public void deleteByUsername(String username) {
+	public void deleteByUsername(final String username) {
 	    userRepository.deleteByUsername(username);
 	}
 
 	@Override
-	public UserDTO create(UserDTO userParam) {
+	public UserDTO create(final UserDTO userParam) {
 		User user = UserMapper.toEntity(userParam);
 		
 		user.setState		(UserState.ENABLED);
@@ -50,32 +51,77 @@ public class UserServiceImpl implements UserService {
         user.setFollowing	(null);
         user.setChats		(null);
         user.setPassword	(userParam.getPassword());
-		
-        userRepository.save(user);
         
-		return UserMapper.toDTO(user);
+		return UserMapper.toDTO(userRepository.save(user));
 	}
 
 	@Override
-	public UserDTO update(UserDTO updatedUser) {
-		//to do: pedir la apiKey en parametros
-		//utilizar dicha apiKey para comprobar si puede updatear los datos o no
-		
-		String username = updatedUser.getUsername();
-		User   user 	= userRepository.findByUsername(username).orElseThrow();
-		
-		String password = updatedUser.getPassword();
-		String nickname = updatedUser.getNickname();
-		String email 	= updatedUser.getEmail();
+	public UserDTO updateUsername(final UUID userId, final String username) {
+		User user = userRepository.findById(userId)
+								  .orElseThrow();
 
 		if(!username.equals(user.getUsername())) { user.setUsername(username); } 
-		if(!password.equals(user.getPassword())) { user.setPassword(password); }
-		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); }
-		if(!email	.equals(user.getEmail())) 	 { user.setEmail(email); }
+
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+	
+	public UserDTO updateNickname(final UUID userId, final String nickname) {
+		User user = userRepository.findById(userId)
+								  .orElseThrow();
+
+		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); } 
 		
-		userRepository.save(user);
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+	
+	public UserDTO updateEmail(final UUID userId, final String email) {
+		User user = userRepository.findById(userId)
+								  .orElseThrow();
+
+		if(!email.equals(user.getEmail())) { user.setEmail(email); } 
 		
-		return UserMapper.toDTO(user);
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+	
+	public UserDTO updatePassword(final UUID userId, final String password) {
+		User user = userRepository.findById(userId)
+								  .orElseThrow();
+
+		if(!password.equals(user.getPassword())) { user.setPassword(password); } 
+		
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+
+	@Override
+	public UserDTO followUser(final UUID userId,final UUID followedUserId) {
+		User user 		  = userRepository.findById(userId)
+										  .orElseThrow();
+		User followedUser = userRepository.findById(followedUserId)
+										  .orElseThrow();
+		
+		if(!followedUser.getFollowers().contains(user) && userId != followedUserId) {
+			followedUser.getFollowers().add     (user); 
+			user		.getFollowing().add		(followedUser); 
+			userRepository			   .save	(followedUser);
+		} 
+		
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+
+	@Override
+	public UserDTO unfollowUser(final UUID userId, final UUID followedUserId) {
+		User user 		  	= userRepository.findById(userId)
+											.orElseThrow();
+		User unFollowedUser = userRepository.findById(followedUserId)
+											.orElseThrow();
+		
+		if( unFollowedUser.getFollowers().contains(user) && userId != followedUserId) {
+			unFollowedUser.getFollowers().remove  (user); 
+			user		  .getFollowing().remove  (unFollowedUser); 
+			userRepository				 .save	  (unFollowedUser);
+		} 
+		
+		return UserMapper.toDTO(userRepository.save(user));
 	}
 	
 }
