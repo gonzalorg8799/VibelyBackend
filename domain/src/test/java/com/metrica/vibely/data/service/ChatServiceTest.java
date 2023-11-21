@@ -108,6 +108,29 @@ public class ChatServiceTest {
     	assertTrue(testChat		.getParticipants().contains(alex   .getUserId()));
     	assertTrue(testChat		.getParticipants().contains(gonzalo.getUserId()));
     }
-
+    @Test
+    void groupMessageCreationTest() {
+    	ChatDTO testChat = chatService.create(alex.getUserId(), participants);
+    	String name   = testChat.getParticipants().stream().map(p -> p.getUsername()).collect(Collectors.joining());
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	
+    	UserRepository repo = new UserRepository();
+    	
+    	
+    	assertNotNull(testChat.getChatId());
+    	
+    	assertEquals(3, 					  testChat.getParticipants().size());
+    	assertEquals(0, 					  testChat.getMessages().size());
+    	assertEquals(name, 					  testChat.getTitle());
+    	assertEquals(ChatType.GROUP, 		  testChat.getType());
+    	assertEquals(ChatStatus.ACTIVE, 	  testChat.getStatus());
+    	assertEquals(LocalDateTime.now().format(formatter), testChat.getLastActivity());
+    	assertEquals(LocalDateTime.now().format(formatter), testChat.getCreationDate());
+    	
+    	assertTrue(testChat		.getParticipants().contains(alex   .getUserId()));
+    	assertTrue(testChat		.getParticipants().contains(gonzalo.getUserId()));
+    	assertTrue(testChat		.getParticipants().contains(adri   .getUserId()));
+    }
+    
     
 }
