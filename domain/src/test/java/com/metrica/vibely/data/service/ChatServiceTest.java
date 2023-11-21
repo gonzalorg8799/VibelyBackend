@@ -89,5 +89,25 @@ public class ChatServiceTest {
     	userService.create(raul);
     	userService.create(pedro);
     }
+    @Test
+    void directMessageCreationTest() {
+    	Chat testChat = chatService.create(alex.getUserId(), gonzalo);
+    	String name   = testChat.getParticipants().stream().map(p -> p.getUsername()).collect(Collectors.joining());
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	
+    	assertNotNull(testChat.getChatId());
+    	
+    	assertEquals(2, 					  testChat.getParticipants().size());
+    	assertEquals(0, 					  testChat.getMessages().size());
+    	assertEquals(name, 					  testChat.getTitle());
+    	assertEquals(ChatType.DIRECT_MESSAGE, testChat.getType());
+    	assertEquals(ChatStatus.ACTIVE, 	  testChat.getStatus());
+    	assertEquals(LocalDateTime.now().format(formatter), testChat.getLastActivity());
+    	assertEquals(LocalDateTime.now().format(formatter), testChat.getCreationDate());
+    	
+    	assertTrue(testChat		.getParticipants().contains(alex   .getUserId()));
+    	assertTrue(testChat		.getParticipants().contains(gonzalo.getUserId()));
+    }
+
     
 }
