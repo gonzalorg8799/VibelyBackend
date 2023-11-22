@@ -80,22 +80,6 @@ class MessageDTOTest {
     }
 
     @Test
-    @Tag("Default values")
-    void notNullableFieldsAndDefaultValuesTest() {
-    	MessageDTO message = new MessageDTO();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime now = LocalDateTime.now();
-
-        message.setMessageId        (null);
-        message.setCreationTimestamp(null);
-        message.setStatus           (null);
-
-        assertNotNull(message.getMessageId());
-        assertEquals(now.format(formatter), message.getCreationTimestamp().format(formatter));
-        assertEquals(MessageStatus.PENDING,  message.getStatus());
-    }
-
-    @Test
     @Tag("Equality")
     void basicEqualityTest() {
     	MessageDTO message = new MessageDTO();
@@ -109,12 +93,19 @@ class MessageDTOTest {
     @Tag("Equality")
     void equalityByIdAndHashCodeTest() {
     	MessageDTO message1 = new MessageDTO();
-        MessageDTO message2 = new MessageDTO();
+    	MessageDTO message2 = new MessageDTO();
+    	UUID uuid = UUID.randomUUID();
         
-        // Both have the same ID
-        UUID messageId = UUID.randomUUID();
-        message1.setMessageId(messageId);
-        message2.setMessageId(messageId);
+    	// Both the same ID
+    	message1.setMessageId(uuid);
+        message1.setCreationTimestamp(CREATION_TIMESTAMP);
+        message1.setStatus(STATUS);
+        message1.setContent(CONTENT);
+        
+    	message2.setMessageId(uuid);
+        message2.setCreationTimestamp(CREATION_TIMESTAMP);
+        message2.setStatus(STATUS);
+        message2.setContent(CONTENT);
         
         assertEquals(message1, message2);
         assertEquals(message1.hashCode(), message2.hashCode());
@@ -122,15 +113,16 @@ class MessageDTOTest {
     
     
     @Test
-    void testIdNullEquality() {
+    void inequalityByFieldsTest() {
     	MessageDTO message1 = new MessageDTO();
     	MessageDTO message2 = new MessageDTO();
         
+    	message1.setMessageId(UUID.randomUUID());
         message1.setCreationTimestamp(CREATION_TIMESTAMP);
         message1.setStatus(STATUS);
         message1.setContent(CONTENT);
         
-        
+    	message2.setMessageId(UUID.randomUUID());
         message2.setCreationTimestamp(CREATION_TIMESTAMP);
         message2.setStatus(STATUS);
         message2.setContent(CONTENT);

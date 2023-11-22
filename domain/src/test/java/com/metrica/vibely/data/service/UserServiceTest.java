@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Alex, Adri, Raul
  */
 @SpringBootTest
-public class UserServiceTest {
+class UserServiceTest {
 
     // <<-CONSTANTS->>
     private static final String DEFAULT_USERNAME = "jdoe";

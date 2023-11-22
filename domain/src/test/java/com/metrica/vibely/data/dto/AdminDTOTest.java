@@ -34,6 +34,7 @@ class AdminDTOTest {
     private static final String PASSWORD = "12345";
     private static final String NICKNAME = "John Doe";
     private static final String EMAIL    = "johndoe@email.com";
+    private static final String APIKEY   = "randomApikey";
     private static final UserState   STATE   = UserState.ENABLED;
     private static final PrivacyType PRIVACY = PrivacyType.PUBLIC;
     private static final UserStatus  STATUS  = UserStatus.ONLINE;
@@ -54,10 +55,11 @@ class AdminDTOTest {
         AdminDTO admin = new AdminDTO();
 
         admin.setUserId      (adminId);
+        admin.setNickname    (NICKNAME);
         admin.setUsername    (USERNAME);
         admin.setPassword    (PASSWORD);
-        admin.setNickname    (NICKNAME);
         admin.setEmail       (EMAIL);
+        admin.setApikey      (APIKEY);
         admin.setState       (STATE);
         admin.setPrivacy     (PRIVACY);
         admin.setStatus      (STATUS);
@@ -69,21 +71,22 @@ class AdminDTOTest {
         admin.setPosts       (posts);
         admin.setChats       (chats);
 
-        assertEquals(adminId,       admin.getUserId());
-        assertEquals(USERNAME,     admin.getUsername());
-        assertEquals(PASSWORD,     admin.getPassword());
-        assertEquals(NICKNAME,     admin.getNickname());
-        assertEquals(EMAIL,        admin.getEmail());
-        assertEquals(STATE,        admin.getState());
-        assertEquals(PRIVACY,      admin.getPrivacy());
-        assertEquals(STATUS,       admin.getStatus());
-        assertEquals(LOGINS,       admin.getLogins());
+        assertEquals(adminId,        admin.getUserId());
+        assertEquals(NICKNAME,       admin.getNickname());
+        assertEquals(USERNAME,       admin.getUsername());
+        assertEquals(PASSWORD,       admin.getPassword());
+        assertEquals(EMAIL,          admin.getEmail());
+        assertEquals(APIKEY,         admin.getApikey());
+        assertEquals(STATE,          admin.getState());
+        assertEquals(PRIVACY,        admin.getPrivacy());
+        assertEquals(STATUS,         admin.getStatus());
+        assertEquals(LOGINS,         admin.getLogins());
         assertEquals(LAST_CONN_DATE, admin.getLastConnDate());
-        assertEquals(BLOCKED_DATE,  admin.getBlockedDate());
-        assertEquals(followers,    admin.getFollowers());
-        assertEquals(following,    admin.getFollowing());
-        assertEquals(posts,        admin.getPosts());
-        assertEquals(chats,        admin.getChats());
+        assertEquals(BLOCKED_DATE,   admin.getBlockedDate());
+        assertEquals(followers,      admin.getFollowers());
+        assertEquals(following,      admin.getFollowing());
+        assertEquals(posts,          admin.getPosts());
+        assertEquals(chats,          admin.getChats());
     }
     
     @Test
@@ -97,10 +100,11 @@ class AdminDTOTest {
         
         AdminDTO user = new AdminDTO(
                 adminId,
+                NICKNAME,
                 USERNAME,
                 PASSWORD,
-                NICKNAME,
                 EMAIL,
+                APIKEY,
                 STATE,
                 PRIVACY,
                 LOGINS,
@@ -113,10 +117,11 @@ class AdminDTOTest {
                 chats);
 
         assertEquals(adminId,        user.getUserId());
+        assertEquals(NICKNAME,       user.getNickname());
         assertEquals(USERNAME,       user.getUsername());
         assertEquals(PASSWORD,       user.getPassword());
-        assertEquals(NICKNAME,       user.getNickname());
         assertEquals(EMAIL,          user.getEmail());
+        assertEquals(APIKEY,         user.getApikey());
         assertEquals(STATE,          user.getState());
         assertEquals(PRIVACY,        user.getPrivacy());
         assertEquals(STATUS,         user.getStatus());

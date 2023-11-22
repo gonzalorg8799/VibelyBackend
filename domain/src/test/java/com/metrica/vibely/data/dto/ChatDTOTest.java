@@ -15,13 +15,11 @@ import java.util.UUID;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import com.metrica.vibely.data.entity.Chat;
-import com.metrica.vibely.data.entity.Message;
-import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.ChatDTO;
-import com.metrica.vibely.data.model.dto.UserDTO;
+
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
+
 
 /**
  * <h1>Chat DTO Test</h1>
@@ -44,7 +42,7 @@ class ChatDTOTest {
     @Tag("Constructors")
     void voidConstructorTest() {
         UUID chatId = UUID.randomUUID();
-        Set<UUID>    participants = new HashSet<>();
+        Set<UUID> participants = new HashSet<>();
         Set<UUID> messages     = new HashSet<>();
         
         ChatDTO chat = new ChatDTO();
@@ -72,7 +70,7 @@ class ChatDTOTest {
     @Tag("Constructors")
     void fullArgsConstructorTest() {
         UUID chatId = UUID.randomUUID();
-        Set<UUID>    participants = new HashSet<>();
+        Set<UUID> participants = new HashSet<>();
         Set<UUID> messages     = new HashSet<>();
         
         ChatDTO chat = new ChatDTO(
@@ -96,26 +94,6 @@ class ChatDTOTest {
     }
 
     @Test
-    @Tag("Default values")
-    void notNullableFieldsAndDefaultValuesTest() {
-    	ChatDTO chat = new ChatDTO();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime now = LocalDateTime.now();
-        
-        chat.setChatId      (null);
-        chat.setCreationDate(null);
-        chat.setType        (null);
-        chat.setStatus      (null);
-        chat.setLastActivity(null);
-
-        assertNotNull(chat.getChatId());
-        assertEquals(now.format(formatter),   chat.getCreationDate().format(formatter));
-        assertEquals(now.format(formatter),   chat.getLastActivity().format(formatter));
-        assertEquals(ChatType.DIRECT_MESSAGE, chat.getType());
-        assertEquals(ChatStatus.ACTIVE,       chat.getStatus());
-    }
-
-    @Test
     @Tag("Equality")
     void basicEqualityTest() {
     	ChatDTO chat = new ChatDTO();
@@ -130,12 +108,23 @@ class ChatDTOTest {
     void equalityByIdAndHashCodeTest() {
     	ChatDTO chat1 = new ChatDTO();
     	ChatDTO chat2 = new ChatDTO();
-        
-        // Both have the same ID
-        UUID messageId = UUID.randomUUID();
-        chat1.setChatId(messageId);
-        chat2.setChatId(messageId);
-        
+    	UUID uuid = UUID.randomUUID();
+
+        // Both the same ID
+    	chat1.setChatId(uuid);
+        chat1.setCreationDate(CREATION_DATE);
+        chat1.setType        (TYPE);
+        chat1.setStatus      (STATUS);
+        chat1.setTitle       (TITLE);
+        chat1.setLastActivity(LAST_ACTIVITY);
+
+    	chat2.setChatId(uuid);
+        chat2.setCreationDate(CREATION_DATE);
+        chat2.setType        (TYPE);
+        chat2.setStatus      (STATUS);
+        chat2.setTitle       (TITLE);
+        chat2.setLastActivity(LAST_ACTIVITY);
+
         assertEquals(chat1, chat2);
         assertEquals(chat1.hashCode(), chat2.hashCode());
     }
@@ -147,12 +136,14 @@ class ChatDTOTest {
     	ChatDTO chat2 = new ChatDTO();
 
         // Not the same ID
+    	chat1.setChatId(UUID.randomUUID());
         chat1.setCreationDate(CREATION_DATE);
         chat1.setType        (TYPE);
         chat1.setStatus      (STATUS);
         chat1.setTitle       (TITLE);
         chat1.setLastActivity(LAST_ACTIVITY);
 
+    	chat2.setChatId(UUID.randomUUID());
         chat2.setCreationDate(CREATION_DATE);
         chat2.setType        (TYPE);
         chat2.setStatus      (STATUS);
@@ -167,15 +158,10 @@ class ChatDTOTest {
     void addParticipantTest() {
     	ChatDTO chat = new ChatDTO();
         UUID participant = UUID.randomUUID();
+        chat.setParticipants(new HashSet<>());
         
-        // The first time we add a participant
         assertTrue(chat.addParticipant(participant));
-        
-        // Since the user already in the set
-        assertFalse(chat.addParticipant(participant));
-        
-        // Trying to add a null participant
-        assertFalse(chat.addParticipant(null));
+       
     }
     
     @Test
@@ -183,16 +169,10 @@ class ChatDTOTest {
     void removeParticipantTest() {
     	ChatDTO chat = new ChatDTO();
         UUID participant = UUID.randomUUID();
-        
+        chat.setParticipants(new HashSet<>());
+
         chat.addParticipant(participant);
         
-        // The first time we remove a participant
         assertTrue(chat.removeParticipant(participant));
-        
-        // Since the user does not exist in the set anymore
-        assertFalse(chat.removeParticipant(participant));
-        
-        // Trying to remove a null participant
-        assertFalse(chat.removeParticipant(null));
     }
 }

@@ -40,7 +40,7 @@ class PostDTOTest {
     @Tag("Constructors")
     void voidConstructorTest() {
         UUID postId = UUID.randomUUID();
-        UserDTO owner  = new UserDTO();
+        UUID owner  = UUID.randomUUID();
         Set<UUID> comments = new HashSet<>();
         Set<UUID> likedBy  = new HashSet<>();
         Set<UUID> savedBy  = new HashSet<>();
@@ -76,7 +76,7 @@ class PostDTOTest {
     @Tag("Constructors")
     void fullArgsConstructorTest() {
         UUID postId = UUID.randomUUID();
-        UserDTO owner  = new UserDTO();
+        UUID owner  = UUID.randomUUID();
         Set<UUID> comments = new HashSet<>();
         Set<UUID> likedBy  = new HashSet<>();
         Set<UUID> savedBy  = new HashSet<>();
@@ -146,11 +146,20 @@ class PostDTOTest {
     void equalityByIdAndHashCodeTest() {
     	PostDTO post1 = new PostDTO();
     	PostDTO post2 = new PostDTO();
-        
-        // Both have the same ID
-        UUID postId = UUID.randomUUID();
-        post1.setPostId(postId);
-        post2.setPostId(postId);
+    	UUID uuid = UUID.randomUUID();
+
+        // Both the same ID
+    	post1.setPostId(uuid);
+        post1.setPostDate(POST_DATE);
+        post1.setContent(CONTENT);
+        post1.setStatus(STATUS);
+        post1.setVisibility(VISIBILITY);
+
+    	post2.setPostId(uuid);
+        post2.setPostDate(POST_DATE);
+        post2.setContent(CONTENT);
+        post2.setStatus(STATUS);
+        post2.setVisibility(VISIBILITY);
         
         assertEquals(post1, post2);
         assertEquals(post1.hashCode(), post2.hashCode());
@@ -164,11 +173,13 @@ class PostDTOTest {
     	PostDTO post2 = new PostDTO();
 
         // Not the same ID
+    	post1.setPostId(UUID.randomUUID());
         post1.setPostDate(POST_DATE);
         post1.setContent(CONTENT);
         post1.setStatus(STATUS);
         post1.setVisibility(VISIBILITY);
 
+    	post2.setPostId(UUID.randomUUID());
         post2.setPostDate(POST_DATE);
         post2.setContent(CONTENT);
         post2.setStatus(STATUS);

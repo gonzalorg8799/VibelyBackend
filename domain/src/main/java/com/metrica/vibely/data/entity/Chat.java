@@ -54,10 +54,11 @@ public class Chat implements Copyable<Chat> {
     private Set<Message> messages;
     
     // <<-CONSTRUCTORS->>
+    public Chat(UUID uuid) {
+    	this.chatId = uuid;
+    }
+    
     public Chat() {
-        this.setChatId      (null);
-        this.setParticipants(null);
-        this.setMessages    (null);
     }
 
     public Chat(

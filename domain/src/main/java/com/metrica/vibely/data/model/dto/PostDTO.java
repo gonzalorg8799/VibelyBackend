@@ -33,7 +33,7 @@ public class PostDTO {
     private Integer        timesSaved;
     
 	// Relations
-    private UserDTO           owner;
+    private UUID           owner;
     private Set<UUID>      comments;
     private Set<UUID>      likedBy;
     private Set<UUID>      savedBy;
@@ -41,11 +41,6 @@ public class PostDTO {
     
     // <<-CONSTRUCTORS->>
     public PostDTO() {
-    	 this.setPostId  (null);
-         this.setOwner   (null);
-         this.setComments(null);
-         this.setLikedBy (null);
-         this.setSavedBy (null);
 	}
     
     public PostDTO(
@@ -56,7 +51,7 @@ public class PostDTO {
     		String content,
 			Integer likes, 
 			Integer timesSaved,
-			UserDTO owner, 
+			UUID owner, 
 			Set<UUID> comments, 
 			Set<UUID> likedBy,
 			Set<UUID> savedBy) 
@@ -84,11 +79,7 @@ public class PostDTO {
 
 
 	public void setPostId(final UUID postId) {
-		if (postId == null) {
-            this.postId = UUID.randomUUID();
-        } else {
-            this.postId = postId;
-        }
+        this.postId = postId;
 	}
 
 
@@ -99,9 +90,6 @@ public class PostDTO {
 
 	public void setPostDate(final LocalDateTime postDate) {
 		this.postDate = postDate;
-		if(postDate == null) {
-			this.postDate = LocalDateTime.now();
-		}
 	}
 
 
@@ -112,9 +100,6 @@ public class PostDTO {
 
 	public void setStatus(final PostStatus status) {
 		this.status = status;
-		if(status == null) {
-			this.status = PostStatus.ACTIVE;
-		}
 	}
 
 
@@ -125,9 +110,6 @@ public class PostDTO {
 
 	public void setVisibility(final PostVisibility visibility) {
 		this.visibility = visibility;
-		if(visibility == null) {
-			this.visibility = PostVisibility.PUBLIC;
-		}
 	}
 
 
@@ -148,9 +130,6 @@ public class PostDTO {
 
 	public void setLikes(final Integer likes) {
 		this.likes = likes;
-		if(likes == null) {
-			this.likes = 0;
-		}
 	}
 
 
@@ -161,18 +140,15 @@ public class PostDTO {
 
 	public void setTimesSaved(final Integer timesSaved) {
 		this.timesSaved = timesSaved;
-		if(timesSaved == null) {
-			this.timesSaved = 0;
-		}
 	}
 
 
-	public UserDTO getOwner() {
+	public UUID getOwner() {
 		return this.owner;
 	}
 
 
-	public void setOwner(final UserDTO owner) {
+	public void setOwner(final UUID owner) {
 		this.owner = owner;
 	}
 
