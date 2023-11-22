@@ -112,7 +112,7 @@ class UserDTOTest {
                 BLOCKED_DATE,
                 followers,
                 following,
-                posts,
+                posts, 
                 chats);
 
         assertEquals(userId,         user.getUserId());
