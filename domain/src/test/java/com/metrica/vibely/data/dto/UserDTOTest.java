@@ -20,7 +20,7 @@ import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 
 /**
- * <h1>Admin DTO Test</h1>
+ * <h1>User DTO Test</h1>
  * 
  * @since 2023-11-20
  * @version 1.0
@@ -58,6 +58,7 @@ class UserDTOTest {
         user.setPassword    (PASSWORD);
         user.setNickname    (NICKNAME);
         user.setEmail       (EMAIL);
+        user.setApikey		(APIKEY);
         user.setState       (STATE);
         user.setPrivacy     (PRIVACY);
         user.setStatus      (STATUS);
@@ -69,21 +70,22 @@ class UserDTOTest {
         user.setPosts       (posts);
         user.setChats       (chats);
 
-        assertEquals(userId,       user.getUserId());
-        assertEquals(USERNAME,     user.getUsername());
-        assertEquals(PASSWORD,     user.getPassword());
-        assertEquals(NICKNAME,     user.getNickname());
-        assertEquals(EMAIL,        user.getEmail());
-        assertEquals(STATE,        user.getState());
-        assertEquals(PRIVACY,      user.getPrivacy());
-        assertEquals(STATUS,       user.getStatus());
-        assertEquals(LOGINS,       user.getLogins());
+        assertEquals(userId,         user.getUserId());
+        assertEquals(USERNAME,       user.getUsername());
+        assertEquals(PASSWORD,       user.getPassword());
+        assertEquals(NICKNAME,       user.getNickname());
+        assertEquals(EMAIL,          user.getEmail());
+        assertEquals(APIKEY,         user.getApikey());
+        assertEquals(STATE,          user.getState());
+        assertEquals(PRIVACY,        user.getPrivacy());
+        assertEquals(STATUS,         user.getStatus());
+        assertEquals(LOGINS,         user.getLogins());
         assertEquals(LAST_CONN_DATE, user.getLastConnDate());
-        assertEquals(BLOCKED_DATE,  user.getBlockedDate());
-        assertEquals(followers,    user.getFollowers());
-        assertEquals(following,    user.getFollowing());
-        assertEquals(posts,        user.getPosts());
-        assertEquals(chats,        user.getChats());
+        assertEquals(BLOCKED_DATE,   user.getBlockedDate());
+        assertEquals(followers,      user.getFollowers());
+        assertEquals(following,      user.getFollowing());
+        assertEquals(posts,          user.getPosts());
+        assertEquals(chats,          user.getChats());
     }
     
     @Test
@@ -97,9 +99,9 @@ class UserDTOTest {
         
         UserDTO user = new UserDTO(
                 userId,
+                NICKNAME,
                 USERNAME,
                 PASSWORD,
-                NICKNAME,
                 EMAIL,
                 APIKEY,
                 STATE,
@@ -114,10 +116,11 @@ class UserDTOTest {
                 chats);
 
         assertEquals(userId,         user.getUserId());
+        assertEquals(NICKNAME,       user.getNickname());
         assertEquals(USERNAME,       user.getUsername());
         assertEquals(PASSWORD,       user.getPassword());
-        assertEquals(NICKNAME,       user.getNickname());
         assertEquals(EMAIL,          user.getEmail());
+        assertEquals(APIKEY,         user.getApikey());
         assertEquals(STATE,          user.getState());
         assertEquals(PRIVACY,        user.getPrivacy());
         assertEquals(STATUS,         user.getStatus());

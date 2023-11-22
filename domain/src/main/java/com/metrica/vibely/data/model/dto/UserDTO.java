@@ -149,7 +149,7 @@ public class UserDTO {
     }
     
 	public String getApikey() {
-		return apikey;
+		return this.apikey;
 	}
 
 	public void setApikey(String apikey) {
