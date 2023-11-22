@@ -32,11 +32,7 @@ public class MessageDTO {
     private UUID sender;
     
     // <<-CONSTRUCTORS->>
- // <<-CONSTRUCTORS->>
     public MessageDTO() {
-        this.setMessageId(null);
-        this.setChat     (null);
-        this.setSender   (null);
     }
 
     public MessageDTO(
@@ -79,11 +75,7 @@ public class MessageDTO {
     }
 
     public void setMessageId(final UUID messageId) {
-        if (messageId == null) {
-            this.messageId = UUID.randomUUID();
-        } else {
-            this.messageId = messageId;
-        }
+        this.messageId = messageId;
     }
 
     public LocalDateTime getCreationTimestamp() {
@@ -91,11 +83,7 @@ public class MessageDTO {
     }
 
     public void setCreationTimestamp(final LocalDateTime creationTimestamp) {
-        if (creationTimestamp == null) {
-            this.creationTimestamp = LocalDateTime.now();
-        } else {
-            this.creationTimestamp = creationTimestamp;
-        }
+        this.creationTimestamp = creationTimestamp;
     }
 
     public MessageStatus getStatus() {
@@ -103,11 +91,7 @@ public class MessageDTO {
     }
 
     public void setStatus(final MessageStatus status) {
-        if (status == null) {
-            this.status = MessageStatus.PENDING;
-        } else {
-            this.status = status;
-        }
+        this.status = status;
     }
 
     public String getContent() {
@@ -123,11 +107,7 @@ public class MessageDTO {
     }
 
     public void setChat(final UUID chat) {
-        if (chat == null) {
-            this.chat = UUID.randomUUID();
-        } else {
-            this.chat = chat;
-        }
+        this.chat = chat;
     }
 
     public UUID getSender() {
@@ -135,11 +115,7 @@ public class MessageDTO {
     }
 
     public void setSender(final UUID sender) {
-        if (sender == null) {
-            this.sender = UUID.randomUUID();
-        } else {
-            this.sender = sender;
-        }
+        this.sender = sender;
     }
     
 	

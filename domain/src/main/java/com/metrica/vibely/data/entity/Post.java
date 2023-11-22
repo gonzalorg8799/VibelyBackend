@@ -67,6 +67,10 @@ public class Post implements Copyable<Post> {
     private Set<User> savedBy;
     
     // <<-CONSTRUCTORS->>
+    public Post(UUID postId) {
+    	this.setPostId(postId);
+    }
+    
     public Post() {
         this.setPostId  (null);
         this.setOwner   (null);

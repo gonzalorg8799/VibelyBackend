@@ -33,6 +33,7 @@ class UserDTOTest {
     private static final String PASSWORD = "12345";
     private static final String NICKNAME = "John Doe";
     private static final String EMAIL    = "johndoe@email.com";
+    private static final String APIKEY   = "randomApikey";
     private static final UserState   STATE   = UserState.ENABLED;
     private static final PrivacyType PRIVACY = PrivacyType.PUBLIC;
     private static final UserStatus  STATUS  = UserStatus.ONLINE;
@@ -100,6 +101,7 @@ class UserDTOTest {
                 PASSWORD,
                 NICKNAME,
                 EMAIL,
+                APIKEY,
                 STATE,
                 PRIVACY,
                 LOGINS,
@@ -128,27 +130,6 @@ class UserDTOTest {
         assertEquals(chats,          user.getChats());
     }
     
-    @Test
-    @Tag("Default values")
-    void notNullableFieldsAndDefaultValuesTest() {
-        UserDTO user = new UserDTO();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime now = LocalDateTime.now();
-
-        user.setUserId      (null);
-        user.setLastConnDate(null);
-        user.setState       (null);
-        user.setPrivacy     (null);
-        user.setStatus      (null);
-        user.setLogins      (null);
-
-        assertNotNull(user.getUserId());
-        assertEquals(now.format(formatter), user.getLastConnDate().format(formatter));
-        assertEquals(UserState.ENABLED,  user.getState());
-        assertEquals(PrivacyType.PUBLIC, user.getPrivacy());
-        assertEquals(UserStatus.OFFLINE, user.getStatus());
-        assertEquals(0,                  user.getLogins());
-    }
 
     @Test
     @Tag("Equality")
@@ -163,13 +144,22 @@ class UserDTOTest {
     @Test
     @Tag("Equality")
     void equalityByIdAndHashCodeTest() {
-        UserDTO user1 = new UserDTO();
+    	UserDTO user1 = new UserDTO();
         UserDTO user2 = new UserDTO();
+        UUID uuid = UUID.randomUUID();
         
-        // Both have the same ID
-        UUID userId = UUID.randomUUID();
-        user1.setUserId(userId);
-        user2.setUserId(userId);
+        // Both the same ID
+        user1.setUserId(uuid);
+        user1.setUsername(USERNAME);
+        user1.setPassword(PASSWORD);
+        user1.setNickname(NICKNAME);
+        user1.setEmail   (EMAIL);
+        
+        user2.setUserId(uuid);
+        user2.setUsername(USERNAME);
+        user2.setPassword(PASSWORD);
+        user2.setNickname(NICKNAME);
+        user2.setEmail   (EMAIL);
         
         assertEquals(user1, user2);
         assertEquals(user1.hashCode(), user2.hashCode());
@@ -183,11 +173,13 @@ class UserDTOTest {
         UserDTO user2 = new UserDTO();
 
         // Not the same ID
+        user1.setUserId(UUID.randomUUID());
         user1.setUsername(USERNAME);
         user1.setPassword(PASSWORD);
         user1.setNickname(NICKNAME);
         user1.setEmail   (EMAIL);
         
+        user2.setUserId(UUID.randomUUID());
         user2.setUsername(USERNAME);
         user2.setPassword(PASSWORD);
         user2.setNickname(NICKNAME);

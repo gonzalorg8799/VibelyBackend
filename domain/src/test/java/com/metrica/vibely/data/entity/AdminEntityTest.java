@@ -29,6 +29,7 @@ public class AdminEntityTest {
     private static final String PASSWORD = "12345";
     private static final String NICKNAME = "John Doe";
     private static final String EMAIL    = "johndoe@email.com";
+    private static final String APIKEY   = "randomApikey";
     private static final UserState   STATE   = UserState.ENABLED;
     private static final PrivacyType PRIVACY = PrivacyType.PUBLIC;
     private static final UserStatus  STATUS  = UserStatus.ONLINE;
@@ -96,6 +97,7 @@ public class AdminEntityTest {
                 PASSWORD,
                 NICKNAME,
                 EMAIL,
+                APIKEY,
                 STATE,
                 PRIVACY,
                 LOGINS,

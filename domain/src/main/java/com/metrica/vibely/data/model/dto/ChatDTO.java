@@ -6,11 +6,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-import com.metrica.vibely.data.entity.Message;
-import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
-import com.metrica.vibely.data.util.DeepCopyGenerator;
 
 /**
  * <h1>Chat DTO</h1>
@@ -39,9 +36,6 @@ public class ChatDTO {
     
     // <<-CONSTRUCTORS->>
     public ChatDTO() {
-        this.setChatId      (null);
-        this.setParticipants(null);
-        this.setMessages    (null);
     }
     
     public ChatDTO(
@@ -54,7 +48,6 @@ public class ChatDTO {
 			Set<UUID> participants,
 			Set<UUID> messages) 
     {
-		super();
 		this.chatId = chatId;
 		this.creationDate = creationDate;
 		this.type = type;
@@ -73,11 +66,7 @@ public class ChatDTO {
      * @param participant the new user
      */
     public boolean addParticipant(final UUID participant) {
-        boolean inserted = false;
-        if (participant != null) {
-            inserted = this.participants.add(participant);
-        }
-        return inserted;
+         return this.participants.add(participant);       
     }
     
     /**
@@ -86,11 +75,7 @@ public class ChatDTO {
      * @param participant the user to remove
      */
     public boolean removeParticipant(final UUID participant) {
-        boolean removed = false;
-        if (participant != null) {
-            removed = this.participants.remove(participant);
-        }
-        return removed;
+         return this.participants.remove(participant);
     }
 
     @Override
@@ -116,11 +101,7 @@ public class ChatDTO {
     }
 
     public void setChatId(final UUID chatId) {
-        if (chatId == null) {
-            this.chatId = UUID.randomUUID();
-        } else {
-            this.chatId = chatId;
-        }
+        this.chatId = chatId;
     }
 
     public LocalDateTime getCreationDate() {
@@ -128,11 +109,7 @@ public class ChatDTO {
     }
 
     public void setCreationDate(final LocalDateTime creationDate) {
-        if (creationDate == null) {
-            this.creationDate = LocalDateTime.now();
-        } else {
-            this.creationDate = creationDate;
-        }
+        this.creationDate = creationDate;
     }
 
     public ChatType getType() {
@@ -140,11 +117,7 @@ public class ChatDTO {
     }
 
     public void setType(final ChatType type) {
-        if (type == null) {
-            this.type = ChatType.DIRECT_MESSAGE;
-        } else {
-            this.type = type;
-        }
+        this.type = type;
     }
 
     public ChatStatus getStatus() {
@@ -152,11 +125,7 @@ public class ChatDTO {
     }
 
     public void setStatus(final ChatStatus status) {
-        if (status == null) {
-            this.status = ChatStatus.ACTIVE;
-        } else {
-            this.status = status;
-        }
+        this.status = status;
     }
 
     public String getTitle() {
@@ -172,11 +141,7 @@ public class ChatDTO {
     }
 
     public void setLastActivity(final LocalDateTime lastActivity) {
-        if (lastActivity == null) {
-            this.lastActivity = LocalDateTime.now();
-        } else {
-            this.lastActivity = lastActivity;
-        }
+        this.lastActivity = lastActivity;
     }
 
     public Set<UUID> getParticipants() {
@@ -184,10 +149,7 @@ public class ChatDTO {
     }
 
     public void setParticipants(final Set<UUID> participants) {
-        this.participants = new HashSet<>();
-        if (participants != null) {
-            this.participants.addAll(participants);
-        }
+        this.participants = participants;
     }
 
     public Set<UUID> getMessages() {
@@ -195,11 +157,7 @@ public class ChatDTO {
     }
 
     public void setMessages(final Set<UUID> messages) {
-        this.messages = new HashSet<>();
-        if (messages != null) {
-            this.messages.addAll(messages);
-        }
+        this.messages = messages;
     }
-    
     
 }

@@ -1,3 +1,4 @@
+
 package com.metrica.vibely.data.model.dto;
 
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ import com.metrica.vibely.data.util.DeepCopyGenerator;
  * 
  * @since 2023-11-15
  * @version 1.0 
- * @author Raul
+ * @author Raul, Adrian
  *
  */
 public class UserDTO {
@@ -33,13 +34,14 @@ public class UserDTO {
 	private String 		  username;
 	private String 		  password;
 	private String 		  email;
-	private String		  apiKey;
+	private String		  apikey;
 	private PrivacyType   privacy;
 	private UserStatus    status;
 	private UserState  	  state;
 	private Integer 	  logins;
-	private LocalDate 	  blockedDate;
 	private LocalDateTime lastConnDate;
+	private LocalDate 	  blockedDate;
+
 	
 	// Relations
 	private Set<UUID> 	  followers;
@@ -49,19 +51,15 @@ public class UserDTO {
 	
     // <<-CONSTRUCTORS->>
 	public UserDTO() {
-        this.setUserId   (null);
-        this.setFollowers(null);
-        this.setFollowing(null);
-        this.setPosts    (null);
-        this.setChats    (null);
 	}	
 	
 	public UserDTO(
             UUID userId,
+            String nickname,
             String username,
             String password,
-            String nickname,
             String email,
+            String apikey,
             UserState state,
             PrivacyType privacy,
             Integer logins,
@@ -73,10 +71,11 @@ public class UserDTO {
             Set<UUID> posts,
             Set<UUID> chats) {
         this.setUserId      (userId);
+        this.setNickname    (nickname);
         this.setUsername    (username);
         this.setPassword    (password);
-        this.setNickname    (nickname);
         this.setEmail       (email);
+        this.setApikey      (apikey);
         this.setState       (state);
         this.setPrivacy     (privacy);
         this.setLogins      (logins);
@@ -114,13 +113,7 @@ public class UserDTO {
     }
 
     public void setUserId(final UUID userId) {
-    	if (userId == null) {
-    	    this.userId = UUID.randomUUID();
-    	} else {
-            this.userId = userId;
-    	}
-    	// Another way
-    	// this.userId = (userId == null) ? UUID.randomUUID() : userId;
+    	this.userId = userId;
     }
 
     public String getUsername() {
@@ -129,6 +122,14 @@ public class UserDTO {
 
     public void setUsername(final String username) {
         this.username = username;
+    }
+    
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    public void setNickname(final String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPassword() {
@@ -139,14 +140,6 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getNickname() {
-        return this.nickname;
-    }
-
-    public void setNickname(final String nickname) {
-        this.nickname = nickname;
-    }
-
     public String getEmail() {
         return this.email;
     }
@@ -154,17 +147,21 @@ public class UserDTO {
     public void setEmail(final String email) {
         this.email = email;
     }
+    
+	public String getApikey() {
+		return apikey;
+	}
+
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
+	}
 
     public UserState getState() {
         return this.state;
     }
 
     public void setState(final UserState state) {
-        if (state == null) {
-            this.state = UserState.ENABLED;
-        } else {
-            this.state = state;
-        }
+        this.state = state;
     }
 
     public PrivacyType getPrivacy() {
@@ -172,11 +169,7 @@ public class UserDTO {
     }
 
     public void setPrivacy(final PrivacyType privacy) {
-        if (privacy == null) {
-            this.privacy = PrivacyType.PUBLIC;
-        } else {
-            this.privacy = privacy;
-        }
+        this.privacy = privacy;
     }
 
     public Integer getLogins() {
@@ -184,11 +177,7 @@ public class UserDTO {
     }
 
     public void setLogins(final Integer logins) {
-        if (logins == null) {
-            this.logins = 0;
-        } else {
-            this.logins = logins;
-        }
+        this.logins = logins;
     }
 
     public UserStatus getStatus() {
@@ -196,11 +185,7 @@ public class UserDTO {
     }
 
     public void setStatus(final UserStatus status) {
-        if (status == null) {
-            this.status = UserStatus.OFFLINE;
-        } else {
-            this.status = status;   
-        }
+        this.status = status;
     }
 
     public LocalDateTime getLastConnDate() {
@@ -208,11 +193,7 @@ public class UserDTO {
     }
 
     public void setLastConnDate(final LocalDateTime lastConnDate) {
-        if (lastConnDate == null) {
-            this.lastConnDate = LocalDateTime.now();
-        } else {
-            this.lastConnDate = lastConnDate;   
-        }
+        this.lastConnDate = lastConnDate;
     }
 
     public LocalDate getBlockedDate() {
@@ -228,10 +209,7 @@ public class UserDTO {
     }
 
     public void setFollowers(final Set<UUID> followers) {
-        this.followers = new HashSet<>();
-        if (followers != null) {
-            this.followers.addAll(followers);
-        }
+        this.followers = followers;
     }
 
     public Set<UUID> getFollowing() {
@@ -239,10 +217,7 @@ public class UserDTO {
     }
 
     public void setFollowing(final Set<UUID> following) {
-        this.following = new HashSet<>();
-        if (following != null) {
-            this.following.addAll(following);
-        }
+        this.following = following;
     }
 
     public Set<UUID> getPosts() {
@@ -250,10 +225,7 @@ public class UserDTO {
     }
 
     public void setPosts(final Set<UUID> posts) {
-        this.posts = new HashSet<>();
-        if (posts != null) {
-            this.posts.addAll(posts);
-        }
+        this.posts = posts;
     }
 
     public Set<UUID> getChats() {
@@ -261,11 +233,9 @@ public class UserDTO {
     }
 
     public void setChats(final Set<UUID> chats) {
-        this.chats = new HashSet<>();
-        if (chats != null) {
-            this.chats.addAll(chats);
-        }
+        this.chats = chats;
     }
+
     
 
 }
