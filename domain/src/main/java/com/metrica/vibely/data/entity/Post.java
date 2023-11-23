@@ -66,11 +66,7 @@ public class Post implements Copyable<Post> {
     @OneToMany(mappedBy = "userId")
     private Set<User> savedBy;
     
-    // <<-CONSTRUCTORS->>
-    public Post(UUID postId) {
-    	this.setPostId(postId);
-    }
-    
+    // <<-CONSTRUCTORS->>  
     public Post() {
         this.setPostId  (null);
         this.setOwner   (null);

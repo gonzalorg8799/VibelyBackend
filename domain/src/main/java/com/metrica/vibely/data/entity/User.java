@@ -66,11 +66,7 @@ public class User implements Copyable<User> {
     @OneToMany(mappedBy = "chatId")
     private Set<Chat> chats;
 
-    // <<-CONSTRUCTORS->>
-    public User(UUID userId) {
-    	this.setUserId(userId);
-    }
-    
+    // <<-CONSTRUCTORS->>    
     public User() {
         this.setUserId   (null);
         this.setFollowers(null);
