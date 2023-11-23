@@ -3,7 +3,6 @@ package com.metrica.vibely.data.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -119,20 +118,21 @@ public class UserServiceTest {
     @Order(3)
     void userUpdateTest() {
     	UserDTO createdUser 	= userService.create(generateTestUser());
+    	UserDTO updatedDataDTO  = userService.create(generateTestUser());
         UserDTO nonExistingUser = userService.create(generateTestUser());
-        
-        UUID createdUserUUID 	 = createdUser.getUserId();
-        UUID nonExistingUserUUID = nonExistingUser.getUserId();
         
         String newUsername  	= "New Username";
         String newNickname  	= "Updated Nickname";
         String newEmail     	= "newEmail@email.com";
         String newPassword  	= "NewPassword";
         
-        userService.updateNickname	(createdUser.getUserId(), newNickname);
-        userService.updateUsername	(createdUserUUID, 		  newUsername);
-        userService.updateEmail	  	(createdUserUUID, 		  newEmail);
-        userService.updatePassword	(createdUserUUID, 		  newPassword);
+        updatedDataDTO.setNickname(newNickname);
+        updatedDataDTO.setUsername(newUsername);
+        updatedDataDTO.setEmail(newEmail);
+        updatedDataDTO.setPassword(newPassword);
+        
+        userService.update(updatedDataDTO);
+        
         userService.deleteByUsername(nonExistingUser.getUsername());
         
         UserDTO updatedUser = UserMapper.toDTO(userRepository.findByUsername(createdUser.getUsername()).get());
@@ -149,10 +149,7 @@ public class UserServiceTest {
         assertNotEquals(PasswordHasher.hash(newPassword),  createdUser.getPassword());
         
         //User not exist
-        assertThrows(NoSuchElementException.class, () -> userService.updateUsername(nonExistingUserUUID, newUsername));
-        assertThrows(NoSuchElementException.class, () -> userService.updateNickname(nonExistingUserUUID, newNickname));
-        assertThrows(NoSuchElementException.class, () -> userService.updateEmail(nonExistingUserUUID, newEmail));
-        assertThrows(NoSuchElementException.class, () -> userService.updatePassword(nonExistingUserUUID, newPassword));
+        assertThrows(NoSuchElementException.class, () -> userService.update(nonExistingUser));
     }
     
     @Test

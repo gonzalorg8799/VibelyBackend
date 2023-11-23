@@ -55,41 +55,49 @@ public class UserServiceImpl implements UserService {
 		return UserMapper.toDTO(userRepository.save(user));
 	}
 
-	@Override
-	public UserDTO updateUsername(final UUID userId, final String username) {
+	private UserDTO updateUsername(final UUID userId, final String username) {
 		User user = userRepository.findById(userId)
 								  .orElseThrow();
 
-		if(!username.equals(user.getUsername())) { user.setUsername(username); } 
+		if(!username.equals(user.getUsername()) && username != null) { user.setUsername(username); } 
 
-		return UserMapper.toDTO(userRepository.save(user));
+		return UserMapper.toDTO(user);
 	}
 	
-	public UserDTO updateNickname(final UUID userId, final String nickname) {
+	private UserDTO updateNickname(final UUID userId, final String nickname) {
 		User user = userRepository.findById(userId)
 								  .orElseThrow();
 
-		if(!nickname.equals(user.getNickname())) { user.setNickname(nickname); } 
+		if(!nickname.equals(user.getNickname()) && nickname != null) { user.setNickname(nickname); }  
 		
-		return UserMapper.toDTO(userRepository.save(user));
+		return UserMapper.toDTO(user);
 	}
 	
-	public UserDTO updateEmail(final UUID userId, final String email) {
+	private UserDTO updateEmail(final UUID userId, final String email) {
 		User user = userRepository.findById(userId)
 								  .orElseThrow();
 
-		if(!email.equals(user.getEmail())) { user.setEmail(email); } 
+		if(!email.equals(user.getEmail()) && email != null) { user.setEmail(email); } 
 		
-		return UserMapper.toDTO(userRepository.save(user));
+		return UserMapper.toDTO(user);
 	}
 	
-	public UserDTO updatePassword(final UUID userId, final String password) {
+	private UserDTO updatePassword(final UUID userId, final String password) {
 		User user = userRepository.findById(userId)
 								  .orElseThrow();
 
-		if(!password.equals(user.getPassword())) { user.setPassword(password); } 
+		if(!password.equals(user.getPassword()) && password != null) { user.setPassword(password); } 
 		
-		return UserMapper.toDTO(userRepository.save(user));
+		return UserMapper.toDTO(user);
+	}
+	
+	public UserDTO update(UserDTO userDto) {
+		userDto.setNickname(updateNickname(userDto.getUserId(), userDto.getNickname()).getNickname());
+		userDto.setUsername(updateUsername(userDto.getUserId(), userDto.getUsername()).getUsername());
+		userDto.setEmail   (updateEmail   (userDto.getUserId(), userDto.getEmail())   .getEmail());
+		userDto.setPassword(updatePassword(userDto.getUserId(), userDto.getPassword()).getPassword());
+		
+		return UserMapper.toDTO(userRepository.save(UserMapper.toEntity(userDto))) ;
 	}
 
 	@Override
