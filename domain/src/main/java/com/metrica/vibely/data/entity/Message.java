@@ -51,10 +51,6 @@ public class Message implements Copyable<Message> {
     private User sender;
     
     // <<-CONSTRUCTORS->>
-    public Message(UUID uuid) {
-    	this.messageId = uuid;
-    }
-    
     public Message() {
         this.setMessageId(null);
         this.setChat     (null);

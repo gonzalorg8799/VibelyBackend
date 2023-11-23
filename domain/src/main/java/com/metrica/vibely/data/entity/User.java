@@ -82,11 +82,7 @@ public class User implements Copyable<User> {
     @ManyToMany(mappedBy = "savedBy")
     private Set<Post> saves;
 
-    // <<-CONSTRUCTORS->>
-    public User(UUID userId) {
-    	this.setUserId(userId);
-    }
-    
+    // <<-CONSTRUCTORS->>    
     public User() {
         this.setUserId   (null);
         this.setFollowers(null);

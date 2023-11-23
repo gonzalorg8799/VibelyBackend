@@ -80,11 +80,7 @@ public class Post implements Copyable<Post> {
         inverseForeignKey = @ForeignKey(name = "fk_post-user_saves_user"))
     private Set<User> savedBy;
     
-    // <<-CONSTRUCTORS->>
-    public Post(UUID postId) {
-    	this.setPostId(postId);
-    }
-    
+    // <<-CONSTRUCTORS->>  
     public Post() {
         this.setPostId  (null);
         this.setOwner   (null);
