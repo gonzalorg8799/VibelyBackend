@@ -1,5 +1,7 @@
 package com.metrica.vibely.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,7 @@ import jakarta.validation.Valid;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     // <<-FIELDS->>
@@ -39,13 +41,21 @@ public class UserController {
     }
 
     // <<-METHODS->>
+//    @GetMapping("/{id}")
+//    public UserDTO getUserById(@PathVariable UUID id) {
+//        return this.userService.getByUsername(username);
+//    }
+    
     @GetMapping("/{username}")
     public UserDTO getUserByUsername(@PathVariable String username) {
         return this.userService.getByUsername(username);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDTO> crearUsuario(@RequestBody @Valid CreateUserRequest createUser,
+    public ResponseEntity<UserDTO> crearUsuario(
+            @RequestBody
+            @Valid
+            CreateUserRequest createUser,
             BindingResult bindingResult) {
         if (!bindingResult.getAllErrors().isEmpty())
             return ResponseEntity.badRequest().build();

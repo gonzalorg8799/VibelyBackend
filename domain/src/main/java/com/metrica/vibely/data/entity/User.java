@@ -25,6 +25,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * <h1>User Entity</h1>
@@ -34,6 +36,7 @@ import jakarta.persistence.OneToMany;
  * @author Adrian, Alex
  */
 @Entity
+@Table(name = "Users")
 public class User implements Copyable<User> {
 
     // <<-FIELDS->>
@@ -41,7 +44,7 @@ public class User implements Copyable<User> {
     // Basic
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id", updatable = false)
+    @Column(name = "user_id")
     private UUID userId;
     @Column(unique = true, nullable = false)
     private String username;

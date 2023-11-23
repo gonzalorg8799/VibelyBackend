@@ -1,12 +1,9 @@
 package com.metrica.vibely.data.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.metrica.vibely.data.entity.Admin;
-import com.metrica.vibely.data.entity.User;
 
 /**
  * <h1>Admin Repository</h1>
@@ -15,7 +12,6 @@ import com.metrica.vibely.data.entity.User;
  * @version 1.0
  * @author Daniel
  */
-
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, java.util.UUID> {
 	
@@ -24,12 +20,12 @@ public interface AdminRepository extends JpaRepository<Admin, java.util.UUID> {
 	 * @return
 	 * @throws NoSuchElementException
 	 */
-	Optional<User> findByUsername(String username);
+//	Optional<User> findByUsername(String username);
 	
 	/**
 	 * @param username
 	 * @throws NoSuchElementException
 	 */
-	void deleteByUsername(String username);
+//	void deleteByUsername(String username);
 
 }

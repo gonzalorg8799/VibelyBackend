@@ -2,6 +2,7 @@ package com.metrica.vibely.data.service;
 
 import java.util.UUID;
 
+import com.metrica.vibely.data.model.dto.AdminDTO;
 import com.metrica.vibely.data.model.dto.UserDTO;
 
 /**
@@ -26,7 +27,7 @@ public interface AdminService {
 	 * @return adminDTO
 	 * @throws NoSuchElementException
 	 */
-	AdminDTO create(adminDTO adminDTO); 
+	AdminDTO create(AdminDTO adminDTO); 
 		
 	/**
 	 * updates admins' nickname

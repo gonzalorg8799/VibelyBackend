@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.metrica.vibely.data.entity.Message;
 import com.metrica.vibely.data.entity.User;
+import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
 
@@ -52,8 +53,8 @@ public class CreateChatRequest {
 		chatDto.setStatus	   (chat.getStatus());
 		chatDto.setTitle	   (chat.getTitle());
 		chatDto.setLastActivity(chat.getLastActivity());
-		chatDto.setParticipants(chat.getParticipants());
-		chatDto.setMessages	   (chat.getMessages());
+//		chatDto.setParticipants(chat.getParticipants());
+//		chatDto.setMessages	   (chat.getMessages());
 		
 		return chatDto;
 	}

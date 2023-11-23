@@ -22,6 +22,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.ForeignKey;
 
@@ -60,20 +61,20 @@ public class Post implements Copyable<Post> {
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_post_user"))
     private User owner;
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "parent_id",
         updatable = false,
         foreignKey = @ForeignKey(name = "fk_post_comment"))
     private Set<Post> comments;
     @ManyToMany
-    @JoinTable(name = "post-user_likes",
+    @JoinTable(name = "post_user_likes",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"),
             foreignKey = @ForeignKey(name = "fk_post-user_likes_post"),
             inverseForeignKey = @ForeignKey(name = "fk_post-user_likes_user"))
     private Set<User> likedBy;
     @ManyToMany
-    @JoinTable(name = "post-user_likes",
+    @JoinTable(name = "post_user_saves",
         joinColumns = @JoinColumn(name = "post_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id"),
         foreignKey = @ForeignKey(name = "fk_post-user_saves_post"),

@@ -25,13 +25,13 @@ public interface PostRepository extends JpaRepository<Post, java.util.UUID>{
 	 * @return Post
 	 * @throws NoSuchElementException
 	 */
-	Optional<Post> findByContentandUser(String username, String content);
+//	Optional<Post> findByContentandUser(String username, String content);
 
 	/**
 	 * @params following
 	 * @return TreeSet Posts
 	 * @throws NoSuchElementException
 	 */
-	Set<Post> getFollowingPost(Set<User> following);
+//	Set<Post> getFollowingPost(Set<User> following);
 	
 }

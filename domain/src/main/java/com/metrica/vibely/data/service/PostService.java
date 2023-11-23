@@ -2,6 +2,7 @@ package com.metrica.vibely.data.service;
 
 import java.util.UUID;
 
+import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.model.enumerator.PostStatus;
 import com.metrica.vibely.data.model.enumerator.PostVisibility;
 

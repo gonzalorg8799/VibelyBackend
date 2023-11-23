@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
+import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.model.enumerator.PostStatus;
 import com.metrica.vibely.data.model.enumerator.PostVisibility;
 
@@ -58,10 +59,10 @@ public class CreatePostRequest {
 		postDto.setContent   (post.getContent());
 		postDto.setLikes	 (post.getLikes());
 		postDto.setTimesSaved(post.getTimesSaved());
-		postDto.setOwner	 (post.getOwner());
-		postDto.setComments  (post.getComments());
-		postDto.setLikedBy   (post.getLikedBy());
-		postDto.setSavedBy   (post.getSavedBy());
+		postDto.setOwner	 (post.getOwner().getUserId());
+//		postDto.setComments  (post.getComments());
+//		postDto.setLikedBy   (post.getLikedBy());
+//		postDto.setSavedBy   (post.getSavedBy());
 		
 		return postDto;
 	}

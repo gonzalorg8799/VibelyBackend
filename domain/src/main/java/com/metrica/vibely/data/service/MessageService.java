@@ -2,7 +2,9 @@ package com.metrica.vibely.data.service;
 
 import java.util.UUID;
 
+import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.model.dto.MessageDTO;
+import com.metrica.vibely.data.model.dto.UserDTO;
 
 /**
  * <h1>Message Service</h1>
@@ -43,7 +45,7 @@ public interface MessageService {
 	 * @return sender
 	 * @throws NoSuchElementException
 	 */
-	User getSender(UUID messageId);
+	UserDTO getSender(UUID messageId);
 	
 	/**
 	 * gets Message chat
@@ -51,7 +53,7 @@ public interface MessageService {
 	 * @return chat
 	 * @throws NoSuchElementException
 	 */
-	Chat getChat(UUID messageId);
+	ChatDTO getChat(UUID messageId);
 	
 	/**
 	 * deletes a message given its Id

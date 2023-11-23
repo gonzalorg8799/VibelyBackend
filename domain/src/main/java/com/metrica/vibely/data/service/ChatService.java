@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.metrica.vibely.data.entity.Message;
 import com.metrica.vibely.data.entity.User;
+import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
 

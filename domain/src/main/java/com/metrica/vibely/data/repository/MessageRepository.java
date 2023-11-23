@@ -23,6 +23,6 @@ public interface MessageRepository extends JpaRepository<Message, java.util.UUID
 	 * @return Message
 	 * @throws NoSuchElementException
 	 */
-	Optional<Message> findByContent(String username, String content);
+//	Optional<Message> findByContent(String username, String content);
 
 }
