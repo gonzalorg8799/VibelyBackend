@@ -15,9 +15,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 /**
@@ -48,9 +52,14 @@ public class Chat implements Copyable<Chat> {
     private LocalDateTime lastActivity;
 
     // Relations
-    @OneToMany(mappedBy = "userId")
+    @ManyToMany
+    @JoinTable(name = "user_chat",
+            joinColumns = @JoinColumn(name = "chat_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"),
+            foreignKey = @ForeignKey(name = "fk_user-chat_chat"),
+            inverseForeignKey = @ForeignKey(name = "fk_user-chat_user"))
     private Set<User> participants;
-    @OneToMany(mappedBy = "messageId")
+    @OneToMany(mappedBy = "chat")
     private Set<Message> messages;
     
     // <<-CONSTRUCTORS->>

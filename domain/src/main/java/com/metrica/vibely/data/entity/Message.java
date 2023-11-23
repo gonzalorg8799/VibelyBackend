@@ -40,18 +40,14 @@ public class Message implements Copyable<Message> {
 
     // Relations
     @OneToOne(optional = false)
-    @JoinColumn(
-            name = "chat_id",
-            unique = true,
+    @JoinColumn(name = "chat_id",
             nullable = false,
-            foreignKey = @ForeignKey(name = "fk_chat_message"))
+            foreignKey = @ForeignKey(name = "fk_message_chat"))
     private Chat chat;
     @OneToOne(optional = false)
-    @JoinColumn(
-            name = "sender_id",
-            unique = true,
+    @JoinColumn(name = "sender_id",
             nullable = false,
-            foreignKey = @ForeignKey(name = "fk_chat_user"))
+            foreignKey = @ForeignKey(name = "fk_message_user"))
     private User sender;
     
     // <<-CONSTRUCTORS->>

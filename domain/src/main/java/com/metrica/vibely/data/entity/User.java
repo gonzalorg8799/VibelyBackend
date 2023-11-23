@@ -17,9 +17,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 /**
@@ -37,11 +41,14 @@ public class User implements Copyable<User> {
     // Basic
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id")
+    @Column(name = "user_id", updatable = false)
     private UUID userId;
+    @Column(unique = true, nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
     private String nickname;
+    @Column(unique = true)
     private String email;
     @Enumerated(value = EnumType.ORDINAL)
     private UserState state;
@@ -56,14 +63,23 @@ public class User implements Copyable<User> {
     private LocalDate blockedDate;
 
     // Relations
-    @OneToMany(mappedBy = "userId")
+    @ManyToMany
+    @JoinTable(name = "user_follower",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "follower_id"),
+            foreignKey = @ForeignKey(name = "fk_user-follower_user"),
+            inverseForeignKey = @ForeignKey(name = "fk_user-follower_follower"))
     private Set<User> followers;
-    @OneToMany(mappedBy = "userId")
+    @ManyToMany(mappedBy = "followers")
     private Set<User> following;
-    @OneToMany(mappedBy = "postId")
+    @OneToMany(mappedBy = "owner")
     private Set<Post> posts;
-    @OneToMany(mappedBy = "chatId")
+    @ManyToMany(mappedBy = "participants")
     private Set<Chat> chats;
+    @ManyToMany(mappedBy = "likedBy")
+    private Set<Post> likes;
+    @ManyToMany(mappedBy = "savedBy")
+    private Set<Post> saves;
 
     // <<-CONSTRUCTORS->>
     public User() {

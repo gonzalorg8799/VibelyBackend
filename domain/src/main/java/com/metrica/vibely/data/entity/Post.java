@@ -19,7 +19,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.ForeignKey;
 
@@ -53,17 +55,29 @@ public class Post implements Copyable<Post> {
 	
 	// Relations
     @OneToOne(optional = false)
-    @JoinColumn(
-            name = "owner_id",
+    @JoinColumn(name = "owner_id",
             unique = true,
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_post_user"))
     private User owner;
-    @OneToMany(mappedBy = "postId")
+    @ManyToOne
+    @JoinColumn(name = "parent_id",
+        updatable = false,
+        foreignKey = @ForeignKey(name = "fk_post_comment"))
     private Set<Post> comments;
-    @OneToMany(mappedBy = "userId")
+    @ManyToMany
+    @JoinTable(name = "post-user_likes",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"),
+            foreignKey = @ForeignKey(name = "fk_post-user_likes_post"),
+            inverseForeignKey = @ForeignKey(name = "fk_post-user_likes_user"))
     private Set<User> likedBy;
-    @OneToMany(mappedBy = "userId")
+    @ManyToMany
+    @JoinTable(name = "post-user_likes",
+        joinColumns = @JoinColumn(name = "post_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id"),
+        foreignKey = @ForeignKey(name = "fk_post-user_saves_post"),
+        inverseForeignKey = @ForeignKey(name = "fk_post-user_saves_user"))
     private Set<User> savedBy;
     
     // <<-CONSTRUCTORS->>
