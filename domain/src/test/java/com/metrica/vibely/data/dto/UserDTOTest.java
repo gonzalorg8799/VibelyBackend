@@ -1,8 +1,8 @@
-package com.metrica.vibely.data.entity;
+package com.metrica.vibely.data.dto;
 
-import com.metrica.vibely.data.model.enumerator.PrivacyType;
-import com.metrica.vibely.data.model.enumerator.UserState;
-import com.metrica.vibely.data.model.enumerator.UserStatus;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,20 +14,21 @@ import java.util.UUID;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
 
 /**
- * <h1>User Entity Test</h1>
+ * <h1>User DTO Test</h1>
  * 
- * @since 2023-11-15
+ * @since 2023-11-20
  * @version 1.0
- * @author Alex
+ * @author Adri
  */
-public class UserEntityTest {
+class UserDTOTest {
 
-    // <<-CONSTANTS->>
+	// <<-CONSTANTS->>
     private static final String USERNAME = "jdoe";
     private static final String PASSWORD = "12345";
     private static final String NICKNAME = "John Doe";
@@ -40,23 +41,24 @@ public class UserEntityTest {
     private static final LocalDateTime LAST_CONN_DATE = LocalDateTime.now();
     private static final LocalDate     BLOCKED_DATE   = LocalDate.now();
     
-    // <<-METHODS->>
+ // <<-METHODS->>
     @Test
     @Tag("Constructors")
     void voidConstructorTest() {
         UUID userId = UUID.randomUUID();
-        Set<User> followers = new HashSet<>();
-        Set<User> following = new HashSet<>();
-        Set<Post> posts     = new HashSet<>();
-        Set<Chat> chats     = new HashSet<>();
+        Set<UUID> followers = new HashSet<>();
+        Set<UUID> following = new HashSet<>();
+        Set<UUID> posts     = new HashSet<>();
+        Set<UUID> chats     = new HashSet<>();
         
-        User user = new User();
+        UserDTO user = new UserDTO();
 
         user.setUserId      (userId);
         user.setUsername    (USERNAME);
         user.setPassword    (PASSWORD);
         user.setNickname    (NICKNAME);
         user.setEmail       (EMAIL);
+        user.setApikey		(APIKEY);
         user.setState       (STATE);
         user.setPrivacy     (PRIVACY);
         user.setStatus      (STATUS);
@@ -68,55 +70,12 @@ public class UserEntityTest {
         user.setPosts       (posts);
         user.setChats       (chats);
 
-        assertEquals(userId,       user.getUserId());
-        assertEquals(USERNAME,     user.getUsername());
-        assertEquals(PASSWORD,     user.getPassword());
-        assertEquals(NICKNAME,     user.getNickname());
-        assertEquals(EMAIL,        user.getEmail());
-        assertEquals(STATE,        user.getState());
-        assertEquals(PRIVACY,      user.getPrivacy());
-        assertEquals(STATUS,       user.getStatus());
-        assertEquals(LOGINS,       user.getLogins());
-        assertEquals(LAST_CONN_DATE, user.getLastConnDate());
-        assertEquals(BLOCKED_DATE,  user.getBlockedDate());
-        assertEquals(followers,    user.getFollowers());
-        assertEquals(following,    user.getFollowing());
-        assertEquals(posts,        user.getPosts());
-        assertEquals(chats,        user.getChats());
-    }
-    
-    @Test
-    @Tag("Constructors")
-    void fullArgsConstructorTest() {
-        UUID userId = UUID.randomUUID();
-        Set<User> followers = new HashSet<>();
-        Set<User> following = new HashSet<>();
-        Set<Post> posts     = new HashSet<>();
-        Set<Chat> chats     = new HashSet<>();
-        
-        User user = new User(
-                userId,
-                USERNAME,
-                PASSWORD,
-                NICKNAME,
-                EMAIL,
-                APIKEY,
-                STATE,
-                PRIVACY,
-                LOGINS,
-                STATUS,
-                LAST_CONN_DATE,
-                BLOCKED_DATE,
-                followers,
-                following,
-                posts,
-                chats);
-
         assertEquals(userId,         user.getUserId());
         assertEquals(USERNAME,       user.getUsername());
         assertEquals(PASSWORD,       user.getPassword());
         assertEquals(NICKNAME,       user.getNickname());
         assertEquals(EMAIL,          user.getEmail());
+        assertEquals(APIKEY,         user.getApikey());
         assertEquals(STATE,          user.getState());
         assertEquals(PRIVACY,        user.getPrivacy());
         assertEquals(STATUS,         user.getStatus());
@@ -128,33 +87,57 @@ public class UserEntityTest {
         assertEquals(posts,          user.getPosts());
         assertEquals(chats,          user.getChats());
     }
-
+    
     @Test
-    @Tag("Default values")
-    void notNullableFieldsAndDefaultValuesTest() {
-        User user = new User();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime now = LocalDateTime.now();
+    @Tag("Constructors")
+    void fullArgsConstructorTest() {
+        UUID userId = UUID.randomUUID();
+        Set<UUID> followers = new HashSet<>();
+        Set<UUID> following = new HashSet<>();
+        Set<UUID> posts     = new HashSet<>();
+        Set<UUID> chats     = new HashSet<>();
+        
+        UserDTO user = new UserDTO(
+                userId,
+                NICKNAME,
+                USERNAME,
+                PASSWORD,
+                EMAIL,
+                APIKEY,
+                STATE,
+                PRIVACY,
+                LOGINS,
+                STATUS,
+                LAST_CONN_DATE,
+                BLOCKED_DATE,
+                followers,
+                following,
+                posts, 
+                chats);
 
-        user.setUserId      (null);
-        user.setLastConnDate(null);
-        user.setState       (null);
-        user.setPrivacy     (null);
-        user.setStatus      (null);
-        user.setLogins      (null);
-
-        assertNotNull(user.getUserId());
-        assertEquals(now.format(formatter), user.getLastConnDate().format(formatter));
-        assertEquals(UserState.ENABLED,  user.getState());
-        assertEquals(PrivacyType.PUBLIC, user.getPrivacy());
-        assertEquals(UserStatus.OFFLINE, user.getStatus());
-        assertEquals(0,                  user.getLogins());
+        assertEquals(userId,         user.getUserId());
+        assertEquals(NICKNAME,       user.getNickname());
+        assertEquals(USERNAME,       user.getUsername());
+        assertEquals(PASSWORD,       user.getPassword());
+        assertEquals(EMAIL,          user.getEmail());
+        assertEquals(APIKEY,         user.getApikey());
+        assertEquals(STATE,          user.getState());
+        assertEquals(PRIVACY,        user.getPrivacy());
+        assertEquals(STATUS,         user.getStatus());
+        assertEquals(LOGINS,         user.getLogins());
+        assertEquals(LAST_CONN_DATE, user.getLastConnDate());
+        assertEquals(BLOCKED_DATE,   user.getBlockedDate());
+        assertEquals(followers,      user.getFollowers());
+        assertEquals(following,      user.getFollowing());
+        assertEquals(posts,          user.getPosts());
+        assertEquals(chats,          user.getChats());
     }
+    
 
     @Test
     @Tag("Equality")
     void basicEqualityTest() {
-        User user = new User();
+        UserDTO user = new UserDTO();
         
         assertEquals   (user, user);
         assertNotEquals(user, null);
@@ -164,45 +147,42 @@ public class UserEntityTest {
     @Test
     @Tag("Equality")
     void equalityByIdAndHashCodeTest() {
-        User user1 = new User();
-        User user2 = new User();
+    	UserDTO user1 = new UserDTO();
+        UserDTO user2 = new UserDTO();
+        UUID uuid = UUID.randomUUID();
         
-        // Both have the same ID
-        UUID userId = UUID.randomUUID();
-        user1.setUserId(userId);
-        user2.setUserId(userId);
-        
-        assertEquals(user1, user2);
-        assertEquals(user1.hashCode(), user2.hashCode());
-    }
-    
-    @Test
-    @Tag("Equality")
-    void equalityWithDeepCopyTest() {
-        User user1 = new User();
-        User user2 = user1.deepCopy();
-        
-        // Both have the same ID
-        UUID userId = UUID.randomUUID();
-        user1.setUserId(userId);
-        user2.setUserId(userId);
-        
-        assertEquals(user1, user2);
-        assertEquals(user1.hashCode(), user2.hashCode());
-    }
-    
-    @Test
-    @Tag("Equality")
-    void inequalityByFieldsTest() {
-        User user1 = new User();
-        User user2 = new User();
-
-        // Not the same ID
+        // Both the same ID
+        user1.setUserId(uuid);
         user1.setUsername(USERNAME);
         user1.setPassword(PASSWORD);
         user1.setNickname(NICKNAME);
         user1.setEmail   (EMAIL);
         
+        user2.setUserId(uuid);
+        user2.setUsername(USERNAME);
+        user2.setPassword(PASSWORD);
+        user2.setNickname(NICKNAME);
+        user2.setEmail   (EMAIL);
+        
+        assertEquals(user1, user2);
+        assertEquals(user1.hashCode(), user2.hashCode());
+    }   
+
+    
+    @Test
+    @Tag("Equality")
+    void inequalityByFieldsTest() {
+        UserDTO user1 = new UserDTO();
+        UserDTO user2 = new UserDTO();
+
+        // Not the same ID
+        user1.setUserId(UUID.randomUUID());
+        user1.setUsername(USERNAME);
+        user1.setPassword(PASSWORD);
+        user1.setNickname(NICKNAME);
+        user1.setEmail   (EMAIL);
+        
+        user2.setUserId(UUID.randomUUID());
         user2.setUsername(USERNAME);
         user2.setPassword(PASSWORD);
         user2.setNickname(NICKNAME);
@@ -210,5 +190,4 @@ public class UserEntityTest {
         
         assertNotEquals(user1, user2);
     }
-    
 }

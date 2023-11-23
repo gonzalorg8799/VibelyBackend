@@ -50,6 +50,7 @@ public class User implements Copyable<User> {
     private String nickname;
     @Column(unique = true)
     private String email;
+    private String apikey;
     @Enumerated(value = EnumType.ORDINAL)
     private UserState state;
     @Enumerated(value = EnumType.ORDINAL)
@@ -82,6 +83,10 @@ public class User implements Copyable<User> {
     private Set<Post> saves;
 
     // <<-CONSTRUCTORS->>
+    public User(UUID userId) {
+    	this.setUserId(userId);
+    }
+    
     public User() {
         this.setUserId   (null);
         this.setFollowers(null);
@@ -96,6 +101,7 @@ public class User implements Copyable<User> {
             String password,
             String nickname,
             String email,
+            String apikey,
             UserState state,
             PrivacyType privacy,
             Integer logins,
@@ -111,6 +117,7 @@ public class User implements Copyable<User> {
         this.setPassword    (password);
         this.setNickname    (nickname);
         this.setEmail       (email);
+        this.setApikey      (apikey);
         this.setState       (state);
         this.setPrivacy     (privacy);
         this.setLogins      (logins);
@@ -210,6 +217,14 @@ public class User implements Copyable<User> {
     public void setEmail(final String email) {
         this.email = email;
     }
+
+	public String getApikey() {
+		return apikey;
+	}
+
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
+	}
 
     public UserState getState() {
         return this.state;
@@ -322,5 +337,6 @@ public class User implements Copyable<User> {
             this.chats.addAll(DeepCopyGenerator.generateCopy(chats));
         }
     }
+
     
 }

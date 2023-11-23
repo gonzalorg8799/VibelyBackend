@@ -81,6 +81,10 @@ public class Post implements Copyable<Post> {
     private Set<User> savedBy;
     
     // <<-CONSTRUCTORS->>
+    public Post(UUID postId) {
+    	this.setPostId(postId);
+    }
+    
     public Post() {
         this.setPostId  (null);
         this.setOwner   (null);
@@ -141,7 +145,7 @@ public class Post implements Copyable<Post> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) 
             return true;
         if (obj == null)
             return false;

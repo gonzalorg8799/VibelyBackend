@@ -1,8 +1,6 @@
-package com.metrica.vibely.data.entity;
+package com.metrica.vibely.data.dto;
 
-import com.metrica.vibely.data.model.enumerator.PrivacyType;
-import com.metrica.vibely.data.model.enumerator.UserState;
-import com.metrica.vibely.data.model.enumerator.UserStatus;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,18 +11,25 @@ import java.util.UUID;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.metrica.vibely.data.entity.Admin;
+import com.metrica.vibely.data.entity.Chat;
+import com.metrica.vibely.data.entity.Post;
+import com.metrica.vibely.data.entity.User;
+import com.metrica.vibely.data.model.dto.AdminDTO;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
 
 /**
- * <h1>Admin Entity Test</h1>
+ * <h1>Admin DTO Test</h1>
  * 
- * @since 2023-11-18
+ * @since 2023-11-20
  * @version 1.0
- * @author Alex
+ * @author Adri
  */
-public class AdminEntityTest {
+class AdminDTOTest {
 
-    // <<-CONSTANTS->>
+	// <<-CONSTANTS->>
     private static final String USERNAME = "jdoe";
     private static final String PASSWORD = "12345";
     private static final String NICKNAME = "John Doe";
@@ -42,18 +47,19 @@ public class AdminEntityTest {
     @Tag("Constructors")
     void voidConstructorTest() {
         UUID adminId = UUID.randomUUID();
-        Set<User> followers = new HashSet<>();
-        Set<User> following = new HashSet<>();
-        Set<Post> posts     = new HashSet<>();
-        Set<Chat> chats     = new HashSet<>();
+        Set<UUID> followers = new HashSet<>();
+        Set<UUID> following = new HashSet<>();
+        Set<UUID> posts     = new HashSet<>();
+        Set<UUID> chats     = new HashSet<>();
         
-        Admin admin = new Admin();
+        AdminDTO admin = new AdminDTO();
 
         admin.setUserId      (adminId);
+        admin.setNickname    (NICKNAME);
         admin.setUsername    (USERNAME);
         admin.setPassword    (PASSWORD);
-        admin.setNickname    (NICKNAME);
         admin.setEmail       (EMAIL);
+        admin.setApikey      (APIKEY);
         admin.setState       (STATE);
         admin.setPrivacy     (PRIVACY);
         admin.setStatus      (STATUS);
@@ -65,37 +71,38 @@ public class AdminEntityTest {
         admin.setPosts       (posts);
         admin.setChats       (chats);
 
-        assertEquals(adminId,       admin.getUserId());
-        assertEquals(USERNAME,     admin.getUsername());
-        assertEquals(PASSWORD,     admin.getPassword());
-        assertEquals(NICKNAME,     admin.getNickname());
-        assertEquals(EMAIL,        admin.getEmail());
-        assertEquals(STATE,        admin.getState());
-        assertEquals(PRIVACY,      admin.getPrivacy());
-        assertEquals(STATUS,       admin.getStatus());
-        assertEquals(LOGINS,       admin.getLogins());
+        assertEquals(adminId,        admin.getUserId());
+        assertEquals(NICKNAME,       admin.getNickname());
+        assertEquals(USERNAME,       admin.getUsername());
+        assertEquals(PASSWORD,       admin.getPassword());
+        assertEquals(EMAIL,          admin.getEmail());
+        assertEquals(APIKEY,         admin.getApikey());
+        assertEquals(STATE,          admin.getState());
+        assertEquals(PRIVACY,        admin.getPrivacy());
+        assertEquals(STATUS,         admin.getStatus());
+        assertEquals(LOGINS,         admin.getLogins());
         assertEquals(LAST_CONN_DATE, admin.getLastConnDate());
-        assertEquals(BLOCKED_DATE,  admin.getBlockedDate());
-        assertEquals(followers,    admin.getFollowers());
-        assertEquals(following,    admin.getFollowing());
-        assertEquals(posts,        admin.getPosts());
-        assertEquals(chats,        admin.getChats());
+        assertEquals(BLOCKED_DATE,   admin.getBlockedDate());
+        assertEquals(followers,      admin.getFollowers());
+        assertEquals(following,      admin.getFollowing());
+        assertEquals(posts,          admin.getPosts());
+        assertEquals(chats,          admin.getChats());
     }
     
     @Test
     @Tag("Constructors")
     void fullArgsConstructorTest() {
         UUID adminId = UUID.randomUUID();
-        Set<User> followers = new HashSet<>();
-        Set<User> following = new HashSet<>();
-        Set<Post> posts     = new HashSet<>();
-        Set<Chat> chats     = new HashSet<>();
+        Set<UUID> followers = new HashSet<>();
+        Set<UUID> following = new HashSet<>();
+        Set<UUID> posts     = new HashSet<>();
+        Set<UUID> chats     = new HashSet<>();
         
-        Admin user = new Admin(
+        AdminDTO user = new AdminDTO(
                 adminId,
+                NICKNAME,
                 USERNAME,
                 PASSWORD,
-                NICKNAME,
                 EMAIL,
                 APIKEY,
                 STATE,
@@ -110,10 +117,11 @@ public class AdminEntityTest {
                 chats);
 
         assertEquals(adminId,        user.getUserId());
+        assertEquals(NICKNAME,       user.getNickname());
         assertEquals(USERNAME,       user.getUsername());
         assertEquals(PASSWORD,       user.getPassword());
-        assertEquals(NICKNAME,       user.getNickname());
         assertEquals(EMAIL,          user.getEmail());
+        assertEquals(APIKEY,         user.getApikey());
         assertEquals(STATE,          user.getState());
         assertEquals(PRIVACY,        user.getPrivacy());
         assertEquals(STATUS,         user.getStatus());
@@ -126,4 +134,5 @@ public class AdminEntityTest {
         assertEquals(chats,          user.getChats());
     }
 
+	
 }
