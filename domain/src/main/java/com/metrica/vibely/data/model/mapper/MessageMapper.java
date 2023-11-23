@@ -13,18 +13,18 @@ import com.metrica.vibely.data.model.dto.MessageDTO;
  */
 public class MessageMapper {
 
-	public static Message toEntity(MessageDTO messageDTO) {
+	public static Message toEntity(MessageDTO messageDTO, Chat chat, User sender) {
         Message message = new Message();
 
         // Mapping Basics
-        message.setMessageId(messageDTO.getMessageId());
+        message.setMessageId		(messageDTO.getMessageId());
         message.setCreationTimestamp(messageDTO.getCreationTimestamp());
-        message.setStatus(messageDTO.getStatus());
-        message.setContent(messageDTO.getContent());
+        message.setStatus			(messageDTO.getStatus());
+        message.setContent			(messageDTO.getContent());
 
         // Mapping Relations
-        message.setChat(new Chat(messageDTO.getChat()));
-        message.setSender(new User(messageDTO.getSender()));
+        message.setChat				(chat);
+        message.setSender			(sender);
 
         return message;
     }
@@ -33,14 +33,14 @@ public class MessageMapper {
         MessageDTO messageDTO = new MessageDTO();
 
         // Mapping Basics
-        messageDTO.setMessageId(message.getMessageId());
+        messageDTO.setMessageId        (message.getMessageId());
         messageDTO.setCreationTimestamp(message.getCreationTimestamp());
-        messageDTO.setStatus(message.getStatus());
-        messageDTO.setContent(message.getContent());
+        messageDTO.setStatus		   (message.getStatus());
+        messageDTO.setContent          (message.getContent());
 
         // Mapping Relations
-        messageDTO.setChat(message.getChat().getChatId());
-        messageDTO.setSender(message.getSender().getUserId());
+        messageDTO.setChat             (message.getChat().getChatId());
+        messageDTO.setSender           (message.getSender().getUserId());
 
         return messageDTO;
     }
