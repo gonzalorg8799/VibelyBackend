@@ -55,14 +55,14 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<?> modifyUserByUsername(@RequestBody @Valid CreateUserRequest createUser, BindingResult bindingResult) {
+    public ResponseEntity<UserDTO> modifyUserByUsername(@RequestBody @Valid CreateUserRequest createUser, BindingResult bindingResult) {
         UserDTO userDto = CreateUserRequest.toUserDTO(createUser);
         UserDTO user = this.userService.update(userDto);
         return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{username}")
-    public ResponseEntity<?> deleteUserByUsername(@PathVariable String username) {
+    public ResponseEntity<String> deleteUserByUsername(@PathVariable String username) {
         this.userService.deleteByUsername(username);
         return ResponseEntity.noContent().build();
     }
