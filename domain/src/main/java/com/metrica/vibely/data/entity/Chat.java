@@ -1,11 +1,5 @@
 package com.metrica.vibely.data.entity;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
 import com.metrica.vibely.data.util.Copyable;
@@ -23,6 +17,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * <h1>Chat Entity</h1>
@@ -84,7 +84,7 @@ public class Chat implements Copyable<Chat> {
         this.setParticipants(participants);
         this.setMessages    (messages);
     }
-    
+
     // <<-METHODS->>
     /**
      * Add a new participant to the chat.
@@ -98,7 +98,7 @@ public class Chat implements Copyable<Chat> {
         }
         return inserted;
     }
-    
+
     /**
      * Remove a participant from the chat.
      * 
@@ -127,7 +127,7 @@ public class Chat implements Copyable<Chat> {
         
         return copy;
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(this.chatId);
@@ -235,5 +235,5 @@ public class Chat implements Copyable<Chat> {
             this.messages.addAll(DeepCopyGenerator.generateCopy(messages));
         }
     }
-    
+
 }

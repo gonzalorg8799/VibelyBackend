@@ -1,11 +1,5 @@
 package com.metrica.vibely.data.entity;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-
 import com.metrica.vibely.data.model.enumerator.PostStatus;
 import com.metrica.vibely.data.model.enumerator.PostVisibility;
 import com.metrica.vibely.data.util.Copyable;
@@ -21,10 +15,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.ForeignKey;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * <h1>Post Entity</h1>
@@ -37,7 +36,7 @@ import jakarta.persistence.ForeignKey;
 public class Post implements Copyable<Post> {
 
     // <<-FIELDS->>
-    
+
     // Basics
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -81,7 +80,7 @@ public class Post implements Copyable<Post> {
         inverseForeignKey = @ForeignKey(name = "fk_post-user_saves_user"))
     private Set<User> savedBy;
     
-    // <<-CONSTRUCTORS->>  
+    // <<-CONSTRUCTORS->>
     public Post() {
         this.setPostId  (null);
         this.setOwner   (null);
@@ -119,7 +118,7 @@ public class Post implements Copyable<Post> {
     @Override
     public Post deepCopy() {
         Post copy = new Post();
-        
+
         copy.setPostId    (this.postId);
         copy.setPostDate  (this.postDate);
         copy.setStatus    (this.status);
@@ -131,10 +130,10 @@ public class Post implements Copyable<Post> {
         copy.setComments  (this.comments);
         copy.setLikedBy   (this.likedBy);
         copy.setSavedBy   (this.savedBy);
-        
+
         return copy;
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(this.postId);
@@ -142,7 +141,7 @@ public class Post implements Copyable<Post> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) 
+        if (this == obj)
             return true;
         if (obj == null)
             return false;
@@ -151,7 +150,7 @@ public class Post implements Copyable<Post> {
         Post other = (Post) obj;
         return Objects.equals(this.postId, other.postId);
     }
-    
+
     // <<-GETTERS & SETTERS->>
     public UUID getPostId() {
         return this.postId;
@@ -163,8 +162,6 @@ public class Post implements Copyable<Post> {
         } else {
             this.postId = postId;
         }
-        // Another way
-        // this.postId = (postId == null) ? UUID.randomUUID() : postId;
     }
 
     public LocalDateTime getPostDate() {
@@ -283,10 +280,10 @@ public class Post implements Copyable<Post> {
             this.savedBy.addAll(DeepCopyGenerator.generateCopy(savedBy));
         }
     }
-    
+
     // <<-CLASS->>
     static class TreePost extends java.util.TreeSet<Post> {
-        
+
         // <<-CONSTANT->>
         private static final long serialVersionUID = 1L;
 
@@ -295,7 +292,7 @@ public class Post implements Copyable<Post> {
             // The argument is a Comparator
             super((p1, p2) -> p1.getPostDate().compareTo(p2.getPostDate()));
         }
-        
+
     }
-    
+
 }
