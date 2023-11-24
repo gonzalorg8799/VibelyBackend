@@ -46,6 +46,8 @@ public class AdminEntityTest {
         Set<User> following = new HashSet<>();
         Set<Post> posts     = new HashSet<>();
         Set<Chat> chats     = new HashSet<>();
+        Set<Post> likes     = new HashSet<>();
+        Set<Post> saves     = new HashSet<>();
         
         Admin admin = new Admin();
 
@@ -64,22 +66,26 @@ public class AdminEntityTest {
         admin.setFollowing   (following);
         admin.setPosts       (posts);
         admin.setChats       (chats);
+        admin.setLikes       (likes);
+        admin.setSaves       (saves);
 
-        assertEquals(adminId,       admin.getUserId());
-        assertEquals(USERNAME,     admin.getUsername());
-        assertEquals(PASSWORD,     admin.getPassword());
-        assertEquals(NICKNAME,     admin.getNickname());
-        assertEquals(EMAIL,        admin.getEmail());
-        assertEquals(STATE,        admin.getState());
-        assertEquals(PRIVACY,      admin.getPrivacy());
-        assertEquals(STATUS,       admin.getStatus());
-        assertEquals(LOGINS,       admin.getLogins());
+        assertEquals(adminId,        admin.getUserId());
+        assertEquals(USERNAME,       admin.getUsername());
+        assertEquals(PASSWORD,       admin.getPassword());
+        assertEquals(NICKNAME,       admin.getNickname());
+        assertEquals(EMAIL,          admin.getEmail());
+        assertEquals(STATE,          admin.getState());
+        assertEquals(PRIVACY,        admin.getPrivacy());
+        assertEquals(STATUS,         admin.getStatus());
+        assertEquals(LOGINS,         admin.getLogins());
         assertEquals(LAST_CONN_DATE, admin.getLastConnDate());
-        assertEquals(BLOCKED_DATE,  admin.getBlockedDate());
-        assertEquals(followers,    admin.getFollowers());
-        assertEquals(following,    admin.getFollowing());
-        assertEquals(posts,        admin.getPosts());
-        assertEquals(chats,        admin.getChats());
+        assertEquals(BLOCKED_DATE,   admin.getBlockedDate());
+        assertEquals(followers,      admin.getFollowers());
+        assertEquals(following,      admin.getFollowing());
+        assertEquals(posts,          admin.getPosts());
+        assertEquals(chats,          admin.getChats());
+        assertEquals(likes,          admin.getLikes());
+        assertEquals(saves,          admin.getSaves());
     }
     
     @Test
@@ -90,6 +96,8 @@ public class AdminEntityTest {
         Set<User> following = new HashSet<>();
         Set<Post> posts     = new HashSet<>();
         Set<Chat> chats     = new HashSet<>();
+        Set<Post> likes     = new HashSet<>();
+        Set<Post> saves     = new HashSet<>();
         
         Admin user = new Admin(
                 adminId,
@@ -107,7 +115,9 @@ public class AdminEntityTest {
                 followers,
                 following,
                 posts,
-                chats);
+                chats,
+                likes,
+                saves);
 
         assertEquals(adminId,        user.getUserId());
         assertEquals(USERNAME,       user.getUsername());
@@ -124,6 +134,8 @@ public class AdminEntityTest {
         assertEquals(following,      user.getFollowing());
         assertEquals(posts,          user.getPosts());
         assertEquals(chats,          user.getChats());
+        assertEquals(likes,          user.getLikes());
+        assertEquals(saves,          user.getSaves());
     }
 
 }
