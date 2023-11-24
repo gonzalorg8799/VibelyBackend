@@ -13,7 +13,6 @@ import com.metrica.vibely.data.entity.User;
  * @author Raul
  * @version 1.0
  */
-
 @Repository
 public interface UserRepository extends JpaRepository<User, java.util.UUID> {
 	
