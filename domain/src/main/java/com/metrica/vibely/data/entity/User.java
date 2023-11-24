@@ -26,7 +26,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * <h1>User Entity</h1>
@@ -92,6 +91,8 @@ public class User implements Copyable<User> {
         this.setFollowing(null);
         this.setPosts    (null);
         this.setChats    (null);
+        this.setLikes    (null);
+        this.setSaves    (null);
     }
 
     public User(
@@ -110,7 +111,9 @@ public class User implements Copyable<User> {
             Set<User> followers,
             Set<User> following,
             Set<Post> posts,
-            Set<Chat> chats) {
+            Set<Chat> chats,
+            Set<Post> likes,
+            Set<Post> saves) {
         this.setUserId      (userId);
         this.setUsername    (username);
         this.setPassword    (password);
@@ -127,6 +130,8 @@ public class User implements Copyable<User> {
         this.setFollowing   (following);
         this.setPosts       (posts);
         this.setChats       (chats);
+        this.setLikes       (likes);
+        this.setSaves       (saves);
     }
     
     // <<-METHODS->>
@@ -149,6 +154,8 @@ public class User implements Copyable<User> {
         copy.setFollowing   (this.following);
         copy.setPosts       (this.posts);
         copy.setChats       (this.chats);
+        copy.setLikes       (this.likes);
+        copy.setSaves       (this.saves);
         
         return copy;
     }
@@ -176,13 +183,13 @@ public class User implements Copyable<User> {
     }
 
     public void setUserId(final UUID userId) {
-    	if (userId == null) {
-    	    this.userId = UUID.randomUUID();
-    	} else {
+        if (userId == null) {
+            this.userId = UUID.randomUUID();
+        } else {
             this.userId = userId;
-    	}
-    	// Another way
-    	// this.userId = (userId == null) ? UUID.randomUUID() : userId;
+        }
+        // Another way
+        // this.userId = (userId == null) ? UUID.randomUUID() : userId;
     }
 
     public String getUsername() {
@@ -217,13 +224,13 @@ public class User implements Copyable<User> {
         this.email = email;
     }
 
-	public String getApikey() {
-		return apikey;
-	}
+    public String getApikey() {
+        return apikey;
+    }
 
-	public void setApikey(String apikey) {
-		this.apikey = apikey;
-	}
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
+    }
 
     public UserState getState() {
         return this.state;
@@ -269,7 +276,7 @@ public class User implements Copyable<User> {
         if (status == null) {
             this.status = UserStatus.OFFLINE;
         } else {
-            this.status = status;   
+            this.status = status;
         }
     }
 
@@ -281,7 +288,7 @@ public class User implements Copyable<User> {
         if (lastConnDate == null) {
             this.lastConnDate = LocalDateTime.now();
         } else {
-            this.lastConnDate = lastConnDate;   
+            this.lastConnDate = lastConnDate;
         }
     }
 
@@ -337,5 +344,26 @@ public class User implements Copyable<User> {
         }
     }
 
-    
+    public Set<Post> getLikes() {
+        return DeepCopyGenerator.generateCopy(this.likes);
+    }
+
+    public void setLikes(final Set<Post> likes) {
+        this.likes = new HashSet<>();
+        if (likes != null) {
+            this.chats.addAll(DeepCopyGenerator.generateCopy(chats));
+        }
+    }
+
+    public Set<Post> getSaves() {
+        return DeepCopyGenerator.generateCopy(this.likes);
+    }
+
+    public void setSaves(final Set<Post> saves) {
+        this.saves = new HashSet<>();
+        if (saves != null) {
+            this.chats.addAll(DeepCopyGenerator.generateCopy(chats));
+        }
+    }
+
 }
