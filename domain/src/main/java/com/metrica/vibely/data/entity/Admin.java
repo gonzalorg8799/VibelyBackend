@@ -1,15 +1,15 @@
 package com.metrica.vibely.data.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.UUID;
-
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 
 import jakarta.persistence.Entity;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * <h1>Administrator Entity</h1>
@@ -42,7 +42,9 @@ public class Admin extends User {
             Set<User> followers,
             Set<User> following,
             Set<Post> posts,
-            Set<Chat> chats) {
+            Set<Chat> chats,
+            Set<Post> likes,
+            Set<Post> saves) {
         super(
                 adminId,
                 username,
@@ -59,7 +61,9 @@ public class Admin extends User {
                 followers,
                 following,
                 posts,
-                chats);
+                chats,
+                likes,
+                saves);
     }
-    
+
 }

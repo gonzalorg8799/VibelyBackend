@@ -1,9 +1,5 @@
 package com.metrica.vibely.data.entity;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.UUID;
-
 import com.metrica.vibely.data.model.enumerator.MessageStatus;
 import com.metrica.vibely.data.util.Copyable;
 
@@ -15,6 +11,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * <h1>Message Entity</h1>
@@ -103,7 +103,7 @@ public class Message implements Copyable<Message> {
         Message other = (Message) obj;
         return Objects.equals(this.messageId, other.messageId);
     }
-    
+
     // <<-GETTERS & SETTERS->>
     public UUID getMessageId() {
         return this.messageId;
@@ -172,5 +172,5 @@ public class Message implements Copyable<Message> {
             this.sender = sender.deepCopy();
         }
     }
-    
+
 }
