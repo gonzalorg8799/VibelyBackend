@@ -1,12 +1,5 @@
 package com.metrica.vibely.data.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
@@ -26,6 +19,13 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * <h1>User Entity</h1>
