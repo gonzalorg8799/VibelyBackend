@@ -8,6 +8,7 @@ import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.AdminDTO;
+import com.metrica.vibely.data.model.dto.UserDTO;
 
 /**
  * @since 2023-11-22
@@ -17,7 +18,15 @@ import com.metrica.vibely.data.model.dto.AdminDTO;
  */
 public class AdminMapper {
 
-	public static Admin toEntity(AdminDTO adminDTO, Set<User> followers, Set<User> following,  Set<Post> posts, Set<Chat> chats) {
+	public static Admin toEntity(
+			AdminDTO adminDTO, 
+			Set<User> followers,
+			Set<User> following,
+			Set<Post> posts, 
+			Set<Chat> chats,
+			Set<Post> likes,
+			Set<Post> saves) 
+	{
         Admin admin = new Admin();
 
         // Mapping Basics
@@ -39,6 +48,8 @@ public class AdminMapper {
         admin.setFollowing   (following);
         admin.setPosts	     (posts);
         admin.setChats       (chats);
+        admin.setLikes       (likes);
+        admin.setSaves       (saves);
 
         return admin;
     }
@@ -75,6 +86,14 @@ public class AdminMapper {
 
         adminDTO.setChats	 	(admin.getChats().stream()
 					                  .map(Chat::getChatId)
+					                  .collect(Collectors.toSet()));
+        
+        adminDTO.setLikes	 	(admin.getLikes().stream()
+					                  .map(Post::getPostId)
+					                  .collect(Collectors.toSet()));
+        
+        adminDTO.setSaves	 	(admin.getSaves().stream()
+					                  .map(Post::getPostId)
 					                  .collect(Collectors.toSet()));
 
         return adminDTO;

@@ -42,7 +42,9 @@ public class AdminDTO extends UserDTO{
             Set<UUID> followers,
             Set<UUID> following,
             Set<UUID> posts,
-            Set<UUID> chats) {
+            Set<UUID> chats,
+            Set<UUID> likes,
+            Set<UUID> saves) {
     	super(
                 adminId,
                 username,
@@ -59,6 +61,8 @@ public class AdminDTO extends UserDTO{
                 followers,
                 following,
                 posts,
-                chats);
+                chats,
+                likes,
+                saves);
     }
 }

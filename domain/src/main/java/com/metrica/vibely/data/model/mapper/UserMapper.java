@@ -16,7 +16,15 @@ import com.metrica.vibely.data.model.dto.UserDTO;
  */
 public class UserMapper {
 
-	public static User toEntity(UserDTO userDTO, Set<User> followers, Set<User> following,  Set<Post> posts, Set<Chat> chats) {
+	public static User toEntity(
+			UserDTO userDTO, 
+			Set<User> followers,
+			Set<User> following,
+			Set<Post> posts, 
+			Set<Chat> chats,
+			Set<Post> likes,
+			Set<Post> saves) 
+	{
 		User user = new User();
 		
 		// Mapping Basics
@@ -38,6 +46,8 @@ public class UserMapper {
 		user.setFollowing	(following);
 		user.setPosts		(posts);
 		user.setChats	 	(chats);
+		user.setLikes		(likes);
+		user.setSaves	 	(saves);
 		
 		return user;
 	}
@@ -75,6 +85,14 @@ public class UserMapper {
 		userDTO.setChats	   (user.getChats().stream()
 							 	    .map(Chat::getChatId)
 							 	    .collect(Collectors.toSet()));
+		
+		userDTO.setLikes	   (user.getPosts().stream()
+		 	    					.map(Post::getPostId)
+		 	    					.collect(Collectors.toSet()));
+		
+		userDTO.setSaves	   (user.getSaves().stream()
+		 	    					.map(Post::getPostId)
+		 	    					.collect(Collectors.toSet()));
 		
 		return userDTO;
 	}

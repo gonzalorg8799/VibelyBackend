@@ -51,6 +51,8 @@ class AdminDTOTest {
         Set<UUID> following = new HashSet<>();
         Set<UUID> posts     = new HashSet<>();
         Set<UUID> chats     = new HashSet<>();
+        Set<UUID> likes     = new HashSet<>();
+        Set<UUID> saves     = new HashSet<>();
         
         AdminDTO admin = new AdminDTO();
 
@@ -70,6 +72,8 @@ class AdminDTOTest {
         admin.setFollowing   (following);
         admin.setPosts       (posts);
         admin.setChats       (chats);
+        admin.setLikes       (likes);
+        admin.setSaves       (saves);
 
         assertEquals(adminId,        admin.getUserId());
         assertEquals(NICKNAME,       admin.getNickname());
@@ -87,6 +91,8 @@ class AdminDTOTest {
         assertEquals(following,      admin.getFollowing());
         assertEquals(posts,          admin.getPosts());
         assertEquals(chats,          admin.getChats());
+        assertEquals(likes,          admin.getLikes());
+        assertEquals(saves,          admin.getSaves());
     }
     
     @Test
@@ -97,6 +103,8 @@ class AdminDTOTest {
         Set<UUID> following = new HashSet<>();
         Set<UUID> posts     = new HashSet<>();
         Set<UUID> chats     = new HashSet<>();
+        Set<UUID> likes     = new HashSet<>();
+        Set<UUID> saves     = new HashSet<>();
         
         AdminDTO user = new AdminDTO(
                 adminId,
@@ -114,7 +122,9 @@ class AdminDTOTest {
                 followers,
                 following,
                 posts,
-                chats);
+                chats,
+                likes,
+                saves);
 
         assertEquals(adminId,        user.getUserId());
         assertEquals(NICKNAME,       user.getNickname());
@@ -132,6 +142,9 @@ class AdminDTOTest {
         assertEquals(following,      user.getFollowing());
         assertEquals(posts,          user.getPosts());
         assertEquals(chats,          user.getChats());
+        assertEquals(likes,          user.getChats());
+        assertEquals(saves,          user.getChats());
+        
     }
 
 	

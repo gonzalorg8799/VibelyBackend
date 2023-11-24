@@ -48,11 +48,12 @@ public class UserDTO {
 	private Set<UUID>     following;
 	private Set<UUID> 	  posts;
 	private Set<UUID> 	  chats;
+	private Set<UUID>     likes;
+	private Set<UUID>     saves;
 	
     // <<-CONSTRUCTORS->>
 	public UserDTO() {
-	}	
-	
+	}
 	public UserDTO(
             UUID userId,
             String nickname,
@@ -69,7 +70,10 @@ public class UserDTO {
             Set<UUID> followers,
             Set<UUID> following,
             Set<UUID> posts,
-            Set<UUID> chats) {
+            Set<UUID> chats,
+            Set<UUID> likes,
+            Set<UUID> saves
+            ) {
         this.setUserId      (userId);
         this.setNickname    (nickname);
         this.setUsername    (username);
@@ -86,6 +90,8 @@ public class UserDTO {
         this.setFollowing   (following);
         this.setPosts       (posts);
         this.setChats       (chats);
+        this.setLikes       (likes);
+        this.setSaves       (saves);
     }
 
 
@@ -235,6 +241,22 @@ public class UserDTO {
     public void setChats(final Set<UUID> chats) {
         this.chats = chats;
     }
+
+	public Set<UUID> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(Set<UUID> likes) {
+		this.likes = likes;
+	}
+
+	public Set<UUID> getSaves() {
+		return saves;
+	}
+
+	public void setSaves(Set<UUID> saves) {
+		this.saves = saves;
+	}
 
     
 
