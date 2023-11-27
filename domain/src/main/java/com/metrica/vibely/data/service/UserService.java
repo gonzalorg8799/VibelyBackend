@@ -28,7 +28,7 @@ public interface UserService {
 	 */
 	UserDTO create(UserDTO userDTO); 
 		
-	UserDTO update(UserDTO UserDTO);
+	UserDTO update(UUID userId, UserDTO UserDTO);
 	
 	UserDTO followUser(UUID userId, UUID followedUserId);
 	

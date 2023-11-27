@@ -43,23 +43,7 @@ public class Admin extends User {
             Set<User> following,
             Set<Post> posts,
             Set<Chat> chats) {
-        super(
-                adminId,
-                username,
-                password,
-                nickname,
-                email,
-                apikey,
-                state,
-                privacy,
-                logins,
-                status,
-                lastConnDate,
-                blockedDate,
-                followers,
-                following,
-                posts,
-                chats);
+    	super();
     }
     
 }
