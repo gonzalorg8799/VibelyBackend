@@ -57,7 +57,7 @@ public class UserController {
             @Valid
             CreateUserRequest createUser,
             BindingResult bindingResult) {
-        if (!bindingResult.getAllErrors().isEmpty())
+        if (bindingResult.hasErrors())
             return ResponseEntity.badRequest().build();
         UserDTO userDto = CreateUserRequest.toUserDTO(createUser);
         UserDTO user = this.userService.create(userDto);
