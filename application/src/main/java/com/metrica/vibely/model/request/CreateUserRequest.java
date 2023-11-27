@@ -1,6 +1,7 @@
 package com.metrica.vibely.model.request;
 
 
+import com.metrica.vibely.data.model.dto.AdminDTO;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.util.PasswordHasher;
 
@@ -40,15 +41,15 @@ public class CreateUserRequest {
     }
     
     // <<--METHODS-->>
-    public static UserDTO toUserDTO(CreateUserRequest user) {
-        UserDTO userDto = new UserDTO();
+    public UserDTO toUserDTO() {
+    	UserDTO userDTO = new UserDTO();
 
-        userDto.setUsername(user.getUsername());
-        userDto.setPassword(user.getPassword());
-        userDto.setNickname(user.getNickname());
-        userDto.setEmail(user.getEmail());
+    	userDTO.setUsername(this.username);
+    	userDTO.setPassword(this.password);
+    	userDTO.setNickname(this.nickname);
+    	userDTO.setEmail   (this.email);
 
-        return userDto;
+        return userDTO;
     }
     
     // <<-GETTERS & SETTERS->>

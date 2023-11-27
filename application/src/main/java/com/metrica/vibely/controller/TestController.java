@@ -38,7 +38,8 @@ public class TestController {
             BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return ResponseEntity.badRequest().build();
-        UserDTO userDto = CreateUserRequest.toUserDTO(createUser);
+//        UserDTO userDto = CreateUserRequest.toUserDTO(createUser);
+        UserDTO userDto = new CreateUserRequest().toUserDTO();
         userRepository.save(Parser.toEntity(userDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }

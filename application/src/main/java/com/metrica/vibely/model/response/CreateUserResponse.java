@@ -1,5 +1,6 @@
 package com.metrica.vibely.model.response;
 
+import com.metrica.vibely.data.model.dto.AdminDTO;
 import com.metrica.vibely.data.model.dto.UserDTO;
 
 /**
@@ -19,14 +20,11 @@ public class CreateUserResponse {
     }
     
     // <<--METHODS-->>
-    public static CreateUserResponse toUserResponse(UserDTO userDto) {
-        CreateUserResponse userResponse = new CreateUserResponse();
-
-        userResponse.setUsername(userDto.getUsername());
-        userResponse.setNickname(userDto.getNickname());
-        userResponse.setEmail(userDto.getEmail());
-
-        return userResponse;
+    public CreateUserResponse generateResponse(UserDTO userDTO) {
+        this.setUsername(userDTO.getUsername());
+        this.setNickname(userDTO.getNickname());
+        this.setEmail   (userDTO.getEmail());
+        return this;
     }
     
     // <<-GETTERS & SETTERS->>

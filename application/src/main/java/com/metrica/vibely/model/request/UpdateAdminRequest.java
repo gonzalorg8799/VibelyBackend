@@ -1,4 +1,4 @@
-package com.metrica.vibely.model.response;
+package com.metrica.vibely.model.request;
 
 import com.metrica.vibely.data.model.dto.AdminDTO;
 
@@ -25,7 +25,7 @@ public class UpdateAdminRequest {
     public UpdateAdminRequest() {
     }
     
-    // <<-GETTERS & SETTERS->>
+    // <<-METHODS->>
     public AdminDTO toDTO() {
         AdminDTO adminDTO = new AdminDTO();
         
