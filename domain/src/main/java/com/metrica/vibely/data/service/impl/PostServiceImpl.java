@@ -86,16 +86,6 @@ public class PostServiceImpl implements PostService{
 		postRepository.deleteById(postId);
 	}
 	
-	private PostDTO updateContent(final UUID postId, final String content) {
-		Post post = postRepository.findById(postId)
-								     .orElseThrow();
-
-		if(content != null && content.equals(post.getContent())) { 
-			post.setContent(content); 
-		}  
-		
-		return PostMapper.toDTO(post);
-	}
 
 	
 	
