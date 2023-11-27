@@ -29,7 +29,7 @@ public interface MessageService extends CrudService<MessageDTO, UUID> {
 	 * @return sender
 	 * @throws NoSuchElementException
 	 */
-	UserDTO getSender(UUID messageId);
+	UUID getSender(UUID messageId);
 	
 	/**
 	 * gets Message chat
@@ -37,6 +37,6 @@ public interface MessageService extends CrudService<MessageDTO, UUID> {
 	 * @return chat
 	 * @throws NoSuchElementException
 	 */
-	ChatDTO getChat(UUID messageId);	
+	UUID getChat(UUID messageId);	
 
 }
