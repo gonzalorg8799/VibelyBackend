@@ -102,7 +102,9 @@ public class ChatServiceImpl implements ChatService {
 		dto = updateType(dto.getChatId(), dto.getType());
 		dto = updateChatStatus(dto.getChatId(), dto.getStatus());
 		
-		return dto;
+		Chat chat = chatRepository.findById(dto.getChatId()).orElseThrow();
+		
+		return ChatMapper.toDTO(chatRepository.save(chat));
 	}
 	
     private ChatDTO updateTitle(UUID chatId, String title) {
