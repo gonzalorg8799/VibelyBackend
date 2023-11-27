@@ -50,13 +50,14 @@ public class PostController {
 	@PostMapping
     public ResponseEntity<CreatePostResponse> create(
             @RequestBody
-            @Valid
+            //@Valid
             CreatePostRequest createPostRequest,
             BindingResult bindingResult) {	
         if (bindingResult.hasErrors())
             return ResponseEntity.badRequest().build();
         PostDTO postDTO = CreatePostRequest.toPostDTO(createPostRequest);
-        CreatePostResponse response = CreatePostResponse.toPostResponse(this.postService.create(postDTO));
+        PostDTO createdDTO = this.postService.create(postDTO);
+        CreatePostResponse response = CreatePostResponse.toPostResponse(createdDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 	
