@@ -55,15 +55,12 @@ public class PostServiceImpl implements PostService{
 	@Override
 	public PostDTO update(PostDTO dto) {
 		Post post = postRepository.findById(dto.getPostId()).get();
-		PostDTO postDTO = PostMapper.toDTO(post) ; 
 		
-		postDTO.setContent(updateContent(postDTO.getPostId(), postDTO.getContent()).getContent());
+		if(dto.getContent() != null) {
+			post.setContent(dto.getContent());
+		}
 		
-		Post postUpdated = PostMapper.toEntity(postDTO, post.getOwner(), post.getComments(), post.getLikedBy(), post.getSavedBy());
-		
-		postRepository.save(postUpdated);
-		
-		return postDTO;
+		return PostMapper.toDTO(this.postRepository.save(post));
 	}
 
 	@Override
