@@ -3,7 +3,6 @@ package com.metrica.vibely.data.service.impl;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,7 +97,6 @@ public class UserServiceImpl implements UserService {
 	public UserDTO update(UserDTO newUserDto) {
 		UserDTO userDto = UserMapper.toDTO(userRepository.findById(newUserDto.getUserId()).get()) ; 
 		
-
 		userDto.setNickname(updateNickname(userDto.getUserId(), newUserDto.getNickname()).getNickname());
 		userDto.setUsername(updateUsername(userDto.getUserId(), newUserDto.getUsername()).getUsername());
 		userDto.setEmail   (updateEmail   (userDto.getUserId(), newUserDto.getEmail())   .getEmail());
@@ -147,6 +145,16 @@ public class UserServiceImpl implements UserService {
 		} 
 		
 		return UserMapper.toDTO(userRepository.save(user));
+	}
+
+	@Override
+	public UserDTO getById(UUID id) {
+		return UserMapper.toDTO(userRepository.findById(id).get());
+	}
+
+	@Override
+	public void deleteById(UUID id) {
+		userRepository.deleteById(id);
 	}
 	
 }
