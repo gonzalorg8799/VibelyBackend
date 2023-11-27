@@ -1,20 +1,14 @@
-
 package com.metrica.vibely.data.model.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-import com.metrica.vibely.data.entity.Chat;
-import com.metrica.vibely.data.entity.Post;
-import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
-import com.metrica.vibely.data.util.DeepCopyGenerator;
 
 /**
  * <h1>User DTO</h1>
@@ -22,7 +16,6 @@ import com.metrica.vibely.data.util.DeepCopyGenerator;
  * @since 2023-11-15
  * @version 1.0 
  * @author Raul, Adrian
- *
  */
 public class UserDTO {
 	
@@ -41,7 +34,6 @@ public class UserDTO {
 	private Integer 	  logins;
 	private LocalDateTime lastConnDate;
 	private LocalDate 	  blockedDate;
-
 	
 	// Relations
 	private Set<UUID> 	  followers;
@@ -54,6 +46,7 @@ public class UserDTO {
     // <<-CONSTRUCTORS->>
 	public UserDTO() {
 	}
+	
 	public UserDTO(
             UUID userId,
             String nickname,
@@ -72,8 +65,7 @@ public class UserDTO {
             Set<UUID> posts,
             Set<UUID> chats,
             Set<UUID> likes,
-            Set<UUID> saves
-            ) {
+            Set<UUID> saves) {
         this.setUserId      (userId);
         this.setNickname    (nickname);
         this.setUsername    (username);
@@ -93,7 +85,6 @@ public class UserDTO {
         this.setLikes       (likes);
         this.setSaves       (saves);
     }
-
 
 	// <<-METHODS->>
     @Override
@@ -257,7 +248,5 @@ public class UserDTO {
 	public void setSaves(Set<UUID> saves) {
 		this.saves = saves;
 	}
-
-    
 
 }

@@ -12,23 +12,33 @@ import com.metrica.vibely.data.model.dto.UserDTO;
  */
 public interface UserService {
 	
-	/**
-	 * gets user information by its username
-	 * @param username 
-	 * @return UserDTO
-	 * @throws NoSuchElementException
-	 */
-	UserDTO getByUsername(String username);	
-	
-	/**
-	 * creates a new user and adds it to the database
-	 * @param userDTO
-	 * @return userDTO
-	 * @throws NoSuchElementException
-	 */
-	UserDTO create(UserDTO userDTO); 
-		
-	UserDTO update(UserDTO UserDTO);
+    UserDTO getById(UUID id);
+    
+    /**
+     * gets user information by its username
+     * @param username 
+     * @return UserDTO
+     * @throws NoSuchElementException
+     */
+    UserDTO getByUsername(String username);
+    
+    /**
+     * creates a new user and adds it to the database
+     * @param userDTO
+     * @return userDTO
+     * @throws NoSuchElementException
+     */
+    UserDTO create(UserDTO userDTO);
+        
+    UserDTO update(UserDTO UserDTO);
+    
+    void deleteById(UUID id);
+    
+    /**
+     * deletes an user given its username
+     * @throws NoSuchElementException
+     */
+    void deleteByUsername(String username);
 	
 	UserDTO followUser(UUID userId, UUID followedUserId);
 	
@@ -40,11 +50,5 @@ public interface UserService {
 	 * @throws NoSuchElementException
 	 */
 	UserDTO unfollowUser(UUID userId, UUID followedUserId);
-	
-	/**
-	 * deletes an user given its username
-	 * @throws NoSuchElementException
-	 */
-	void deleteByUsername(String username);
 	
 }
