@@ -13,7 +13,8 @@ import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
-import com.metrica.vibely.data.service.UserService;		
+import com.metrica.vibely.data.service.UserService;
+import com.metrica.vibely.data.util.PasswordHasher;		
 
 /**
  * @since 2023-11-14
@@ -55,14 +56,22 @@ public class UserServiceImpl implements UserService {
 
 	
 	public UserDTO update(UserDTO newUserDto) {
-		newUserDto = updateNickname(newUserDto.getUserId(), newUserDto.getNickname());
-		newUserDto = updateUsername(newUserDto.getUserId(), newUserDto.getUsername());
-		newUserDto = updateEmail(newUserDto.getUserId(), newUserDto.getEmail());
-		newUserDto = updatePassword(newUserDto.getUserId(), newUserDto.getPassword());
-		newUserDto = updateStatus(newUserDto.getUserId(), newUserDto.getStatus());
-		newUserDto = updatePrivacy(newUserDto.getUserId(), newUserDto.getPrivacy());
-		
 		User user = userRepository.findById(newUserDto.getUserId()).orElseThrow();
+		
+		String newNickname = newUserDto.getNickname();
+		String newUsername = newUserDto.getUsername();
+		String newEmail = newUserDto.getEmail();
+		String newPassword = newUserDto.getPassword();
+		UserStatus newStatus = newUserDto.getStatus();
+		PrivacyType newPrivacy = newUserDto.getPrivacy();
+		
+		if(newNickname != null) { user.setNickname(newNickname); }
+		if(newUsername != null) { user.setUsername(newUsername); }
+		if(newEmail    != null) { user.setEmail(newEmail); }
+		if(newPassword != null) { user.setNickname(PasswordHasher.hash(newPassword)); }
+		if(newStatus   != null) { user.setStatus(newStatus); }
+		if(newPrivacy  != null) { user.setPrivacy(newPrivacy); }
+		
 		
 		return UserMapper.toDTO(userRepository.save(user));
 	}
@@ -107,56 +116,5 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteById(UUID id) {
 		userRepository.deleteById(id);
-	}
-	
-	private UserDTO updateUsername(final UUID userId, final String username) {
-		User user = userRepository.findById(userId)
-				.orElseThrow();
-		
-		if(username != null && !username.equals(user.getUsername())) { user.setUsername(username); } 
-		
-		return UserMapper.toDTO(user);
-	}
-	
-	private UserDTO updateNickname(final UUID userId, final String nickname) {
-		User user = userRepository.findById(userId)
-				.orElseThrow();
-		
-		if(nickname != null && !nickname.equals(user.getNickname())) { user.setNickname(nickname); }  
-		
-		return UserMapper.toDTO(user);
-	}
-	
-	private UserDTO updateEmail(final UUID userId, final String email) {
-		User user = userRepository.findById(userId)
-				.orElseThrow();
-		
-		if(email != null && !email.equals(user.getEmail())) { user.setEmail(email); } 
-		
-		return UserMapper.toDTO(user);
-	}
-	
-	private UserDTO updatePassword(final UUID userId, final String password) {
-		User user = userRepository.findById(userId)
-				.orElseThrow();
-		
-		if(password != null && !password.equals(user.getPassword())) { user.setPassword(password); } 
-		
-		return UserMapper.toDTO(user);
-	}
-	private UserDTO updateStatus(final UUID userId, final UserStatus status) {
-		User user = userRepository.findById(userId).orElseThrow();
-		if(status != null) {
-			user.setStatus(status);
-		}
-		
-		return UserMapper.toDTO(userRepository.save(user));
-	}
-	private UserDTO updatePrivacy(final UUID userID, final PrivacyType privacy) {
-		User user = userRepository.findById(userID).orElseThrow();
-		if(privacy != null) {
-			user.setPrivacy(privacy);			
-		}
-		return UserMapper.toDTO(userRepository.save(user));
 	}
 }

@@ -98,29 +98,16 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public ChatDTO update(ChatDTO dto) {
-		dto = updateTitle(dto.getChatId(), dto.getTitle());
-		dto = updateType(dto.getChatId(), dto.getType());
-		dto = updateChatStatus(dto.getChatId(), dto.getStatus());
-		
 		Chat chat = chatRepository.findById(dto.getChatId()).orElseThrow();
 		
+		String newTitle = dto.getTitle();
+		ChatType newType = dto.getType();
+		ChatStatus newStatus = dto.getStatus();
+		
+		if(newTitle  != null) { chat.setStatus(newStatus); }
+		if(newType   != null) { chat.setType(newType); }
+		if(newStatus != null) { chat.setStatus(newStatus); }
+		
 		return ChatMapper.toDTO(chatRepository.save(chat));
-	}
-	
-    private ChatDTO updateTitle(UUID chatId, String title) {
-    	Chat chat = chatRepository.findById(chatId).get();
-    	if(title != null) { chat.setTitle(title); }
-        return ChatMapper.toDTO(chatRepository.save(chat));
-    }
-    private ChatDTO updateType(UUID chatId, ChatType type) {
-        Chat chat = chatRepository.findById(chatId).orElseThrow();
-        chat.setType(type);
-    	return ChatMapper.toDTO(chatRepository.save(chat)); 
-    }
-
-    private ChatDTO updateChatStatus(UUID chatId, ChatStatus status) {
-    	Chat chat = chatRepository.findById(chatId).orElseThrow();
-        chat.setStatus(status);
-    	return ChatMapper.toDTO(chatRepository.save(chat));
-    }
+	}	
 }
