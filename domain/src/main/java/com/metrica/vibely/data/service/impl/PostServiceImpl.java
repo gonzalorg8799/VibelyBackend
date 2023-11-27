@@ -38,16 +38,15 @@ public class PostServiceImpl implements PostService{
 				  							  .orElseThrow());
 	}
 
+	//TODO hacer bien el create
 	@Override
 	public PostDTO create(PostDTO dto) {
 		Post post = PostMapper.toEntity(dto, null, null, null, null);
 		
-		post.setPostDate  (LocalDateTime.now());
-		post.setStatus	  (PostStatus.ACTIVE);
-		post.setVisibility(PostVisibility.PUBLIC);
-		post.setContent	  (null);
-		post.setLikes	  (null);
-        post.setTimesSaved(null);
+		post.setContent(dto.getContent());
+		
+		
+//		post.setOwner(dto.getOwner());
         
 		return PostMapper.toDTO(postRepository.save(post));
 	}
