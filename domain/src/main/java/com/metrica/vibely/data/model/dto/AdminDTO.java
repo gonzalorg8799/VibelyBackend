@@ -1,16 +1,13 @@
 package com.metrica.vibely.data.model.dto;
 
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
-
-import com.metrica.vibely.data.entity.Chat;
-import com.metrica.vibely.data.entity.Post;
-import com.metrica.vibely.data.entity.User;
-import com.metrica.vibely.data.model.enumerator.PrivacyType;
-import com.metrica.vibely.data.model.enumerator.UserState;
-import com.metrica.vibely.data.model.enumerator.UserStatus;
 
 /**
  * <h1>Administrator DTO</h1>
@@ -19,13 +16,13 @@ import com.metrica.vibely.data.model.enumerator.UserStatus;
  * @version 1.0
  * @author Adri
  */
-public class AdminDTO extends UserDTO{
+public class AdminDTO extends UserDTO {
 
-	// <<-CONSTRUCTORS->>
+    // <<-CONSTRUCTORS->>
     public AdminDTO() {
         super();
     }
-    
+
     public AdminDTO(
             UUID adminId,
             String username,
@@ -65,4 +62,5 @@ public class AdminDTO extends UserDTO{
                 likes,
                 saves);
     }
+
 }

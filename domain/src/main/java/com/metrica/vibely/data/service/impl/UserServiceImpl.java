@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
 	    userRepository.deleteByUsername(username);
 	}
 
+	
 	@Override
 	public UserDTO create(final UserDTO userParam) {
 		User user = UserMapper.toEntity(userParam, null, null, null, null, null, null);
@@ -148,5 +149,17 @@ public class UserServiceImpl implements UserService {
 		
 		return UserMapper.toDTO(userRepository.save(user));
 	}
+
+    @Override
+    public UserDTO getById(UUID id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        // TODO Auto-generated method stub
+        
+    }
 	
 }

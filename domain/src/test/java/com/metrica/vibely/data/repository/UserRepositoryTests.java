@@ -1,8 +1,12 @@
 package com.metrica.vibely.data.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.metrica.vibely.data.entity.Chat;
+import com.metrica.vibely.data.entity.Post;
+import com.metrica.vibely.data.entity.User;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
+import com.metrica.vibely.data.util.PasswordHasher;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,37 +14,53 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import com.metrica.vibely.data.entity.User;
-import com.metrica.vibely.data.model.enumerator.PrivacyType;
-import com.metrica.vibely.data.model.enumerator.UserState;
-import com.metrica.vibely.data.model.enumerator.UserStatus;
-import com.metrica.vibely.data.util.PasswordHasher;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <h1>User Repository Test</h1>
  * 
  * @since 2023-11-16
  * @version 1.0
- * @author Daniel
+ * @author Daniel, Alex
  */
-@SpringBootTest
-public class UserRepositoryTests {
+//@ExtendWith(SpringExtension.class)
+//@SpringBootTest
+//@SpringBootTest
+@DataJpaTest
+class UserRepositoryTests {
+
+    // <<-CONSTANTS->>
+    private static final String USERNAME = "jdoe";
+    private static final String PASSWORD = "12345";
+    private static final String NICKNAME = "John Doe";
+    private static final String EMAIL    = "johndoe@email.com";
+    private static final String APIKEY   = "randomApikey";
+    private static final UserState   STATE   = UserState.ENABLED;
+    private static final PrivacyType PRIVACY = PrivacyType.PUBLIC;
+    private static final UserStatus  STATUS  = UserStatus.ONLINE;
+    private static final Integer LOGINS = 0;
+    private static final LocalDateTime LAST_CONN_DATE = LocalDateTime.now();
+    private static final LocalDate     BLOCKED_DATE   = LocalDate.now();
 
     // <<-FIELD->>
-    private UserRepository userRepository;
-    
-    // <<-CONSTRUCTOR->>
     @Autowired
-    public UserRepositoryTests(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-    
+    private UserRepository userRepository;
 
     // <<-METHODS->>
     private User initializeUser(String username, String password, String nickname, String email) {
@@ -61,6 +81,55 @@ public class UserRepositoryTests {
         user.setPosts       (new HashSet<>());
         user.setChats       (new HashSet<>());
 		return user;
+    }
+    
+    @Test
+    void saveTest() {
+        Set<User> followers = new HashSet<>();
+        Set<User> following = new HashSet<>();
+        Set<Post> posts     = new HashSet<>();
+        Set<Chat> chats     = new HashSet<>();
+        Set<Post> likes     = new HashSet<>();
+        Set<Post> saves     = new HashSet<>();
+        
+        User user = new User();
+
+        user.setUsername    (USERNAME);
+        user.setPassword    (PASSWORD);
+        user.setNickname    (NICKNAME);
+        user.setEmail       (EMAIL);
+        user.setState       (STATE);
+        user.setPrivacy     (PRIVACY);
+        user.setStatus      (STATUS);
+        user.setLogins      (LOGINS);
+        user.setLastConnDate(LAST_CONN_DATE);
+        user.setBlockedDate (BLOCKED_DATE);
+        user.setFollowers   (followers);
+        user.setFollowing   (following);
+        user.setPosts       (posts);
+        user.setChats       (chats);
+        user.setLikes       (likes);
+        user.setSaves       (saves);
+        
+        User dbUser = userRepository.save(user);
+        
+        assertNotNull(dbUser.getUserId());
+        assertEquals(USERNAME,       user.getUsername());
+        assertEquals(PASSWORD,       user.getPassword());
+        assertEquals(NICKNAME,       user.getNickname());
+        assertEquals(EMAIL,          user.getEmail());
+        assertEquals(STATE,          user.getState());
+        assertEquals(PRIVACY,        user.getPrivacy());
+        assertEquals(STATUS,         user.getStatus());
+        assertEquals(LOGINS,         user.getLogins());
+        assertEquals(LAST_CONN_DATE, user.getLastConnDate());
+        assertEquals(BLOCKED_DATE,   user.getBlockedDate());
+        assertEquals(followers,      user.getFollowers());
+        assertEquals(following,      user.getFollowing());
+        assertEquals(posts,          user.getPosts());
+        assertEquals(chats,          user.getChats());
+        assertEquals(likes,          user.getLikes());
+        assertEquals(saves,          user.getSaves());
     }
     
     @Test

@@ -1,88 +1,88 @@
 package com.metrica.vibely.model.request;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.metrica.vibely.data.model.dto.AdminDTO;
-import com.metrica.vibely.data.util.PasswordHasher;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 /**
+ * <h1>Create Administrator Requested Body</h1>
+ * 
  * @since 2023-11-20
  * @version 1.0
+ * @author Alex
  */
-@RestController
-@RequestMapping("/api/v1")
 public class CreateAdminRequest {
 
-//	<<--FIELDS-->>
-	@NotNull
+    // <<-FIELDS->>
+    @NotNull
     @NotBlank
+    @Size(min = 4)
     private String username;
-
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d@$!%^*#&]{12,}$")
+    @Size(min = 12)
+    // TODO: FIX PATTERNS !!!
+//    @Pattern(regexp = "(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z0-9@$!%^*#&]{12,}")
     private String password;
-
-    @Pattern(regexp = "[a-zA-Z_-\\d]*")
     @NotBlank
+    @Size(min = 4)
+//    @Pattern(regexp = "[a-zA-Z0-9_-]*")
     private String nickname;
-
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
     @NotNull
     @NotBlank
+//    @Pattern(regexp = "[A-Za-z0-9+_.-]+@(.+)")
     private String email;
 
     // <<-CONSTRUCTOR->>
     public CreateAdminRequest() {
     }
     
-    // <<--METHODS-->>
-    public static AdminDTO toAdminDTO(CreateUserRequest user) {
-        AdminDTO adminDto = new AdminDTO();
+    // <<-METHODS->>
+    public AdminDTO toAdminDTO() {
+        AdminDTO admin = new AdminDTO();
 
-        adminDto.setUsername(user.getUsername());
-        adminDto.setPassword(user.getPassword());
-        adminDto.setNickname(user.getNickname());
-        adminDto.setEmail(user.getEmail());
+        admin.setUsername(this.username);
+        admin.setPassword(this.password);
+        admin.setNickname(this.nickname);
+        admin.setEmail   (this.email);
 
-        return adminDto;
+        return admin;
     }
-    
+
     // <<-GETTERS & SETTERS->>
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public void setPassword(String password) {
-		this.password = PasswordHasher.hash(password);
+    public void setPassword(final String password) {
+        this.password = password;
     }
 
     public String getNickname() {
-        return nickname;
+        return this.nickname;
     }
 
-    public void setNickname(String nickname) {
+    public void setNickname(final String nickname) {
         this.nickname = nickname;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
+
 }

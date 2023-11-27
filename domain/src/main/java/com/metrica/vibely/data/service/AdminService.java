@@ -1,61 +1,68 @@
 package com.metrica.vibely.data.service;
 
+import com.metrica.vibely.data.model.dto.AdminDTO;
+
 import java.util.UUID;
 
-import com.metrica.vibely.data.model.dto.AdminDTO;
-import com.metrica.vibely.data.model.dto.UserDTO;
-
 /**
- * 
+ * <h1>Administrator Service</h1>
  * 
  * @since 2023-11-14
  * @version 1.0
+ * @author Alex
  */
 public interface AdminService {
 	
+    /**
+     * Gets an Admininistrator by its id.
+     * 
+     * @param id the id to search
+     * @return the admin DTO
+     * @throws NoSuchElementException in case the admin does not exist
+     */
+    AdminDTO getById(UUID id);
+    
 	/**
-	 * gets admin information by its username
-	 * @param username 
-	 * @return adminDTO
-	 * @throws NoSuchElementException
+	 * Gets an Admininistrator by its username.
+	 * 
+	 * @param username the username to search
+	 * @return the admin DTO
+	 * @throws NoSuchElementException in case the admin does not exist
 	 */
-	AdminDTO getByUsername(String username);	
+	AdminDTO getByUsername(String username);
 	
 	/**
-	 * creates a new admin and adds it to the database
-	 * @param adminDTO
-	 * @return adminDTO
-	 * @throws NoSuchElementException
+	 * Creates a new admin and adds it to the database
+	 * 
+	 * @param adminDTO the admin to create
+	 * @return adminDTO the admin with the id from the database
 	 */
-	AdminDTO create(AdminDTO adminDTO); 
-		
+	AdminDTO create(AdminDTO adminDTO);
+    
 	/**
-	 * updates admins' nickname
-	 * @param desired nickname, apiKey
-	 * @throws NoSuchElementException
-	 */
-	AdminDTO updateNickname(UUID adminId, String nickname);
+     * Creates a new admin and adds it to the database
+     * 
+     * @param adminDTO the admin to create
+     * @return adminDTO the admin with the id from the database
+     * @throws NoSuchElementException in case the admin does not exist
+     */
+    AdminDTO update(AdminDTO adminDTO);
 	
-	/**
-	 * updates admins' username
-	 * @param desired username, apiKey
-	 * @throws NoSuchElementException
-	 */
-	AdminDTO updateUsername(UUID adminId, String username);
-	
-	/**
-	 * updates admins' email
-	 * @param new email, apiKey
-	 * @throws NoSuchElementException
-	 */
-	AdminDTO updateEmail(UUID adminId, String email);
-	
-	/**
-	 * updates admins' password
-	 * @param desired password, apiKey
-	 * @throws NoSuchElementException
-	 */
-	AdminDTO updatePassword(UUID adminId, String password);
+    /**
+     * Deletes an admin given its ID
+     * 
+     * @param id the id to delete
+     * @throws NoSuchElementException in case the admin does not exist
+     */
+	void deleteById(UUID id);
+    
+    /**
+     * Deletes an admin given its username
+     * 
+     * @param username the username to delete
+     * @throws NoSuchElementException
+     */
+    void deleteByUsername(String username);
 	
 	/**
 	 * 
@@ -75,11 +82,5 @@ public interface AdminService {
 	 * @throws NoSuchElementException
 	 */
 	AdminDTO unfollowUser(UUID adminId, UUID followedUserId);
-	
-	/**
-	 * deletes an admin given its username
-	 * @throws NoSuchElementException
-	 */
-	void deleteByUsername(String username);
-	
+
 }

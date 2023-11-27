@@ -1,12 +1,14 @@
 package com.metrica.vibely.data.repository;
 
+import com.metrica.vibely.data.entity.Admin;
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.metrica.vibely.data.entity.Admin;
-
 /**
- * <h1>Admin Repository</h1>
+ * <h1>Administrator Repository</h1>
  * 
  * @since 2023-11-20
  * @version 1.0
@@ -16,11 +18,12 @@ import com.metrica.vibely.data.entity.Admin;
 public interface AdminRepository extends JpaRepository<Admin, java.util.UUID> {
 	
 	/**
-	 * @param username
-	 * @return
-	 * @throws NoSuchElementException
+	 * Find a user by its username.
+	 * 
+	 * @param username the unique username
+	 * @return the user if exist
 	 */
-//	Optional<User> findByUsername(String username);
+	Optional<Admin> findByUsername(String username);
 	
 	/**
 	 * @param username
