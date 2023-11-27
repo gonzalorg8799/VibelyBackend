@@ -46,7 +46,7 @@ public class CreateChatRequest {
 
 //	<<--METHODS-->>
 	public static ChatDTO toChatDTO(CreateChatRequest chat) {
-		ChatDTO chatDto=new ChatDTO();
+		ChatDTO chatDto = new ChatDTO();
 		
 		chatDto.setCreationDate(chat.getCreationDate());
 		chatDto.setType		   (chat.getType());
