@@ -42,8 +42,8 @@ public class PostController {
 	
 //	<<--METHODS-->>
 	@GetMapping("/{id}")
-    public ResponseEntity<PostDTO> getById(@PathVariable String id) {
-        return ResponseEntity.ok(this.postService.getById(UUID.fromString(id)));
+    public ResponseEntity<PostDTO> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(this.postService.getById(id));
     }
 	
 	@PostMapping
@@ -54,7 +54,6 @@ public class PostController {
             BindingResult bindingResult) {	
         if (bindingResult.hasErrors())
             return ResponseEntity.badRequest().build();
-        
         PostDTO postDTO = CreatePostRequest.toPostDTO(createPostRequest);
         PostDTO postDTOResponse = this.postService.create(postDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(postDTOResponse);
@@ -72,8 +71,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable String id) {
-        this.postService.deleteById(UUID.fromString(id));
+    public ResponseEntity<String> deleteById(@PathVariable UUID id) {
+        this.postService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
