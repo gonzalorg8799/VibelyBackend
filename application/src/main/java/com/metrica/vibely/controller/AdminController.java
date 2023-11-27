@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Alex
  */
 @RestController
-@RequestMapping("/api/v1/admin/user")
+@RequestMapping("/api/v1/admin/users")
 public class AdminController {
 
     // <<-FIELD->>
