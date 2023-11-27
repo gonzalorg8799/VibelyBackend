@@ -56,8 +56,10 @@ public class MessageController {
 	}
 	@PutMapping("/{id}")
 	public ResponseEntity<MessageDTO> update(
+			@PathVariable
+			UUID id,
 			@RequestBody 
-			@PathVariable 
+			@Valid
 			CreateMessageRequest createMessage, 
 			BindingResult bindingResult){
 		
