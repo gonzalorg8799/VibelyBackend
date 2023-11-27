@@ -5,14 +5,13 @@ import java.util.UUID;
 import com.metrica.vibely.data.model.dto.UserDTO;
 
 /**
- * 
+ * <h1>User Service</h1>
  * 
  * @since 2023-11-14
  * @version 1.0
+ * @author Raul,
  */
-public interface UserService {
-	
-    UserDTO getById(UUID id);
+public interface UserService extends CrudService<UserDTO, UUID>{
     
     /**
      * gets user information by its username
@@ -21,18 +20,6 @@ public interface UserService {
      * @throws NoSuchElementException
      */
     UserDTO getByUsername(String username);
-    
-    /**
-     * creates a new user and adds it to the database
-     * @param userDTO
-     * @return userDTO
-     * @throws NoSuchElementException
-     */
-    UserDTO create(UserDTO userDTO);
-        
-    UserDTO update(UserDTO UserDTO);
-    
-    void deleteById(UUID id);
     
     /**
      * deletes an user given its username

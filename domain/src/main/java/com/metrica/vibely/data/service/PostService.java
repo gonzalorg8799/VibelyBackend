@@ -14,23 +14,7 @@ import com.metrica.vibely.data.model.enumerator.PostVisibility;
  * @version 1.0
  * @author Daniel,
  */
-public interface PostService {
-
-	/**
-	 * gets post information by its id
-	 * @param postId
-	 * @return PostDTO
-	 * @throws NoSuchElementException
-	 */
-	PostDTO getById(UUID postId);	
-	
-	/**
-	 * creates a new post and adds it to the database
-	 * @param postDTO
-	 * @throws NoSuchElementException
-	 */
-	PostDTO create(PostDTO postDTO); 
-	
+public interface PostService extends CrudService<PostDTO, UUID> {
 	/**
 	 * 
 	 * @param content 
@@ -53,10 +37,6 @@ public interface PostService {
 	 * @throws NoSuchElementException
 	 */
 	PostDTO ChangeVisibility(PostVisibility visibility); 
-	
-	/**
-	 * deletes a post given its Id
-	 * @throws NoSuchElementException
-	 */
+
 	void deleteById(UUID postId);
 }

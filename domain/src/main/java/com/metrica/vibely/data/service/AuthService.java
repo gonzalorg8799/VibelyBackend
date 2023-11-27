@@ -1,5 +1,7 @@
 package com.metrica.vibely.data.service;
 
+import com.metrica.vibely.data.model.dto.AdminDTO;
+
 /**
  * 
  * 
