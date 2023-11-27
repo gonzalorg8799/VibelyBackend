@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-import com.metrica.vibely.data.entity.Chat;
-import com.metrica.vibely.data.entity.Message;
-import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.enumerator.MessageStatus;
 
 /**

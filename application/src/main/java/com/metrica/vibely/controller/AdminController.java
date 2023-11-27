@@ -5,9 +5,9 @@ import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.service.AdminService;
 import com.metrica.vibely.model.request.CreateAdminRequest;
+import com.metrica.vibely.model.request.UpdateAdminRequest;
 import com.metrica.vibely.model.response.BasicInfoResponse;
 import com.metrica.vibely.model.response.CreateAdminResponse;
-import com.metrica.vibely.model.response.UpdateAdminRequest;
 
 import jakarta.validation.Valid;
 import java.util.UUID;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Alex
  */
 @RestController
-@RequestMapping("/api/v1/admin/users")
+@RequestMapping("/api/v1/admin/user")
 public class AdminController {
 
     // <<-FIELD->>
