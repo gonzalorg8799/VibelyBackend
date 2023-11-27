@@ -11,7 +11,7 @@ import com.metrica.vibely.data.model.dto.UserDTO;
  * @since 2023-11-14
  * @version 1.0
  */
-public interface AdminService {
+public interface AdminService extends CrudService<AdminDTO, UUID> {
 	
 	/**
 	 * gets admin information by its username
@@ -20,14 +20,6 @@ public interface AdminService {
 	 * @throws NoSuchElementException
 	 */
 	AdminDTO getByUsername(String username);	
-	
-	/**
-	 * creates a new admin and adds it to the database
-	 * @param adminDTO
-	 * @return adminDTO
-	 * @throws NoSuchElementException
-	 */
-	AdminDTO create(AdminDTO adminDTO); 
 		
 	/**
 	 * updates admins' nickname
@@ -75,11 +67,5 @@ public interface AdminService {
 	 * @throws NoSuchElementException
 	 */
 	AdminDTO unfollowUser(UUID adminId, UUID followedUserId);
-	
-	/**
-	 * deletes an admin given its username
-	 * @throws NoSuchElementException
-	 */
-	void deleteByUsername(String username);
 	
 }

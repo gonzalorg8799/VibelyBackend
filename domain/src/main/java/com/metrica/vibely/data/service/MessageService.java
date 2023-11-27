@@ -13,15 +13,7 @@ import com.metrica.vibely.data.model.dto.UserDTO;
  * @version 1.0
  * @author Daniel,
  */
-public interface MessageService {
-	
-	/**
-	 * gets message information by its content
-	 * @param content 
-	 * @return MessageDTO
-	 * @throws NoSuchElementException
-	 */
-	MessageDTO getById(UUID messageId);
+public interface MessageService extends CrudService<MessageDTO, UUID> {
 
 	/**
 	 * gets message information by its content
@@ -30,15 +22,7 @@ public interface MessageService {
 	 * @throws NoSuchElementException
 	 */
 	MessageDTO getByContent(String content);	
-	
-	/**
-	 * creates a new message and adds it to the database
-	 * @param MessageDTO
-	 * @return MessageDTO
-	 * @throws NoSuchElementException
-	 */
-	MessageDTO create(MessageDTO MessageDTO); 
-		
+
 	/**
 	 * gets Message sender
 	 * @param messageId
@@ -53,13 +37,6 @@ public interface MessageService {
 	 * @return chat
 	 * @throws NoSuchElementException
 	 */
-	ChatDTO getChat(UUID messageId);
-	
-	/**
-	 * deletes a message given its Id
-	 * @throws NoSuchElementException
-	 */
-	void deleteById(UUID messageId);
-	
+	ChatDTO getChat(UUID messageId);	
 
 }

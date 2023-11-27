@@ -16,7 +16,7 @@ import com.metrica.vibely.data.model.enumerator.ChatType;
  * @version 1.0
  * @author Daniel,
  */
-public interface ChatService {
+public interface ChatService extends CrudService<ChatDTO, UUID> {
 
 	/**
 	 * gets chat by member username
@@ -25,14 +25,6 @@ public interface ChatService {
 	 * @throws NoSuchElementException
 	 */
 	ChatDTO getByMember(String username);	
-	
-	/**
-	 * creates a new user and adds it to the database
-	 * @param ChatDTO
-	 * @return ChatDTO
-	 * @throws NoSuchElementException
-	 */
-	ChatDTO create(ChatDTO ChatDto); 
 		
 	/**
 	 * updates chat title
@@ -87,9 +79,4 @@ public interface ChatService {
 	 */
 	Set<Message> getMessages(UUID chatId);
 	
-	/**
-	 * deletes a chat given its Id
-	 * @throws NoSuchElementException
-	 */
-	void deleteById(UUID chatId);
 }
