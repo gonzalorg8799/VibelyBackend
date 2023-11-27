@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/api/v1/message")
+@RequestMapping("/api/v1/messages")
 public class MessageController {
 //	<<--FIELDS-->>
 	private MessageService messageService;
@@ -37,19 +37,20 @@ public class MessageController {
 	}
 //	<<--METHODS-->>
 	@GetMapping("/{id}")
-	public MessageDTO getById(@PathVariable UUID id) {
-		return this.messageService.getById(id);
+	public ResponseEntity<MessageDTO> getById(@PathVariable UUID id) {
+		return ResponseEntity.ok().body(this.messageService.getById(id));
 	}
 	@PostMapping("/create")
 	public ResponseEntity<MessageDTO> create(
 			@RequestBody 
-			@Valid 
+			//TODO arreglar validaciones
+//			@Valid
 			CreateMessageRequest createMessage,
 			BindingResult bindingResult){
 		
 		if(bindingResult.hasErrors())return ResponseEntity.badRequest().build();
 	
-		MessageDTO messageDto = CreateMessageRequest.toMessageDTO(createMessage);
+		MessageDTO messageDto = createMessage.toDto();
 		MessageDTO message = this.messageService.create(messageDto);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
@@ -65,7 +66,8 @@ public class MessageController {
 		
 		if(bindingResult.hasErrors())return ResponseEntity.badRequest().build();
 		
-		MessageDTO messageDto = CreateMessageRequest.toMessageDTO(createMessage);
+		MessageDTO messageDto = createMessage.toDto();
+		messageDto.setMessageId(id);
 		MessageDTO message = this.messageService.update(messageDto);
 		
 		return ResponseEntity.ok(message);
