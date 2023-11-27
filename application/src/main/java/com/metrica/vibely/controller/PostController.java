@@ -59,13 +59,16 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postDTOResponse);
     }
 	
-	@PutMapping
+	@PutMapping("/{id}")
     public ResponseEntity<PostDTO> update(
+    		@PathVariable
+    		UUID id,
     		@RequestBody
     		@Valid 
     		CreatePostRequest createPostRequest, 
     		BindingResult bindingResult) {
 		PostDTO postDTO = CreatePostRequest.toPostDTO(createPostRequest);
+		postDTO.setPostId(id);
 		PostDTO postDTOResponse = this.postService.update(postDTO);
         return ResponseEntity.ok(postDTOResponse);
     }
