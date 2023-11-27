@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.service.PostService;
 import com.metrica.vibely.model.request.CreatePostRequest;
+import com.metrica.vibely.model.response.CreatePostResponse;
 
 import jakarta.validation.Valid;
 
@@ -47,7 +48,7 @@ public class PostController {
     }
 	
 	@PostMapping
-    public ResponseEntity<PostDTO> create(
+    public ResponseEntity<CreatePostResponse> create(
             @RequestBody
             @Valid
             CreatePostRequest createPostRequest,
@@ -55,8 +56,8 @@ public class PostController {
         if (bindingResult.hasErrors())
             return ResponseEntity.badRequest().build();
         PostDTO postDTO = CreatePostRequest.toPostDTO(createPostRequest);
-        PostDTO postDTOResponse = this.postService.create(postDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(postDTOResponse);
+        CreatePostResponse response = CreatePostResponse.toPostResponse(this.postService.create(postDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 	
 	@PutMapping("/{id}")
