@@ -15,9 +15,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.metrica.vibely.data.model.dto.AdminDTO;
 import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.service.AdminService;
 import com.metrica.vibely.data.service.UserService;
+import com.metrica.vibely.model.request.CreateAdminRequest;
 import com.metrica.vibely.model.request.CreateUserRequest;
+import com.metrica.vibely.model.request.UpdateAdminRequest;
+import com.metrica.vibely.model.request.UpdateUserRequest;
+import com.metrica.vibely.model.response.BasicInfoResponse;
+import com.metrica.vibely.model.response.CreateAdminResponse;
+import com.metrica.vibely.model.response.CreateUserResponse;
 
 import jakarta.validation.Valid;
 
@@ -38,41 +48,75 @@ public class UserController {
         this.userService = userService;
     }
 
-//     <<-METHODS->>
+    // <<-METHODS->>
     @GetMapping("/{id}")
-    public UserDTO getById(@PathVariable UUID id) {
-        return this.userService.getById(id);
+    public ResponseEntity<BasicInfoResponse> getById(@PathVariable UUID id) {
+        UserDTO userDTO = this.userService.getById(id);
+        
+        if (userDTO.getState() != UserState.DISABLED) {
+            return ResponseEntity.ok()
+                    .body(new BasicInfoResponse().generateResponse(userDTO));
+        }
+        
+        return ResponseEntity.notFound().build();
     }
-    
-    @GetMapping("/{username}")
-    public UserDTO getByUsername(@PathVariable String username) {
-        return this.userService.getByUsername(username);
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<BasicInfoResponse> getByUsername(@PathVariable String username) {
+        UserDTO userDTO = this.userService.getByUsername(username);
+        
+        if (userDTO.getState()   != UserState.DISABLED &&
+            userDTO.getPrivacy() == PrivacyType.PUBLIC) {
+            return ResponseEntity.ok().body(new BasicInfoResponse().generateResponse(userDTO));
+        }
+        
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDTO> create(
+    public ResponseEntity<CreateUserResponse> create(
             @RequestBody
             @Valid
-            CreateUserRequest createUser,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
+            CreateUserRequest userRequest,
+            BindingResult bindingResult
+    ) {
+        
+        if (bindingResult.hasErrors()) {
+            // TODO: This is only for debug the validation errors. DELETE LATER!!
+            bindingResult.getAllErrors().forEach(System.err::println);
+            
             return ResponseEntity.badRequest().build();
-        UserDTO userDto = CreateUserRequest.toUserDTO(createUser);
-        UserDTO user = this.userService.create(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        }
+        
+        UserDTO userDTO = this.userService.create(userRequest.toUserDTO());
+        return ResponseEntity.ok()
+                .body(new CreateUserResponse().generateResponse(userDTO));
     }
 
-    @PutMapping("/{username}")
-    public ResponseEntity<UserDTO> modifyByUsername(@RequestBody @Valid CreateUserRequest createUser, BindingResult bindingResult) {
-        UserDTO userDto = CreateUserRequest.toUserDTO(createUser);
-        UserDTO user = this.userService.update(userDto);
-        return ResponseEntity.ok(user);
+    @PutMapping("/{id}")
+    public ResponseEntity<CreateUserResponse> updateById(
+            @PathVariable
+            UUID id,
+            @RequestBody
+            @Valid
+            UpdateUserRequest userRequest,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        UserDTO userDTO = userRequest.toDTO();
+        userDTO.setUserId(id);
+        
+        UserDTO updatedDTO = this.userService.update(userDTO);
+        return ResponseEntity.ok()
+                .body(new CreateUserResponse().generateResponse(updatedDTO));
     }
 
-    @DeleteMapping("/{username}")
-    public ResponseEntity<String> deleteByUsername(@PathVariable String username) {
-        this.userService.deleteByUsername(username);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
+        this.userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
 }

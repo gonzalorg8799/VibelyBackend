@@ -11,6 +11,7 @@ import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.UserMapper;
+import com.metrica.vibely.data.entity.Admin;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.UserService;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     // <<-METHODS->>
     @Override
     public UserDTO getById(UUID id) {
-        return UserMapper.toDTO(userRepository.findById(id).get());
+        return UserMapper.toDTO(userRepository.findById(id).orElseThrow());
     }
 	
 	@Override
@@ -119,7 +120,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteById(UUID id) {
-		userRepository.deleteById(id);
+        User user = this.userRepository.findById(id).orElseThrow();
+        user.setState(UserState.DISABLED);
+        this.userRepository.save(user);
 	}
 	
 }
