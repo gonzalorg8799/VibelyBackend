@@ -1,6 +1,7 @@
 package com.metrica.vibely.model.request;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.metrica.vibely.data.entity.User;
@@ -18,7 +19,7 @@ public class CreateChatRequest {
 	@NotNull
 	@NotBlank
 	private String title;
-	private Set<User> participants;
+	private Set<UUID> participants;
 	
 //	<<--CONSTRUCTOR-->>
 	public CreateChatRequest() {
@@ -30,9 +31,7 @@ public class CreateChatRequest {
 		ChatDTO chatDto = new ChatDTO();
 		
 		chatDto.setTitle	   (this.getTitle());
-		chatDto.setParticipants(this.getParticipants().stream()
-													  .map(p -> p.getUserId())
-													  .collect(Collectors.toSet()));
+		chatDto.setParticipants(this.getParticipants());
 		return chatDto;
 	}
 //	<<--GETTERS & SETTERS-->>
@@ -45,11 +44,11 @@ public class CreateChatRequest {
 		this.title = title;
 	}
 
-	public Set<User> getParticipants() {
+	public Set<UUID> getParticipants() {
 		return participants;
 	}
 
-	public void setParticipants(Set<User> participants) {
+	public void setParticipants(Set<UUID> participants) {
 		this.participants = participants;
 	}
 

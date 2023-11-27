@@ -69,7 +69,7 @@ public class ChatController {
 	@PostMapping("/newchat")
 	public ResponseEntity<CreateChatResponse> create(
 			@RequestBody
-			@Valid
+//			@Valid
 			CreateChatRequest chatRequest,
 			BindingResult bindingResult
 		) {
