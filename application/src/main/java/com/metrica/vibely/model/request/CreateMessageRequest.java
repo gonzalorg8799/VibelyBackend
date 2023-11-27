@@ -43,14 +43,14 @@ public class CreateMessageRequest {
 	}
 
 //	<<--METHODS-->>
-	public static MessageDTO toMessageDTO(CreateMessageRequest message) {
+	public  MessageDTO toDto() {
 		MessageDTO messageDto = new MessageDTO();
 		
-		messageDto.setCreationTimestamp(message.getCreationTimestamp());
-		messageDto.setStatus		   (message.getStatus());
-		messageDto.setContent		   (message.getContent());
-//		messageDto.setChat			   (message.getChat());
-//		messageDto.setSender           (message.getSender());
+		messageDto.setCreationTimestamp(this.getCreationTimestamp());
+		messageDto.setStatus		   (this.getStatus());
+		messageDto.setContent		   (this.getContent());
+		messageDto.setChat			   (this.getChat().getChatId());
+		messageDto.setSender           (this.getSender().getUserId());
 		
 		return messageDto;
 	}
