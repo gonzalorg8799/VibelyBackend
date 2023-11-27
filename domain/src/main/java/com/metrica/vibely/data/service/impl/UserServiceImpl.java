@@ -1,7 +1,9 @@
 package com.metrica.vibely.data.service.impl;
 	
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.UserMapper;
+import com.metrica.vibely.data.entity.Chat;
+import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.UserService;		
@@ -91,13 +95,24 @@ public class UserServiceImpl implements UserService {
 		return UserMapper.toDTO(user);
 	}
 	
-	public UserDTO update(UserDTO userDto) {
-		userDto.setNickname(updateNickname(userDto.getUserId(), userDto.getNickname()).getNickname());
-		userDto.setUsername(updateUsername(userDto.getUserId(), userDto.getUsername()).getUsername());
-		userDto.setEmail   (updateEmail   (userDto.getUserId(), userDto.getEmail())   .getEmail());
-		userDto.setPassword(updatePassword(userDto.getUserId(), userDto.getPassword()).getPassword());
+	public UserDTO update(UUID userId, UserDTO newUserDto) {
+		UserDTO userDto = UserMapper.toDTO(userRepository.findById(userId).get()) ; 
 		
-		return UserMapper.toDTO(userRepository.save(UserMapper.toEntity(userDto, null, null, null, null, null, null))) ;
+
+		userDto.setNickname(updateNickname(userId, newUserDto.getNickname()).getNickname());
+		userDto.setUsername(updateUsername(userId, newUserDto.getUsername()).getUsername());
+		userDto.setEmail   (updateEmail   (userId, newUserDto.getEmail())   .getEmail());
+		userDto.setPassword(updatePassword(userId, newUserDto.getPassword()).getPassword());
+		
+		User user = userRepository.findById(userId).get();
+		
+		Set<User> followers = user.getFollowers();
+		Set<User> following = user.getFollowing();
+		Set<Post> posts = user.getPosts();
+		Set<Chat> chats = user.getChats();
+		
+		return UserMapper.toDTO(userRepository.save(UserMapper.toEntity(userDto, followers, following, posts, chats))); 
+
 	}
 
 	@Override
