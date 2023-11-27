@@ -88,5 +88,17 @@ public class ChatServiceImpl implements ChatService {
         // TODO Auto-generated method stub
         
     }
+
+	@Override
+	public ChatDTO getById(UUID id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ChatDTO update(ChatDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
