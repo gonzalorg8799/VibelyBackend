@@ -29,14 +29,14 @@ public interface PostService extends CrudService<PostDTO, UUID> {
 	 * @param status
 	 * @throws NoSuchElementException
 	 */
-	PostDTO ChangeStatus(PostStatus status); 
+	PostDTO changeStatus(PostStatus status); 
 	
 	/**
 	 * changes post visibility
 	 * @param visibility
 	 * @throws NoSuchElementException
 	 */
-	PostDTO ChangeVisibility(PostVisibility visibility); 
+	PostDTO changeVisibility(PostVisibility visibility); 
 
 	void deleteById(UUID postId);
 }
