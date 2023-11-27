@@ -50,9 +50,6 @@ public class UserServiceImpl implements UserService {
 		user.setStatus		(UserStatus.ONLINE);
 		user.setLogins		(1);
 		user.setLastConnDate(LocalDateTime.now());
-		user.setFollowers	(null);
-        user.setFollowing	(null);
-        user.setChats		(null);
         user.setPassword	(userParam.getPassword());
         
 		return UserMapper.toDTO(userRepository.save(user));
