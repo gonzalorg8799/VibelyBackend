@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.UserDTO;
-import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.service.UserService;
 import com.metrica.vibely.model.request.CreateUserRequest;
 
@@ -40,19 +38,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    // <<-METHODS->>
-//    @GetMapping("/{id}")
-//    public UserDTO getUserById(@PathVariable UUID id) {
-//        return this.userService.getByUsername(username);
-//    }
+//     <<-METHODS->>
+    @GetMapping("/{id}")
+    public UserDTO getById(@PathVariable UUID id) {
+        return this.userService.getById(id);
+    }
     
     @GetMapping("/{username}")
-    public UserDTO getUserByUsername(@PathVariable String username) {
+    public UserDTO getByUsername(@PathVariable String username) {
         return this.userService.getByUsername(username);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDTO> crearUsuario(
+    public ResponseEntity<UserDTO> create(
             @RequestBody
             @Valid
             CreateUserRequest createUser,
@@ -65,14 +63,14 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<UserDTO> modifyUserByUsername(@RequestBody @Valid CreateUserRequest createUser, BindingResult bindingResult) {
+    public ResponseEntity<UserDTO> modifyByUsername(@RequestBody @Valid CreateUserRequest createUser, BindingResult bindingResult) {
         UserDTO userDto = CreateUserRequest.toUserDTO(createUser);
         UserDTO user = this.userService.update(userDto);
         return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{username}")
-    public ResponseEntity<String> deleteUserByUsername(@PathVariable String username) {
+    public ResponseEntity<String> deleteByUsername(@PathVariable String username) {
         this.userService.deleteByUsername(username);
         return ResponseEntity.noContent().build();
     }
