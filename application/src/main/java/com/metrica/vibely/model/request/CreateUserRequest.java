@@ -1,7 +1,6 @@
 package com.metrica.vibely.model.request;
 
 
-import com.metrica.vibely.data.model.dto.AdminDTO;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.util.PasswordHasher;
 
@@ -24,14 +23,14 @@ public class CreateUserRequest {
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d@$!%^*#&]{12,}$")
+    //@Pattern(regexp = "^(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d@$!%^*#&]{12,}$")
     private String password;
 
-    @Pattern(regexp = "[a-zA-Z_-\\d]*")
+    //@Pattern(regexp = "[a-zA-Z_-\\d]*")
     @NotBlank
     private String nickname;
 
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
+    //@Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
     @NotNull
     @NotBlank
     private String email;

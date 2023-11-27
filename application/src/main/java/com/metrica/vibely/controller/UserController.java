@@ -36,7 +36,7 @@ import jakarta.validation.Valid;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     // <<-FIELDS->>
@@ -115,7 +115,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
+    public ResponseEntity<Object> deleteById(@PathVariable UUID id) {
         this.userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
