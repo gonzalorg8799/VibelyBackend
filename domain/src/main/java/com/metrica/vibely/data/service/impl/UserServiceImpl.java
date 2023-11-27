@@ -95,23 +95,25 @@ public class UserServiceImpl implements UserService {
 		return UserMapper.toDTO(user);
 	}
 	
-	public UserDTO update(UUID userId, UserDTO newUserDto) {
-		UserDTO userDto = UserMapper.toDTO(userRepository.findById(userId).get()) ; 
+	public UserDTO update(UserDTO newUserDto) {
+		UserDTO userDto = UserMapper.toDTO(userRepository.findById(newUserDto.getUserId()).get()) ; 
 		
 
-		userDto.setNickname(updateNickname(userId, newUserDto.getNickname()).getNickname());
-		userDto.setUsername(updateUsername(userId, newUserDto.getUsername()).getUsername());
-		userDto.setEmail   (updateEmail   (userId, newUserDto.getEmail())   .getEmail());
-		userDto.setPassword(updatePassword(userId, newUserDto.getPassword()).getPassword());
+		userDto.setNickname(updateNickname(userDto.getUserId(), newUserDto.getNickname()).getNickname());
+		userDto.setUsername(updateUsername(userDto.getUserId(), newUserDto.getUsername()).getUsername());
+		userDto.setEmail   (updateEmail   (userDto.getUserId(), newUserDto.getEmail())   .getEmail());
+		userDto.setPassword(updatePassword(userDto.getUserId(), newUserDto.getPassword()).getPassword());
 		
-		User user = userRepository.findById(userId).get();
+		User user = userRepository.findById(newUserDto.getUserId()).get();
 		
 		Set<User> followers = user.getFollowers();
 		Set<User> following = user.getFollowing();
 		Set<Post> posts = user.getPosts();
 		Set<Chat> chats = user.getChats();
+		Set<Post> likes = user.getLikes();
+		Set<Post> saves = user.getSaves();
 		
-		return UserMapper.toDTO(userRepository.save(UserMapper.toEntity(userDto, followers, following, posts, chats))); 
+		return UserMapper.toDTO(userRepository.save(UserMapper.toEntity(userDto, followers, following, posts, chats, likes, saves))); 
 
 	}
 
