@@ -1,25 +1,37 @@
 package com.metrica.vibely.data.model.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.metrica.vibely.data.entity.Admin;
 import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.AdminDTO;
-import com.metrica.vibely.data.model.dto.UserDTO;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
+ * <h1>Administrator Mapper</h1>
+ * 
  * @since 2023-11-22
- * @author Adrian
  * @version 1.0
- *
+ * @author Adrian, Alex
  */
 public class AdminMapper {
 
+    /**
+     * Convert a DTO into an entity
+     * 
+     * @param adminDTO
+     * @param followers
+     * @param following
+     * @param posts
+     * @param chats
+     * @param likes
+     * @param saves
+     * @return
+     */
 	public static Admin toEntity(
-			AdminDTO adminDTO, 
+	        AdminDTO adminDTO, 
 			Set<User> followers,
 			Set<User> following,
 			Set<Post> posts, 
@@ -27,7 +39,7 @@ public class AdminMapper {
 			Set<Post> likes,
 			Set<Post> saves) 
 	{
-        Admin admin = new Admin();
+	    Admin admin = new Admin();
 
         // Mapping Basics
         admin.setUserId	 	 (adminDTO.getUserId());
@@ -44,16 +56,22 @@ public class AdminMapper {
         admin.setBlockedDate (adminDTO.getBlockedDate());
 
         // Mapping Relations
-        admin.setFollowers   (followers);
-        admin.setFollowing   (following);
-        admin.setPosts	     (posts);
-        admin.setChats       (chats);
-        admin.setLikes       (likes);
-        admin.setSaves       (saves);
+        admin.setFollowers(followers);
+        admin.setFollowing(following);
+        admin.setPosts	  (posts);
+        admin.setChats    (chats);
+        admin.setLikes    (likes);
+        admin.setSaves    (saves);
 
         return admin;
     }
 
+	/**
+	 * Convert an entity into a DTO
+	 * 
+	 * @param admin entity
+	 * @return the admin DTO
+	 */
     public static AdminDTO toDTO(Admin admin) {
         AdminDTO adminDTO = new AdminDTO();
 
@@ -72,30 +90,32 @@ public class AdminMapper {
         adminDTO.setBlockedDate (admin.getBlockedDate());
 
         // Mapping Relations
-        adminDTO.setFollowers	(admin.getFollowers().stream()
-					               	  .map(User::getUserId)
-					                  .collect(Collectors.toSet()));
-
-        adminDTO.setFollowing	(admin.getFollowing().stream()
-					                  .map(User::getUserId)
-					                  .collect(Collectors.toSet()));
-
-        adminDTO.setPosts	 	(admin.getPosts().stream()
-					                  .map(Post::getPostId)
-					                  .collect(Collectors.toSet()));
-
-        adminDTO.setChats	 	(admin.getChats().stream()
-					                  .map(Chat::getChatId)
-					                  .collect(Collectors.toSet()));
-        
-        adminDTO.setLikes	 	(admin.getLikes().stream()
-					                  .map(Post::getPostId)
-					                  .collect(Collectors.toSet()));
-        
-        adminDTO.setSaves	 	(admin.getSaves().stream()
-					                  .map(Post::getPostId)
-					                  .collect(Collectors.toSet()));
+        adminDTO.setFollowers(admin.getFollowers()
+                .stream()
+                .map(User::getUserId)
+                .collect(Collectors.toSet()));
+        adminDTO.setFollowing(admin.getFollowing()
+                .stream()
+                .map(User::getUserId)
+                .collect(Collectors.toSet()));
+        adminDTO.setPosts(admin.getPosts()
+                .stream()
+                .map(Post::getPostId)
+                .collect(Collectors.toSet()));
+        adminDTO.setChats(admin.getChats()
+                .stream()
+                .map(Chat::getChatId)
+                .collect(Collectors.toSet()));
+        adminDTO.setLikes(admin.getLikes()
+                .stream()
+                .map(Post::getPostId)
+                .collect(Collectors.toSet()));
+        adminDTO.setSaves(admin.getSaves()
+                .stream()
+                .map(Post::getPostId)
+                .collect(Collectors.toSet()));
 
         return adminDTO;
     }
+
 }

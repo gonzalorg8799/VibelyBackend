@@ -23,12 +23,20 @@ import com.metrica.vibely.data.util.PasswordHasher;
 @Service
 public class UserServiceImpl implements UserService {
 	
+    // <<-FIELD->>
 	private UserRepository userRepository;
-	
+
+    // <<-CONSTRUCTOR->>
 	@Autowired
 	public UserServiceImpl(final UserRepository userRepostory) {
 		this.userRepository = userRepostory;
 	}
+
+    // <<-METHODS->>
+    @Override
+    public UserDTO getById(UUID id) {
+        return UserMapper.toDTO(userRepository.findById(id).get());
+    }
 	
 	@Override
 	public UserDTO getByUsername(final String username) {
@@ -41,6 +49,7 @@ public class UserServiceImpl implements UserService {
 	    userRepository.deleteByUsername(username);
 	}
 
+	
 	@Override
 	public UserDTO create(final UserDTO userParam) {
 		User user = UserMapper.toEntity(userParam, null, null, null, null, null, null);
@@ -109,12 +118,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO getById(UUID id) {
-		return UserMapper.toDTO(userRepository.findById(id).get());
-	}
-
-	@Override
 	public void deleteById(UUID id) {
 		userRepository.deleteById(id);
 	}
+	
 }
