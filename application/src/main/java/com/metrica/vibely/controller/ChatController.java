@@ -42,11 +42,11 @@ public class ChatController {
 		return chatService.getById(chatId);
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<ChatDTO> updateById(
-			@RequestBody @Valid 
-			CreateChatRequest chat, 
-			BindingResult bindingResult) {
-		
-	}
+//	@PutMapping("/{id}")
+//	public ResponseEntity<ChatDTO> updateById(
+//			@RequestBody @Valid 
+//			CreateChatRequest chat, 
+//			BindingResult bindingResult) {
+//		
+//	}
 }
