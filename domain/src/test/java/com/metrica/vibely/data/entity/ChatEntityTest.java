@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @version 1.0
  * @author Alex
  */
-public class ChatEntityTest {
+class ChatEntityTest {
 
     // <<-CONSTANTS->>
     private static final String TITLE = "Title";

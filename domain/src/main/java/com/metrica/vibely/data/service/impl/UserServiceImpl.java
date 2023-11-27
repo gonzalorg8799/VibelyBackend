@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO create(final UserDTO userParam) {
-		User user = UserMapper.toEntity(userParam, null, null, null, null);
+		User user = UserMapper.toEntity(userParam, null, null, null, null, null, null);
 		
 		user.setState		(UserState.ENABLED);
 		user.setStatus		(UserStatus.ONLINE);
@@ -98,6 +98,7 @@ public class UserServiceImpl implements UserService {
 	public UserDTO update(UUID userId, UserDTO newUserDto) {
 		UserDTO userDto = UserMapper.toDTO(userRepository.findById(userId).get()) ; 
 		
+
 		userDto.setNickname(updateNickname(userId, newUserDto.getNickname()).getNickname());
 		userDto.setUsername(updateUsername(userId, newUserDto.getUsername()).getUsername());
 		userDto.setEmail   (updateEmail   (userId, newUserDto.getEmail())   .getEmail());
@@ -111,6 +112,7 @@ public class UserServiceImpl implements UserService {
 		Set<Chat> chats = user.getChats();
 		
 		return UserMapper.toDTO(userRepository.save(UserMapper.toEntity(userDto, followers, following, posts, chats))); 
+
 	}
 
 	@Override

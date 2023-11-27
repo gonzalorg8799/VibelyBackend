@@ -86,8 +86,10 @@ class UserMapperTest {
         Set<User> following = new HashSet<>();
         Set<Post> posts = new HashSet<>();
         Set<Chat> chats = new HashSet<>();
+        Set<Post> likes = new HashSet<>();
+        Set<Post> saves = new HashSet<>();
 
-        User user = UserMapper.toEntity(userDTO, followers, following, posts, chats);
+        User user = UserMapper.toEntity(userDTO, followers, following, posts, chats, likes, saves);
 
         assertEquals(userDTO.getUserId(), user.getUserId());
         assertEquals(userDTO.getUsername(), user.getUsername());
@@ -107,6 +109,8 @@ class UserMapperTest {
         assertEquals(following, user.getFollowing());
         assertEquals(posts, user.getPosts());
         assertEquals(chats, user.getChats());
+        assertEquals(likes, user.getLikes());
+        assertEquals(saves, user.getSaves());
     
     }
 

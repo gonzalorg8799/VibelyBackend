@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @version 1.0
  * @author Alex
  */
-public class UserEntityTest {
+class UserEntityTest {
 
     // <<-CONSTANTS->>
     private static final String USERNAME = "jdoe";
@@ -49,6 +49,8 @@ public class UserEntityTest {
         Set<User> following = new HashSet<>();
         Set<Post> posts     = new HashSet<>();
         Set<Chat> chats     = new HashSet<>();
+        Set<Post> likes     = new HashSet<>();
+        Set<Post> saves     = new HashSet<>();
         
         User user = new User();
 
@@ -67,22 +69,26 @@ public class UserEntityTest {
         user.setFollowing   (following);
         user.setPosts       (posts);
         user.setChats       (chats);
+        user.setLikes       (likes);
+        user.setSaves       (saves);
 
-        assertEquals(userId,       user.getUserId());
-        assertEquals(USERNAME,     user.getUsername());
-        assertEquals(PASSWORD,     user.getPassword());
-        assertEquals(NICKNAME,     user.getNickname());
-        assertEquals(EMAIL,        user.getEmail());
-        assertEquals(STATE,        user.getState());
-        assertEquals(PRIVACY,      user.getPrivacy());
-        assertEquals(STATUS,       user.getStatus());
-        assertEquals(LOGINS,       user.getLogins());
+        assertEquals(userId,         user.getUserId());
+        assertEquals(USERNAME,       user.getUsername());
+        assertEquals(PASSWORD,       user.getPassword());
+        assertEquals(NICKNAME,       user.getNickname());
+        assertEquals(EMAIL,          user.getEmail());
+        assertEquals(STATE,          user.getState());
+        assertEquals(PRIVACY,        user.getPrivacy());
+        assertEquals(STATUS,         user.getStatus());
+        assertEquals(LOGINS,         user.getLogins());
         assertEquals(LAST_CONN_DATE, user.getLastConnDate());
-        assertEquals(BLOCKED_DATE,  user.getBlockedDate());
-        assertEquals(followers,    user.getFollowers());
-        assertEquals(following,    user.getFollowing());
-        assertEquals(posts,        user.getPosts());
-        assertEquals(chats,        user.getChats());
+        assertEquals(BLOCKED_DATE,   user.getBlockedDate());
+        assertEquals(followers,      user.getFollowers());
+        assertEquals(following,      user.getFollowing());
+        assertEquals(posts,          user.getPosts());
+        assertEquals(chats,          user.getChats());
+        assertEquals(likes,          user.getLikes());
+        assertEquals(saves,          user.getSaves());
     }
     
     @Test
@@ -93,6 +99,8 @@ public class UserEntityTest {
         Set<User> following = new HashSet<>();
         Set<Post> posts     = new HashSet<>();
         Set<Chat> chats     = new HashSet<>();
+        Set<Post> likes     = new HashSet<>();
+        Set<Post> saves     = new HashSet<>();
         
         User user = new User(
                 userId,
@@ -110,7 +118,9 @@ public class UserEntityTest {
                 followers,
                 following,
                 posts,
-                chats);
+                chats,
+                likes,
+                saves);
 
         assertEquals(userId,         user.getUserId());
         assertEquals(USERNAME,       user.getUsername());
@@ -127,6 +137,8 @@ public class UserEntityTest {
         assertEquals(following,      user.getFollowing());
         assertEquals(posts,          user.getPosts());
         assertEquals(chats,          user.getChats());
+        assertEquals(likes,          user.getLikes());
+        assertEquals(saves,          user.getSaves());
     }
 
     @Test

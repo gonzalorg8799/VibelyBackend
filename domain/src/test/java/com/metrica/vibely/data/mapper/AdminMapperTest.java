@@ -94,8 +94,10 @@ class AdminMapperTest {
         Set<User> following = new HashSet<>();
         Set<Post> posts = new HashSet<>();
         Set<Chat> chats = new HashSet<>();
+        Set<Post> likes = new HashSet<>();
+        Set<Post> saves = new HashSet<>();
 
-        Admin admin = AdminMapper.toEntity(adminDTO, followers, following, posts, chats);
+        Admin admin = AdminMapper.toEntity(adminDTO, followers, following, posts, chats, likes, saves);
 
         assertEquals(adminDTO.getUserId(), admin.getUserId());
         assertEquals(adminDTO.getUsername(), admin.getUsername());
@@ -114,6 +116,9 @@ class AdminMapperTest {
         assertEquals(following, admin.getFollowing());
         assertEquals(posts, admin.getPosts());
         assertEquals(chats, admin.getChats());
+        assertEquals(chats, admin.getChats());
+        assertEquals(likes, admin.getLikes());
+        assertEquals(saves, admin.getSaves());
         
     }
 
@@ -126,11 +131,15 @@ class AdminMapperTest {
         Set<User> following = new HashSet<>();
         Set<Post> posts = new HashSet<>();
         Set<Chat> chats = new HashSet<>();
+        Set<Post> likes = new HashSet<>();
+        Set<Post> saves = new HashSet<>();
 
         admin.setFollowers(followers);
         admin.setFollowing(following);
         admin.setPosts(posts);
         admin.setChats(chats);
+        admin.setLikes(likes);
+        admin.setSaves(saves);
         		
         AdminDTO adminDTO = AdminMapper.toDTO(admin);
 
@@ -148,21 +157,34 @@ class AdminMapperTest {
         assertEquals(admin.getBlockedDate(), adminDTO.getBlockedDate());
         
         assertEquals(followers.stream()
-        		.map(User::getUserId)
-        		.collect(Collectors.toSet()), 
-        		adminDTO.getFollowers());
+			        		  .map(User::getUserId)
+			        		  .collect(Collectors.toSet()), 
+			         adminDTO.getFollowers());
+        
         assertEquals(following.stream()
-        		.map(User::getUserId)
-        		.collect(Collectors.toSet()),
-        		adminDTO.getFollowing());
+			        		  .map(User::getUserId)
+			        		  .collect(Collectors.toSet()),
+        		     adminDTO.getFollowing());
+        
         assertEquals(posts.stream()
-        		.map(Post::getPostId)
-        		.collect(Collectors.toSet()),
-        		adminDTO.getPosts());
+		        		  .map(Post::getPostId)
+		        		  .collect(Collectors.toSet()),
+        		     adminDTO.getPosts());
+        
         assertEquals(chats.stream()
-        		.map(Chat::getChatId)
-        		.collect(Collectors.toSet()),
-        		adminDTO.getChats());
+        			      .map(Chat::getChatId)
+        			      .collect(Collectors.toSet()),
+        		     adminDTO.getChats());
+        
+        assertEquals(likes.stream()
+					      .map(Post::getPostId)
+					      .collect(Collectors.toSet()),
+		             adminDTO.getLikes());
+        
+        assertEquals(posts.stream()
+					      .map(Post::getPostId)
+					      .collect(Collectors.toSet()),
+					 adminDTO.getPosts());
  
         
     }

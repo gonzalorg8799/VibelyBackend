@@ -50,6 +50,9 @@ class UserDTOTest {
         Set<UUID> following = new HashSet<>();
         Set<UUID> posts     = new HashSet<>();
         Set<UUID> chats     = new HashSet<>();
+        Set<UUID> likes     = new HashSet<>();
+        Set<UUID> saves     = new HashSet<>();
+
         
         UserDTO user = new UserDTO();
 
@@ -69,6 +72,9 @@ class UserDTOTest {
         user.setFollowing   (following);
         user.setPosts       (posts);
         user.setChats       (chats);
+        user.setLikes       (likes);
+        user.setSaves       (saves);
+
 
         assertEquals(userId,         user.getUserId());
         assertEquals(USERNAME,       user.getUsername());
@@ -86,6 +92,9 @@ class UserDTOTest {
         assertEquals(following,      user.getFollowing());
         assertEquals(posts,          user.getPosts());
         assertEquals(chats,          user.getChats());
+        assertEquals(likes,          user.getLikes());
+        assertEquals(saves,          user.getSaves());
+       
     }
     
     @Test
@@ -96,6 +105,8 @@ class UserDTOTest {
         Set<UUID> following = new HashSet<>();
         Set<UUID> posts     = new HashSet<>();
         Set<UUID> chats     = new HashSet<>();
+        Set<UUID> likes     = new HashSet<>();
+        Set<UUID> saves     = new HashSet<>();
         
         UserDTO user = new UserDTO(
                 userId,
@@ -113,7 +124,9 @@ class UserDTOTest {
                 followers,
                 following,
                 posts, 
-                chats);
+                chats,
+                likes,
+                saves);
 
         assertEquals(userId,         user.getUserId());
         assertEquals(NICKNAME,       user.getNickname());
@@ -131,6 +144,8 @@ class UserDTOTest {
         assertEquals(following,      user.getFollowing());
         assertEquals(posts,          user.getPosts());
         assertEquals(chats,          user.getChats());
+        assertEquals(likes,          user.getChats());
+        assertEquals(saves,          user.getChats());
     }
     
 
