@@ -49,8 +49,8 @@ public class CreateMessageRequest {
 		messageDto.setCreationTimestamp(message.getCreationTimestamp());
 		messageDto.setStatus		   (message.getStatus());
 		messageDto.setContent		   (message.getContent());
-//		messageDto.setChat			   (message.getChat());
-//		messageDto.setSender           (message.getSender());
+		messageDto.setChat			   (message.getChat().getChatId());
+		messageDto.setSender           (message.getSender().getUserId());
 		
 		return messageDto;
 	}
