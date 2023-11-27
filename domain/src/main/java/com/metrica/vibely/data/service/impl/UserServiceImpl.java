@@ -1,18 +1,16 @@
 package com.metrica.vibely.data.service.impl;
 	
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.UserMapper;
-import com.metrica.vibely.data.entity.Chat;
-import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.UserService;		
@@ -50,69 +48,23 @@ public class UserServiceImpl implements UserService {
 		user.setStatus		(UserStatus.ONLINE);
 		user.setLogins		(1);
 		user.setLastConnDate(LocalDateTime.now());
-		user.setFollowers	(null);
-        user.setFollowing	(null);
-        user.setChats		(null);
         user.setPassword	(userParam.getPassword());
         
 		return UserMapper.toDTO(userRepository.save(user));
 	}
 
-	private UserDTO updateUsername(final UUID userId, final String username) {
-		User user = userRepository.findById(userId)
-								  .orElseThrow();
-
-		if(!username.equals(user.getUsername()) && username != null) { user.setUsername(username); } 
-
-		return UserMapper.toDTO(user);
-	}
-	
-	private UserDTO updateNickname(final UUID userId, final String nickname) {
-		User user = userRepository.findById(userId)
-								  .orElseThrow();
-
-		if(!nickname.equals(user.getNickname()) && nickname != null) { user.setNickname(nickname); }  
-		
-		return UserMapper.toDTO(user);
-	}
-	
-	private UserDTO updateEmail(final UUID userId, final String email) {
-		User user = userRepository.findById(userId)
-								  .orElseThrow();
-
-		if(!email.equals(user.getEmail()) && email != null) { user.setEmail(email); } 
-		
-		return UserMapper.toDTO(user);
-	}
-	
-	private UserDTO updatePassword(final UUID userId, final String password) {
-		User user = userRepository.findById(userId)
-								  .orElseThrow();
-
-		if(!password.equals(user.getPassword()) && password != null) { user.setPassword(password); } 
-		
-		return UserMapper.toDTO(user);
-	}
 	
 	public UserDTO update(UserDTO newUserDto) {
-		UserDTO userDto = UserMapper.toDTO(userRepository.findById(newUserDto.getUserId()).get()) ; 
+		newUserDto = updateNickname(newUserDto.getUserId(), newUserDto.getNickname());
+		newUserDto = updateUsername(newUserDto.getUserId(), newUserDto.getUsername());
+		newUserDto = updateEmail(newUserDto.getUserId(), newUserDto.getEmail());
+		newUserDto = updatePassword(newUserDto.getUserId(), newUserDto.getPassword());
+		newUserDto = updateStatus(newUserDto.getUserId(), newUserDto.getStatus());
+		newUserDto = updatePrivacy(newUserDto.getUserId(), newUserDto.getPrivacy());
 		
-		userDto.setNickname(updateNickname(userDto.getUserId(), newUserDto.getNickname()).getNickname());
-		userDto.setUsername(updateUsername(userDto.getUserId(), newUserDto.getUsername()).getUsername());
-		userDto.setEmail   (updateEmail   (userDto.getUserId(), newUserDto.getEmail())   .getEmail());
-		userDto.setPassword(updatePassword(userDto.getUserId(), newUserDto.getPassword()).getPassword());
+		User user = userRepository.findById(newUserDto.getUserId()).orElseThrow();
 		
-		User user = userRepository.findById(newUserDto.getUserId()).get();
-		
-		Set<User> followers = user.getFollowers();
-		Set<User> following = user.getFollowing();
-		Set<Post> posts = user.getPosts();
-		Set<Chat> chats = user.getChats();
-		Set<Post> likes = user.getLikes();
-		Set<Post> saves = user.getSaves();
-		
-		return UserMapper.toDTO(userRepository.save(UserMapper.toEntity(userDto, followers, following, posts, chats, likes, saves))); 
-
+		return UserMapper.toDTO(userRepository.save(user));
 	}
 
 	@Override
@@ -157,4 +109,54 @@ public class UserServiceImpl implements UserService {
 		userRepository.deleteById(id);
 	}
 	
+	private UserDTO updateUsername(final UUID userId, final String username) {
+		User user = userRepository.findById(userId)
+				.orElseThrow();
+		
+		if(username != null && !username.equals(user.getUsername())) { user.setUsername(username); } 
+		
+		return UserMapper.toDTO(user);
+	}
+	
+	private UserDTO updateNickname(final UUID userId, final String nickname) {
+		User user = userRepository.findById(userId)
+				.orElseThrow();
+		
+		if(nickname != null && !nickname.equals(user.getNickname())) { user.setNickname(nickname); }  
+		
+		return UserMapper.toDTO(user);
+	}
+	
+	private UserDTO updateEmail(final UUID userId, final String email) {
+		User user = userRepository.findById(userId)
+				.orElseThrow();
+		
+		if(email != null && !email.equals(user.getEmail())) { user.setEmail(email); } 
+		
+		return UserMapper.toDTO(user);
+	}
+	
+	private UserDTO updatePassword(final UUID userId, final String password) {
+		User user = userRepository.findById(userId)
+				.orElseThrow();
+		
+		if(password != null && !password.equals(user.getPassword())) { user.setPassword(password); } 
+		
+		return UserMapper.toDTO(user);
+	}
+	private UserDTO updateStatus(final UUID userId, final UserStatus status) {
+		User user = userRepository.findById(userId).orElseThrow();
+		if(status != null) {
+			user.setStatus(status);
+		}
+		
+		return UserMapper.toDTO(userRepository.save(user));
+	}
+	private UserDTO updatePrivacy(final UUID userID, final PrivacyType privacy) {
+		User user = userRepository.findById(userID).orElseThrow();
+		if(privacy != null) {
+			user.setPrivacy(privacy);			
+		}
+		return UserMapper.toDTO(userRepository.save(user));
+	}
 }

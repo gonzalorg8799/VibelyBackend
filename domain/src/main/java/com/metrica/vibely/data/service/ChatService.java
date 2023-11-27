@@ -6,33 +6,15 @@ import java.util.UUID;
 import com.metrica.vibely.data.entity.Message;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.ChatDTO;
-import com.metrica.vibely.data.model.enumerator.ChatStatus;
-import com.metrica.vibely.data.model.enumerator.ChatType;
 
 /**
  * <h1>Chat Service</h1>
  * 
  * @since 2023-11-20
  * @version 1.0
- * @author Daniel,
+ * @author Daniel, Raul
  */
-public interface ChatService extends CrudService<ChatDTO, UUID> {
-
-	/**
-	 * gets chat by member username
-	 * @param username 
-	 * @return ChatDTO
-	 * @throws NoSuchElementException
-	 */
-	ChatDTO getByMember(String username);	
-		
-	/**
-	 * updates chat title
-	 * @param desired title
-	 * @throws NoSuchElementException
-	 */
-	ChatDTO updateTitle(UUID chatId, String title);
-	
+public interface ChatService extends CrudService<ChatDTO, UUID> {	
 	/**
 	 * Adds users to the chat
 	 * @param users to add
@@ -46,20 +28,6 @@ public interface ChatService extends CrudService<ChatDTO, UUID> {
 	 * @throws NoSuchElementException
 	 */
 	ChatDTO removeMembers(UUID chatId, Set<User> membersToRemove);
-	
-	/**
-	 * updates chat type
-	 * @param Chat Id, type to update to
-	 * @throws NoSuchElementException
-	 */
-	ChatDTO updateType(UUID chatId, ChatType type);
-	
-	/**
-	 * updates chat status
-	 * @param Chat Id, status to update to
-	 * @throws NoSuchElementException
-	 */
-	ChatDTO updateChatStatus(UUID chatId, ChatStatus status);
 	
 	/**
 	 * 
