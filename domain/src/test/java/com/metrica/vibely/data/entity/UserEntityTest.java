@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @version 1.0
  * @author Alex
  */
-public class UserEntityTest {
+class UserEntityTest {
 
     // <<-CONSTANTS->>
     private static final String USERNAME = "jdoe";

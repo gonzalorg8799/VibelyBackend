@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @version 1.0
  * @author Alex
  */
-public class AdminEntityTest {
+class AdminEntityTest {
 
     // <<-CONSTANTS->>
     private static final String USERNAME = "jdoe";
