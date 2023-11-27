@@ -18,7 +18,6 @@ import com.metrica.vibely.data.entity.User;
  * @version 1.0
  * @author Daniel
  */
-
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, java.util.UUID> {
 	
@@ -27,14 +26,14 @@ public interface ChatRepository extends JpaRepository<Chat, java.util.UUID> {
 	 * @return Chat
 	 * @throws NoSuchElementException
 	 */
-	Optional<Chat> findByParticipants(Set<User> participants);
+//	Optional<Chat> findByParticipants(Set<User> participants);
 	
 	/**
 	 * @params Chat id
 	 * @return Set Messages
 	 * @throws NoSuchElementException
 	 */
-	Set<Message> getMessages(UUID id);
+//	Set<Message> getMessages(UUID id);
 	
 	
 
