@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.metrica.vibely.data.entity.Post;
+import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.model.enumerator.PostStatus;
 import com.metrica.vibely.data.model.enumerator.PostVisibility;
 import com.metrica.vibely.data.model.mapper.PostMapper;
 import com.metrica.vibely.data.repository.PostRepository;
+import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.PostService;
 
 /**
@@ -26,10 +28,12 @@ import com.metrica.vibely.data.service.PostService;
 public class PostServiceImpl implements PostService{
 	
 	private PostRepository postRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
-	public PostServiceImpl(final PostRepository postRepository) {
+	public PostServiceImpl(final PostRepository postRepository, final UserRepository userRepository) {
 		this.postRepository = postRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -38,15 +42,18 @@ public class PostServiceImpl implements PostService{
 				  							  .orElseThrow());
 	}
 
-	//TODO hacer bien el create
 	@Override
 	public PostDTO create(PostDTO dto) {
 		Post post = PostMapper.toEntity(dto, null, null, null, null);
+		User owner = this.userRepository.findById(dto.getOwner()).orElseThrow();
 		
+		post.setPostDate(LocalDateTime.now());
+		post.setStatus(PostStatus.ACTIVE);
+		post.setVisibility(PostVisibility.PUBLIC);
 		post.setContent(dto.getContent());
-		
-		
-//		post.setOwner(dto.getOwner());
+		post.setLikes(null);
+		post.setTimesSaved(null);
+		post.setOwner(owner);
         
 		return PostMapper.toDTO(postRepository.save(post));
 	}

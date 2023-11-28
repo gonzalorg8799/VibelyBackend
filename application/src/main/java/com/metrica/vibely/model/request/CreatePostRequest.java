@@ -25,7 +25,7 @@ public class CreatePostRequest {
 	private String content;
 
 	@NotNull
-	@NotBlank
+	//@NotBlank , no es aplicable para los UUID
 	private UUID owner;
 	
 //	<<--CONSTRUCTOR-->>
@@ -34,10 +34,12 @@ public class CreatePostRequest {
 	}
 
 // 	<<--METHODS-->>
-	public static PostDTO toPostDTO(CreatePostRequest post) {
+	public PostDTO toPostDTO() {
 		PostDTO postDto = new PostDTO();
-		postDto.setContent   (post.getContent());
-		postDto.setOwner	 (post.getOwner());
+		
+		postDto.setContent(this.getContent());
+		postDto.setOwner  (this.getOwner());
+		
 		return postDto;
 	}
 

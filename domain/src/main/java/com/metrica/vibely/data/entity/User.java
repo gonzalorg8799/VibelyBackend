@@ -150,12 +150,12 @@ public class User implements Copyable<User> {
         copy.setStatus      (this.status);
         copy.setLastConnDate(this.lastConnDate);
         copy.setBlockedDate (this.blockedDate);
-        copy.setFollowers   (this.followers);
-        copy.setFollowing   (this.following);
-        copy.setPosts       (this.posts);
-        copy.setChats       (this.chats);
-        copy.setLikes       (this.likes);
-        copy.setSaves       (this.saves);
+//        copy.setFollowers   (this.followers);
+//        copy.setFollowing   (this.following);
+//        copy.setPosts       (this.posts);
+//        copy.setChats       (this.chats);
+//        copy.setLikes       (this.likes);
+//        copy.setSaves       (this.saves);
         
         return copy;
     }
