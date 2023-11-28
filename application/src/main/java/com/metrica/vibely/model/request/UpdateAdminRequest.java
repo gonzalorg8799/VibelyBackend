@@ -5,8 +5,7 @@ import com.metrica.vibely.data.model.dto.AdminDTO;
 import jakarta.validation.constraints.Pattern;
 
 /**
- * <h1></h1>
- * 
+ * <h1>Update Admin Request</h1>
  * 
  * @since 2023-11-22
  * @version 1.0

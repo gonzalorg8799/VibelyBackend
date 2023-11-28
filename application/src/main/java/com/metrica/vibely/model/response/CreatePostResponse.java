@@ -1,5 +1,7 @@
 package com.metrica.vibely.model.response;
 
+import java.util.UUID;
+
 import com.metrica.vibely.data.model.dto.PostDTO;
 
 /**
@@ -11,6 +13,7 @@ import com.metrica.vibely.data.model.dto.PostDTO;
 public class CreatePostResponse {
 
 	// <<-FIELDS->>
+	private UUID id;
     private String content;
     
     // <<-CONSTRUCTOR->>
@@ -18,13 +21,23 @@ public class CreatePostResponse {
     }
     
     // <<--METHODS-->>
-    public static CreatePostResponse toPostResponse(PostDTO postDTO) {
+    public CreatePostResponse generateResponse(PostDTO postDTO) {
     	CreatePostResponse postResponse = new CreatePostResponse();
 
+    	postResponse.setId	   (postDTO.getPostId());
     	postResponse.setContent(postDTO.getContent());
     	
         return postResponse;
     }
+    
+    // <<--METHODS-->>
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
 	public String getContent() {
 		return content;

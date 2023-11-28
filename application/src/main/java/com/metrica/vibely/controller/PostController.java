@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.service.PostService;
 import com.metrica.vibely.model.request.CreatePostRequest;
+import com.metrica.vibely.model.request.UpdatePostRequest;
 import com.metrica.vibely.model.response.CreatePostResponse;
 
 import jakarta.validation.Valid;
@@ -44,35 +45,41 @@ public class PostController {
 //	<<--METHODS-->>
 	@GetMapping("/{id}")
     public ResponseEntity<PostDTO> getById(@PathVariable UUID id) {
-        return ResponseEntity.ok(this.postService.getById(id));
+        return ResponseEntity.ok(this.postService.getById(id)); //TODO: Falta controlar error
     }
 	
 	@PostMapping
     public ResponseEntity<CreatePostResponse> create(
             @RequestBody
-            //@Valid
+            @Valid
             CreatePostRequest createPostRequest,
-            BindingResult bindingResult) {	
-        if (bindingResult.hasErrors())
+            BindingResult bindingResult
+   ) {	
+		if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
-        PostDTO postDTO = CreatePostRequest.toPostDTO(createPostRequest);
-        PostDTO createdDTO = this.postService.create(postDTO);
-        CreatePostResponse response = CreatePostResponse.toPostResponse(createdDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }
+        PostDTO createdDTO = this.postService.create(createPostRequest.toPostDTO());
+        return ResponseEntity.status(HttpStatus.CREATED)
+        		.body(new CreatePostResponse().generateResponse(createdDTO));
     }
 	
 	@PutMapping("/{id}")
-    public ResponseEntity<PostDTO> update(
+    public ResponseEntity<CreatePostResponse> update(
     		@PathVariable
     		UUID id,
     		@RequestBody
     		@Valid 
-    		CreatePostRequest createPostRequest, 
-    		BindingResult bindingResult) {
-		PostDTO postDTO = CreatePostRequest.toPostDTO(createPostRequest);
+    		UpdatePostRequest postRequest, 
+    		BindingResult bindingResult
+   ) {
+		if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
+		PostDTO postDTO = postRequest.toDTO();
 		postDTO.setPostId(id);
-		PostDTO postDTOResponse = this.postService.update(postDTO);
-        return ResponseEntity.ok(postDTOResponse);
+		PostDTO updatedDTO = this.postService.update(postDTO);
+        return ResponseEntity.ok()
+        		.body(new CreatePostResponse().generateResponse(updatedDTO));
     }
 
     @DeleteMapping("/{id}")

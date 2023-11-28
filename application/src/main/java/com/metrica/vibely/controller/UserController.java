@@ -81,10 +81,7 @@ public class UserController {
             BindingResult bindingResult
     ) {
         
-        if (bindingResult.hasErrors()) {
-            // TODO: This is only for debug the validation errors. DELETE LATER!!
-            bindingResult.getAllErrors().forEach(System.err::println);
-            
+        if (bindingResult.hasErrors()) {            
             return ResponseEntity.badRequest().build();
         }
         
@@ -105,10 +102,8 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
-        
         UserDTO userDTO = userRequest.toDTO();
         userDTO.setUserId(id);
-        
         UserDTO updatedDTO = this.userService.update(userDTO);
         return ResponseEntity.ok()
                 .body(new CreateUserResponse().generateResponse(updatedDTO));

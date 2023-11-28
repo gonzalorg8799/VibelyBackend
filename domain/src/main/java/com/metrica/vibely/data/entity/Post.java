@@ -126,10 +126,10 @@ public class Post implements Copyable<Post> {
         copy.setContent   (this.content);
         copy.setLikes     (this.likes);
         copy.setTimesSaved(this.timesSaved);
-        copy.setOwner     (this.owner);
-        copy.setComments  (this.comments);
-        copy.setLikedBy   (this.likedBy);
-        copy.setSavedBy   (this.savedBy);
+//        copy.setOwner     (this.owner);
+//        copy.setComments  (this.comments);
+//        copy.setLikedBy   (this.likedBy);
+//        copy.setSavedBy   (this.savedBy);
 
         return copy;
     }
@@ -275,7 +275,7 @@ public class Post implements Copyable<Post> {
     }
 
     public void setSavedBy(final Set<User> savedBy) {
-        this.savedBy = savedBy;
+        this.savedBy = new HashSet<>();
         if (savedBy != null) {
             this.savedBy.addAll(DeepCopyGenerator.generateCopy(savedBy));
         }
