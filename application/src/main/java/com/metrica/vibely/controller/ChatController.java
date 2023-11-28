@@ -41,12 +41,12 @@ public class ChatController {
 	
 //	<<-METHODS->>
 	@GetMapping("/{id}")
-	public ChatDTO getById(@PathVariable UUID chatId) {
-		return chatService.getById(chatId);
+	public ChatDTO getById(@PathVariable UUID id) {
+		return chatService.getById(id);
 	}
 	
 	@PutMapping("/{id}")
-    public ResponseEntity<?> updateById(
+    public ResponseEntity<CreateChatResponse> updateById(
             @PathVariable
             UUID id,
             @RequestBody
@@ -82,8 +82,8 @@ public class ChatController {
 	}
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteByUsername(@PathVariable UUID chatId) {
-        this.chatService.deleteById(chatId);
+    public ResponseEntity<String> deleteByUsername(@PathVariable UUID id) {
+        this.chatService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 	

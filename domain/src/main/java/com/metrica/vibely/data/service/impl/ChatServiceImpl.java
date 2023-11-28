@@ -104,7 +104,7 @@ public class ChatServiceImpl implements ChatService {
 		ChatType newType = dto.getType();
 		ChatStatus newStatus = dto.getStatus();
 		
-		if(newTitle  != null) { chat.setStatus(newStatus); }
+		if(newTitle  != null) { chat.setTitle(newTitle); }
 		if(newType   != null) { chat.setType(newType); }
 		if(newStatus != null) { chat.setStatus(newStatus); }
 		

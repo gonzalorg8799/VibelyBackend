@@ -122,8 +122,8 @@ public class Chat implements Copyable<Chat> {
         copy.setStatus      (this.status);
         copy.setTitle       (this.title);
         copy.setCreationDate(this.creationDate);
-        copy.setParticipants(this.participants);
-        copy.setMessages    (this.messages);
+//        copy.setParticipants(this.participants);
+//        copy.setMessages    (this.messages);
         
         return copy;
     }
