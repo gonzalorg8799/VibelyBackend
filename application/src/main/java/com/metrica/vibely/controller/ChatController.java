@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/api/v1/chat")
+@RequestMapping("/api/v1/chats")
 public class ChatController {
 	
 //	<<--FIELDS-->
@@ -66,7 +66,7 @@ public class ChatController {
                 .body(new CreateChatResponse().generateResponse(updatedDTO));
     }
 
-	@PostMapping("/newchat")
+	@PostMapping("/create")
 	public ResponseEntity<CreateChatResponse> create(
 			@RequestBody
 //			@Valid
