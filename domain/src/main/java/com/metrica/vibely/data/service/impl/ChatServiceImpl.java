@@ -55,23 +55,29 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public ChatDTO addMembers(UUID chatId, Set<User> membersToAdd) {
+    public ChatDTO addMembers(UUID chatId, Set<UUID> membersToAdd) {
         Chat chat = chatRepository.findById(chatId).orElseThrow();
         
-        chat.setParticipants(membersToAdd.stream()
-        								 .filter(p -> !chat.getParticipants().contains(p))
-        								 .collect(Collectors.toSet()));
+        Set<User> addedParts = chat.getParticipants();
+        
+        addedParts.addAll(membersToAdd.stream()
+        							  .map(p -> userRepository.findById(p).orElseThrow())
+        							  .collect(Collectors.toSet()));
+        chat.setParticipants(addedParts);
         
         return ChatMapper.toDTO(chatRepository.save(chat));
     }
 
     @Override
-    public ChatDTO removeMembers(UUID chatId, Set<User> membersToRemove) {
+    public ChatDTO removeMembers(UUID chatId, Set<UUID> membersToRemove) {
         Chat chat = chatRepository.findById(chatId).orElseThrow();
         
-        chat.getParticipants().removeAll(membersToRemove.stream()
-        											 .filter(p -> chat.getParticipants().contains(p))
-        											 .collect(Collectors.toSet()));
+        Set<User> removedParts = chat.getParticipants();
+        
+        removedParts.removeAll(membersToRemove.stream()
+        							  .map(p -> userRepository.findById(p).orElseThrow())
+        							  .collect(Collectors.toSet()));
+        chat.setParticipants(removedParts);
         
         return ChatMapper.toDTO(chatRepository.save(chat));
     }
