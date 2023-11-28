@@ -20,14 +20,14 @@ public interface ChatService extends CrudService<ChatDTO, UUID> {
 	 * @param users to add
 	 * @throws NoSuchElementException
 	 */
-	ChatDTO addMembers(UUID chatId, Set<UUID> membersToAdd);
+	ChatDTO addMembers(UUID chatId, Set<User> membersToAdd);
 	
 	/**
 	 * Removes users from the chat
 	 * @param users to remove
 	 * @throws NoSuchElementException
 	 */
-	ChatDTO removeMembers(UUID chatId, Set<UUID> membersToRemove);
+	ChatDTO removeMembers(UUID chatId, Set<User> membersToRemove);
 	
 	/**
 	 * 
