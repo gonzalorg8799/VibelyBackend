@@ -16,6 +16,226 @@
         }
     ],
     "paths": {
+        "/auth": {
+            "post": {
+                "tags": ["AUTH"],
+                "summary": "Authenticate user",
+                "description": "Authenticate a user using username and password",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLogin"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Authentication was successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "apiKey": "/NZjs+/WrlC029k+ahQQF+cr/uFrrRrC0ZODzm3mJO8="
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials, authentication failed"
+                    }
+                }
+            }
+        },
+        "/admin/users/{id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Users' unique identifier"
+                }
+            ],
+            "get": {
+                "tags": ["ADMIN"],
+                "summary": "Retrieves admin information by ID",
+                "description": "Retrieves information form a specific admin",
+                "responses": {
+                    "200": {
+                        "description": "Admin's information retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "userId": "8bbdbe71-6c4c-4760-ad4c-3a8dd049746e",
+                                    "username": "sudo",
+                                    "nickname": "Sudo Admin",
+                                    "email": "sudo@email.com",
+                                    "state": "ENABLED",
+                                    "privacy": "PUBLIC",
+                                    "followers": [],
+                                    "following": [],
+                                    "posts": []
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The admin was not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["ADMIN"],
+                "summary": "Modify admin information by ID",
+                "description": "Modifies admin's username, nickname, password or email",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Api-Key",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "API Key"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "required": [
+                                            "password"
+                                        ],
+                                        "properties": {
+                                            "username": {
+                                                "type": "string",
+                                                "description": "Users' name"
+                                            },
+                                            "nickname": {
+                                                "type": "string",
+                                                "description": "Users' nickname"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "description": "Users' password"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "description": "Users' email"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "example": {
+                                    "username": "sudosu"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The modification was successful",
+                        "content": {
+                            "application/json": {
+                                "example":{
+                                    "userId": "8bbdbe71-6c4c-4760-ad4c-3a8dd049746e",
+                                    "username": "sudosu",
+                                    "nickname": "Sudo Admin",
+                                    "email": "sudo@email.com"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["ADMIN"],
+                "summary": "Delete an admin by ID",
+                "description": "Deletes the specified admin",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Api-key",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "API Key"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource was deleted successfully"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/admin/users/signup": {
+            "post": {
+                "tags": ["ADMIN"],
+                "summary": "Creates a new admin",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "description": "Admin's username"
+                                    },
+                                    "nickname": {
+                                        "type": "string",
+                                        "description": "Admin's nickname"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "Admin's password"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "description": "Admin's email"
+                                    }
+                                },
+                                "example": {
+                                    "username": "sudo",
+                                    "nickname":"Sudo Admin",
+                                    "password": "MR%uQK4uX$7K",
+                                    "email": "sudo@email.com"
+                                  }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "parameters": [
                 {
@@ -161,38 +381,6 @@
                     },
                     "404": {
                         "description": "User not found"
-                    }
-                }
-            }
-        },
-        "/auth": {
-            "post": {
-                "tags": ["USER"],
-                "summary": "Authenticate user",
-                "description": "Authenticate a user using username and password",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserLogin"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Authentication was successful",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "apiKey": "/NZjs+/WrlC029k+ahQQF+cr/uFrrRrC0ZODzm3mJO8="
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Invalid credentials, authentication failed"
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package com.metrica.vibely.model.request;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.User;
@@ -31,11 +32,11 @@ public class CreateMessageRequest {
 	
 	@NotNull
 	@NotBlank
-	private Chat chat;
+	private UUID chat;
 	
 	@NotNull
 	@NotBlank
-	private User sender;
+	private UUID sender;
 
 //	<<--CONSTRUCTOR-->>
 	public CreateMessageRequest() {
@@ -45,12 +46,10 @@ public class CreateMessageRequest {
 //	<<--METHODS-->>
 	public  MessageDTO toDto() {
 		MessageDTO messageDto = new MessageDTO();
-		
-		messageDto.setCreationTimestamp(this.getCreationTimestamp());
-		messageDto.setStatus		   (this.getStatus());
+
 		messageDto.setContent		   (this.getContent());
-		messageDto.setChat			   (this.getChat().getChatId());
-		messageDto.setSender           (this.getSender().getUserId());
+		messageDto.setChat			   (this.getChat());
+		messageDto.setSender           (this.getSender());
 		
 		return messageDto;
 	}
@@ -81,19 +80,19 @@ public class CreateMessageRequest {
 		this.content = content;
 	}
 
-	public Chat getChat() {
+	public UUID getChat() {
 		return chat;
 	}
 
-	public void setChat(Chat chat) {
+	public void setChat(UUID chat) {
 		this.chat = chat;
 	}
 
-	public User getSender() {
+	public UUID getSender() {
 		return sender;
 	}
 
-	public void setSender(User sender) {
+	public void setSender(UUID sender) {
 		this.sender = sender;
 	}
 }

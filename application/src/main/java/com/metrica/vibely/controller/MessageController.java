@@ -60,7 +60,7 @@ public class MessageController {
 			@PathVariable
 			UUID id,
 			@RequestBody 
-			@Valid
+			//@Valid
 			CreateMessageRequest createMessage, 
 			BindingResult bindingResult){
 		
