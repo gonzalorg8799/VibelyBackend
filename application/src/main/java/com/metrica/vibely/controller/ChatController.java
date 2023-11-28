@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.service.ChatService;
+import com.metrica.vibely.model.request.AddRemoveChatRequest;
 import com.metrica.vibely.model.request.CreateChatRequest;
 import com.metrica.vibely.model.response.CreateChatResponse;
 import com.metrica.vibely.model.response.UpdateChatRequest;
@@ -65,6 +66,47 @@ public class ChatController {
         return ResponseEntity.ok()
                 .body(new CreateChatResponse().generateResponse(updatedDTO));
     }
+	
+	@PutMapping("/add/{id}")
+	public ResponseEntity<CreateChatResponse> addMember(
+			@PathVariable
+			UUID id,
+			@RequestBody
+//			@Valid
+			AddRemoveChatRequest chatRequest,
+			BindingResult bindingResult
+			) {
+		if(!bindingResult.hasErrors()) {
+			ChatDTO chatDto = chatRequest.toDTO();
+			chatDto.setChatId(id);
+			
+			ChatDTO updatedDto = this.chatService.addMembers(id, chatDto.getParticipants());
+			return ResponseEntity.ok()
+	                .body(new CreateChatResponse().generateResponse(updatedDto));
+		} 
+		return ResponseEntity.badRequest().build();
+	}
+	
+	@PutMapping("/remove/{id}")
+	public ResponseEntity<CreateChatResponse> removeMember(
+			@PathVariable
+			UUID id,
+			@RequestBody
+//			@Valid
+			AddRemoveChatRequest chatRequest,
+			BindingResult bindingResult
+			) {
+		if(!bindingResult.hasErrors()) {
+			ChatDTO chatDto = chatRequest.toDTO();
+			chatDto.setChatId(id);
+			
+			ChatDTO updatedDto = this.chatService.removeMembers(id, chatDto.getParticipants());
+			return ResponseEntity.ok()
+	                .body(new CreateChatResponse().generateResponse(updatedDto));
+		} 
+		return ResponseEntity.badRequest().build();
+	}
+	
 
 	@PostMapping("/create")
 	public ResponseEntity<CreateChatResponse> create(
