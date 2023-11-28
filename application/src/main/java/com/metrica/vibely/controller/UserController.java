@@ -86,7 +86,7 @@ public class UserController {
         }
         
         UserDTO userDTO = this.userService.create(userRequest.toUserDTO());
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CreateUserResponse().generateResponse(userDTO));
     }
 

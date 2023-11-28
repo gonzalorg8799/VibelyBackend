@@ -21,6 +21,15 @@ public interface AdminService extends CrudService<AdminDTO, UUID> {
 	 * @throws NoSuchElementException in case the admin does not exist
 	 */
 	AdminDTO getByUsername(String username);	
+    
+    /**
+     * Gets an Admininistrator by its email.
+     * 
+     * @param username the username to search
+     * @return the admin DTO
+     * @throws NoSuchElementException in case the admin does not exist
+     */
+    AdminDTO getByEmail(String email);
 	
     /**
      * Deletes an admin given its username

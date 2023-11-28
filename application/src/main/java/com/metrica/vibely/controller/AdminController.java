@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -69,6 +70,18 @@ public class AdminController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<BasicInfoResponse> getByEmail(@PathVariable String email) {
+        AdminDTO adminDTO = this.adminService.getByEmail(email);
+        
+        if (adminDTO.getState()   != UserState.DISABLED &&
+            adminDTO.getPrivacy() == PrivacyType.PUBLIC) {
+            return ResponseEntity.ok().body(new BasicInfoResponse().generateResponse(adminDTO));
+        }
+        
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<CreateAdminResponse> create(
             @RequestBody
@@ -85,7 +98,7 @@ public class AdminController {
         }
         
         AdminDTO adminDTO = this.adminService.create(userRequest.toAdminDTO());
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CreateAdminResponse().generateResponse(adminDTO));
     }
 

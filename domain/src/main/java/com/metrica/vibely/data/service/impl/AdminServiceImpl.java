@@ -53,6 +53,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public AdminDTO getByEmail(String email) {
+        Admin admin = this.adminRepository.findByEmail(email).orElseThrow();
+        return AdminMapper.toDTO(admin);
+    }
+
+    @Override
     public AdminDTO create(AdminDTO adminDTO) {
         Admin admin = AdminMapper.toEntity(adminDTO, null, null, null, null, null, null);
         
