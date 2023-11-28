@@ -2,7 +2,7 @@ package com.metrica.vibely.model.request;
 
 
 import com.metrica.vibely.data.model.dto.UserDTO;
-import com.metrica.vibely.data.util.PasswordHashing;
+import com.metrica.vibely.data.util.PasswordHasher;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,14 +23,14 @@ public class CreateUserRequest {
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d@$!%^*#&]{12,}$")
+    //@Pattern(regexp = "^(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d@$!%^*#&]{12,}$")
     private String password;
 
-    @Pattern(regexp = "[a-zA-Z_-\\d]*")
+    //@Pattern(regexp = "[a-zA-Z_-\\d]*")
     @NotBlank
     private String nickname;
 
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
+    //@Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
     @NotNull
     @NotBlank
     private String email;
@@ -40,15 +40,15 @@ public class CreateUserRequest {
     }
     
     // <<--METHODS-->>
-    public static UserDTO toUserDTO(CreateUserRequest user) {
-        UserDTO userDto = new UserDTO();
+    public UserDTO toUserDTO() {
+    	UserDTO userDTO = new UserDTO();
 
-        userDto.setUsername(user.getUsername());
-        userDto.setPassword(user.getPassword());
-        userDto.setNickname(user.getNickname());
-        userDto.setEmail(user.getEmail());
+    	userDTO.setUsername(this.username);
+    	userDTO.setPassword(this.password);
+    	userDTO.setNickname(this.nickname);
+    	userDTO.setEmail   (this.email);
 
-        return userDto;
+        return userDTO;
     }
     
     // <<-GETTERS & SETTERS->>
@@ -65,7 +65,7 @@ public class CreateUserRequest {
     }
 
     public void setPassword(String password) {
-		this.password = PasswordHashing.hash(password);
+		this.password = PasswordHasher.hash(password);
     }
 
     public String getNickname() {

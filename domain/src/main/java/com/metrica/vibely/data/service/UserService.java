@@ -1,44 +1,49 @@
 package com.metrica.vibely.data.service;
 
+import java.util.UUID;
+
 import com.metrica.vibely.data.model.dto.UserDTO;
 
 /**
- * 
+ * <h1>User Service</h1>
  * 
  * @since 2023-11-14
  * @version 1.0
+ * @author Raul,
  */
-public interface UserService {
+public interface UserService extends CrudService<UserDTO, UUID>{
+    
+    /**
+     * gets user information by its username
+     * @param username 
+     * @return UserDTO
+     * @throws NoSuchElementException
+     */
+    UserDTO getByUsername(String username);
+    
+    /**
+     * gets user information by its email
+     * @param email 
+     * @return UserDTO
+     * @throws NoSuchElementException
+     */
+    UserDTO getByEmail(String email);
+    
+    /**
+     * deletes an user given its username
+     * @throws NoSuchElementException
+     */
+    void deleteByUsername(String username);
+	
+	UserDTO followUser(UUID userId, UUID followedUserId);
 	
 	/**
-	 * gets user information by its username
-	 * @param username 
-	 * @return UserDTO
+	 * 
+	 * @param userId
+	 * @param follwedUserId
+	 * @return
 	 * @throws NoSuchElementException
 	 */
-	UserDTO getByUsername(String username);	
-	
-	/**
-	 * creates a new user and adds it to the database
-	 * @param userDTO
-	 * @return userDTO
-	 * @throws NoSuchElementException
-	 */
-	UserDTO create(UserDTO userDTO); 
-	
-	/**
-	 * updates nickname, username, email or password
-	 * @param userDTO
-	 * @return userDTO
-	 * @throws NoSuchElementException
-	 */
-	UserDTO update(UserDTO userDTO);  
-	
-	/**
-	 * deletes an user given its username
-	 * @param username
-	 * @throws NoSuchElementException
-	 */
-	void deleteByUsername(String username);
+	UserDTO unfollowUser(UUID userId, UUID followedUserId);
 	
 }

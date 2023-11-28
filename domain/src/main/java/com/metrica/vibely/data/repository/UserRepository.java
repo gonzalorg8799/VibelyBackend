@@ -13,7 +13,6 @@ import com.metrica.vibely.data.entity.User;
  * @author Raul
  * @version 1.0
  */
-
 @Repository
 public interface UserRepository extends JpaRepository<User, java.util.UUID> {
 	
@@ -23,6 +22,13 @@ public interface UserRepository extends JpaRepository<User, java.util.UUID> {
 	 * @throws NoSuchElementException
 	 */
 	Optional<User> findByUsername(String username);
+	
+	/**
+	 * @param email
+	 * @return
+	 * @throws NoSuchElementException
+	 */
+	Optional<User> findByEmail(String email);
 	
 	/**
 	 * @param username
