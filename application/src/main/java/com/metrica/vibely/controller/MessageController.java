@@ -1,5 +1,9 @@
 package com.metrica.vibely.controller;
 
+import com.metrica.vibely.data.model.dto.MessageDTO;
+import com.metrica.vibely.data.service.MessageService;
+import com.metrica.vibely.model.request.CreateMessageRequest;
+
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,68 +19,69 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.metrica.vibely.data.model.dto.MessageDTO;
-import com.metrica.vibely.data.service.MessageService;
-import com.metrica.vibely.model.request.CreateMessageRequest;
-
-import jakarta.validation.Valid;
-
 /**
+ * <h1>Message Controller</h1>
+ * 
  * @since 2023-11-20
  * @version 1.0
+ * @author Gonzalo
  */
 @RestController
 @RequestMapping("/api/v1/messages")
 public class MessageController {
-//	<<--FIELDS-->>
-	private MessageService messageService;
-//	<<--CONSTRUCTOR-->>
-	@Autowired
-	public MessageController(MessageService messageService) {
-		this.messageService=messageService;
-	}
-//	<<--METHODS-->>
-	@GetMapping("/{id}")
-	public ResponseEntity<MessageDTO> getById(@PathVariable UUID id) {
-		return ResponseEntity.ok().body(this.messageService.getById(id));
-	}
+
+    // <<-FIELDS->>
+    private MessageService messageService;
+
+    // <<-CONSTRUCTOR->>
+    @Autowired
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    // <<-METHODS->>
+    @GetMapping("/{id}")
+    public ResponseEntity<MessageDTO> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(this.messageService.getById(id));
+    }
+    
 	@PostMapping("/create")
 	public ResponseEntity<MessageDTO> create(
-			@RequestBody 
-			//TODO arreglar validaciones
-//			@Valid
-			CreateMessageRequest createMessage,
-			BindingResult bindingResult){
-		
-		if(bindingResult.hasErrors())return ResponseEntity.badRequest().build();
+            @RequestBody 
+            CreateMessageRequest createMessage,
+            BindingResult bindingResult
+    ){
+        if (bindingResult.hasErrors())
+            return ResponseEntity.badRequest().build();
+
+        MessageDTO messageDto = createMessage.toDto();
+        MessageDTO message = this.messageService.create(messageDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+    }
 	
-		MessageDTO messageDto = createMessage.toDto();
-		MessageDTO message = this.messageService.create(messageDto);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(message);
-	}
-	@PutMapping("/{id}")
-	public ResponseEntity<MessageDTO> update(
-			@PathVariable
-			UUID id,
-			@RequestBody 
-			//@Valid
-			CreateMessageRequest createMessage, 
-			BindingResult bindingResult){
-		
-		if(bindingResult.hasErrors())return ResponseEntity.badRequest().build();
-		
-		MessageDTO messageDto = createMessage.toDto();
-		messageDto.setMessageId(id);
-		MessageDTO message = this.messageService.update(messageDto);
-		
-		return ResponseEntity.ok(message);
-	}
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete(@PathVariable UUID id){
-		
-		this.messageService.deleteById(id);
-		
-		return ResponseEntity.noContent().build();
-	}
+    @PutMapping("/{id}")
+    public ResponseEntity<MessageDTO> update(
+            @PathVariable
+            UUID id,
+            @RequestBody
+            CreateMessageRequest createMessage,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors())
+            return ResponseEntity.badRequest().build();
+
+        MessageDTO messageDto = createMessage.toDto();
+        messageDto.setMessageId(id);
+        MessageDTO message = this.messageService.update(messageDto);
+
+        return ResponseEntity.ok(message);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable UUID id) {
+        this.messageService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

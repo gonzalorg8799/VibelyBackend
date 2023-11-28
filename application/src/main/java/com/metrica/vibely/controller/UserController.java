@@ -1,5 +1,14 @@
 package com.metrica.vibely.controller;
 
+import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.service.UserService;
+import com.metrica.vibely.model.request.CreateUserRequest;
+import com.metrica.vibely.model.request.UpdateUserRequest;
+import com.metrica.vibely.model.response.BasicInfoResponse;
+import com.metrica.vibely.model.response.CreateUserResponse;
+
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +24,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.metrica.vibely.data.model.dto.AdminDTO;
-import com.metrica.vibely.data.model.dto.UserDTO;
-import com.metrica.vibely.data.model.enumerator.PrivacyType;
-import com.metrica.vibely.data.model.enumerator.UserState;
-import com.metrica.vibely.data.service.AdminService;
-import com.metrica.vibely.data.service.UserService;
-import com.metrica.vibely.model.request.CreateAdminRequest;
-import com.metrica.vibely.model.request.CreateUserRequest;
-import com.metrica.vibely.model.request.UpdateAdminRequest;
-import com.metrica.vibely.model.request.UpdateUserRequest;
-import com.metrica.vibely.model.response.BasicInfoResponse;
-import com.metrica.vibely.model.response.CreateAdminResponse;
-import com.metrica.vibely.model.response.CreateUserResponse;
-
 import jakarta.validation.Valid;
 
 /**
+ * <h1>User Controller</h1>
+ * 
  * @since 2023-11-14
  * @version 1.0
+ * @author Gonzalo, Adrian, Daniel
  */
 @RestController
 @RequestMapping("/api/v1/users")
@@ -126,4 +124,5 @@ public class UserController {
         this.userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+    
 }

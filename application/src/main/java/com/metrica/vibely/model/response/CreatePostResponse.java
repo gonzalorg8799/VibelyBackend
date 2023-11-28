@@ -13,40 +13,38 @@ import com.metrica.vibely.data.model.dto.PostDTO;
 public class CreatePostResponse {
 
 	// <<-FIELDS->>
-	private UUID id;
+	private UUID postId;
     private String content;
     
     // <<-CONSTRUCTOR->>
     public CreatePostResponse() {
     }
     
-    // <<--METHODS-->>
+    // <<-METHODS->>
     public CreatePostResponse generateResponse(PostDTO postDTO) {
-    	CreatePostResponse postResponse = new CreatePostResponse();
+        CreatePostResponse postResponse = new CreatePostResponse();
 
-    	postResponse.setId	   (postDTO.getPostId());
-    	postResponse.setContent(postDTO.getContent());
-    	
+        postResponse.setPostId (postDTO.getPostId());
+        postResponse.setContent(postDTO.getContent());
+
         return postResponse;
     }
-    
-    // <<--METHODS-->>
-	public UUID getId() {
-		return id;
-	}
 
-	public void setId(UUID id) {
-		this.id = id;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-    
     // <<-GETTERS & SETTERS->>
-    
+    public UUID getPostId() {
+        return this.postId;
+    }
+
+    public void setPostId(final UUID id) {
+        this.postId = id;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
+
+    public void setContent(final String content) {
+        this.content = content;
+    }
+
 }
