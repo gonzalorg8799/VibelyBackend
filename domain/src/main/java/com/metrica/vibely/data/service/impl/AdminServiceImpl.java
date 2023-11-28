@@ -11,6 +11,7 @@ import com.metrica.vibely.data.service.AdminService;
 import com.metrica.vibely.data.util.PasswordHasher;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AdminDTO getById(UUID id) {
         Admin admin = this.adminRepository.findById(id).orElseThrow();
-        return AdminMapper.toDTO(admin);
+        
+        if (admin.getState() != UserState.DISABLED)
+            return AdminMapper.toDTO(admin);
+        throw new NoSuchElementException();
     }
 
     @Override

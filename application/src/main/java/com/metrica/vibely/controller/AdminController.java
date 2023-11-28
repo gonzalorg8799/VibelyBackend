@@ -1,5 +1,6 @@
 package com.metrica.vibely.controller;
 
+import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.AdminDTO;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
@@ -10,18 +11,23 @@ import com.metrica.vibely.model.response.BasicInfoResponse;
 import com.metrica.vibely.model.response.CreateAdminResponse;
 
 import jakarta.validation.Valid;
+
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -32,15 +38,19 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Alex
  */
 @RestController
-@RequestMapping("/api/v1/admin/user")
+@RequestMapping("/api/v1/admin/users")
 public class AdminController {
 
     // <<-FIELD->>
+    private ResponseManager responseManager;
     private AdminService adminService;
 
     // <<-CONSTRUCTOR->>
     @Autowired
-    public AdminController(AdminService adminService) {
+    public AdminController(
+            ResponseManager responseManager,
+            AdminService adminService) {
+        this.responseManager = responseManager; 
         this.adminService = adminService;
     }
 
@@ -48,13 +58,7 @@ public class AdminController {
     @GetMapping("/{id}")
     public ResponseEntity<BasicInfoResponse> getById(@PathVariable UUID id) {
         AdminDTO adminDTO = this.adminService.getById(id);
-        
-        if (adminDTO.getState() != UserState.DISABLED) {
-            return ResponseEntity.ok()
-                    .body(new BasicInfoResponse().generateResponse(adminDTO));
-        }
-        
-        return ResponseEntity.notFound().build();
+        return responseManager.generateResponse(adminDTO);
     }
 
     @GetMapping("/username/{username}")
@@ -115,5 +119,5 @@ public class AdminController {
         this.adminService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
+    
 }
