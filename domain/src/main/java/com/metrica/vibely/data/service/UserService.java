@@ -22,6 +22,14 @@ public interface UserService extends CrudService<UserDTO, UUID>{
     UserDTO getByUsername(String username);
     
     /**
+     * gets user information by its email
+     * @param email 
+     * @return UserDTO
+     * @throws NoSuchElementException
+     */
+    UserDTO getByEmail(String email);
+    
+    /**
      * deletes an user given its username
      * @throws NoSuchElementException
      */

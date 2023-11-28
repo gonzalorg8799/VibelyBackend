@@ -72,6 +72,18 @@ public class UserController {
         
         return ResponseEntity.notFound().build();
     }
+    
+    @GetMapping("/email/{email}")
+    public ResponseEntity<BasicInfoResponse> getByEmail(@PathVariable String email) {
+        UserDTO userDTO = this.userService.getByEmail(email);
+        
+        if (userDTO.getState()   != UserState.DISABLED &&
+            userDTO.getPrivacy() == PrivacyType.PUBLIC) {
+            return ResponseEntity.ok().body(new BasicInfoResponse().generateResponse(userDTO));
+        }
+        
+        return ResponseEntity.notFound().build();
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<CreateUserResponse> create(

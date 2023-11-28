@@ -44,6 +44,12 @@ public class UserServiceImpl implements UserService {
 		return UserMapper.toDTO(userRepository.findByUsername(username)
 											  .orElseThrow());
 	}
+	
+	@Override
+	public UserDTO getByEmail(final String email) {
+		return UserMapper.toDTO(userRepository.findByEmail(email)
+											  .orElseThrow());
+	}
 
 	@Override
 	public void deleteByUsername(final String username) {
