@@ -33,10 +33,10 @@ class UserEntityTest {
     private static final String NICKNAME = "John Doe";
     private static final String EMAIL    = "johndoe@email.com";
     private static final String APIKEY   = "randomApikey";
+    private static final Integer LOGINS  = 0;
     private static final UserState   STATE   = UserState.ENABLED;
     private static final PrivacyType PRIVACY = PrivacyType.PUBLIC;
     private static final UserStatus  STATUS  = UserStatus.ONLINE;
-    private static final Integer LOGINS = 0;
     private static final LocalDateTime LAST_CONN_DATE = LocalDateTime.now();
     private static final LocalDate     BLOCKED_DATE   = LocalDate.now();
     
@@ -59,6 +59,7 @@ class UserEntityTest {
         user.setPassword    (PASSWORD);
         user.setNickname    (NICKNAME);
         user.setEmail       (EMAIL);
+        user.setApikey      (APIKEY);
         user.setState       (STATE);
         user.setPrivacy     (PRIVACY);
         user.setStatus      (STATUS);
@@ -77,6 +78,7 @@ class UserEntityTest {
         assertEquals(PASSWORD,       user.getPassword());
         assertEquals(NICKNAME,       user.getNickname());
         assertEquals(EMAIL,          user.getEmail());
+        assertEquals(APIKEY,         user.getApikey());
         assertEquals(STATE,          user.getState());
         assertEquals(PRIVACY,        user.getPrivacy());
         assertEquals(STATUS,         user.getStatus());
@@ -127,6 +129,7 @@ class UserEntityTest {
         assertEquals(PASSWORD,       user.getPassword());
         assertEquals(NICKNAME,       user.getNickname());
         assertEquals(EMAIL,          user.getEmail());
+        assertEquals(APIKEY,         user.getApikey());
         assertEquals(STATE,          user.getState());
         assertEquals(PRIVACY,        user.getPrivacy());
         assertEquals(STATUS,         user.getStatus());
@@ -142,7 +145,7 @@ class UserEntityTest {
     }
 
     @Test
-    @Tag("Default values")
+    @Tag("DefaultValues")
     void notNullableFieldsAndDefaultValuesTest() {
         User user = new User();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -222,5 +225,5 @@ class UserEntityTest {
         
         assertNotEquals(user1, user2);
     }
-    
+
 }
