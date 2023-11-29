@@ -57,20 +57,20 @@ public class MessageServiceImpl implements MessageService{
 		return MessageMapper.toDTO(messageRepository.save(message));
 	}
 
-	@Override
-	public MessageDTO update(MessageDTO dto) {
-	    Message message 	 = this.messageRepository.findById(dto.getMessageId()).orElseThrow();
-		
-	    MessageStatus status = message.getStatus();
-		MessageState state	 = message.getState();
-		String content       = message.getContent();
-		
-		if(status !=null)     message.setStatus(status);
-		if(state  !=null)	  message.setState(state);
-		if(content!=null)     message.setContent(content);
-		
-		return MessageMapper.toDTO(this.messageRepository.save(message));
-	}
+    @Override
+    public MessageDTO update(MessageDTO messageDTO) {
+        Message message = this.messageRepository.findById(messageDTO.getMessageId()).orElseThrow();
+
+        MessageStatus status = messageDTO.getStatus();
+        MessageState  state  = messageDTO.getState();
+        String content       = messageDTO.getContent();
+
+        if (status != null)  message.setStatus(status);
+        if (state != null)   message.setState(state);
+        if (content != null) message.setContent(content);
+
+        return MessageMapper.toDTO(this.messageRepository.save(message));
+    }
 	
 	@Override
 	public void deleteById(UUID id) {
