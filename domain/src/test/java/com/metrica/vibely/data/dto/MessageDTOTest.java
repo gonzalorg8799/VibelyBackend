@@ -2,19 +2,15 @@ package com.metrica.vibely.data.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import com.metrica.vibely.data.entity.Chat;
-import com.metrica.vibely.data.entity.Message;
-import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.MessageDTO;
+import com.metrica.vibely.data.model.enumerator.MessageState;
 import com.metrica.vibely.data.model.enumerator.MessageStatus;
 
 /**
@@ -22,13 +18,14 @@ import com.metrica.vibely.data.model.enumerator.MessageStatus;
  * 
  * @since 2023-11-20
  * @version 1.0
- * @author Adri
+ * @author Adri, Gonzalo
  */
 class MessageDTOTest {
 	
 	 // <<-CONSTANTS->>
     private static final String CONTENT = "content";
     private static final MessageStatus STATUS = MessageStatus.PENDING;
+    private static final MessageState STATE = MessageState.ENABLED;
     private static final LocalDateTime CREATION_TIMESTAMP = LocalDateTime.now();
 
     // <<-METHODS->>
@@ -44,6 +41,7 @@ class MessageDTOTest {
         message.setMessageId        (messageId);
         message.setCreationTimestamp(CREATION_TIMESTAMP);
         message.setStatus           (STATUS);
+        message.setState			(STATE);
         message.setContent          (CONTENT);
         message.setChat             (chat);
         message.setSender           (sender);
@@ -51,6 +49,7 @@ class MessageDTOTest {
         assertEquals(messageId,          message.getMessageId());
         assertEquals(CREATION_TIMESTAMP, message.getCreationTimestamp());
         assertEquals(STATUS,             message.getStatus());
+        assertEquals(STATE,				 message.getState());	
         assertEquals(CONTENT,            message.getContent());
         assertEquals(chat,               message.getChat());
         assertEquals(sender,             message.getSender());
@@ -67,6 +66,7 @@ class MessageDTOTest {
                 messageId,
                 CREATION_TIMESTAMP,
                 STATUS,
+                STATE,
                 CONTENT,
                 chat,
                 sender);
@@ -74,6 +74,7 @@ class MessageDTOTest {
         assertEquals(messageId,          message.getMessageId());
         assertEquals(CREATION_TIMESTAMP, message.getCreationTimestamp());
         assertEquals(STATUS,             message.getStatus());
+        assertEquals(STATE,				 message.getState());	
         assertEquals(CONTENT,            message.getContent());
         assertEquals(chat,               message.getChat());
         assertEquals(sender,             message.getSender());
@@ -100,11 +101,13 @@ class MessageDTOTest {
     	message1.setMessageId(uuid);
         message1.setCreationTimestamp(CREATION_TIMESTAMP);
         message1.setStatus(STATUS);
+        message1.setState(STATE);
         message1.setContent(CONTENT);
         
     	message2.setMessageId(uuid);
         message2.setCreationTimestamp(CREATION_TIMESTAMP);
         message2.setStatus(STATUS);
+        message2.setState(STATE);
         message2.setContent(CONTENT);
         
         assertEquals(message1, message2);
@@ -120,11 +123,13 @@ class MessageDTOTest {
     	message1.setMessageId(UUID.randomUUID());
         message1.setCreationTimestamp(CREATION_TIMESTAMP);
         message1.setStatus(STATUS);
+        message1.setState(STATE);
         message1.setContent(CONTENT);
         
     	message2.setMessageId(UUID.randomUUID());
         message2.setCreationTimestamp(CREATION_TIMESTAMP);
         message2.setStatus(STATUS);
+        message2.setState(STATE);
         message2.setContent(CONTENT);
         
         assertNotEquals(message1, message2);
