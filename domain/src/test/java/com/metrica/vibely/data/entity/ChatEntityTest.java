@@ -1,5 +1,6 @@
 package com.metrica.vibely.data.entity;
 
+import com.metrica.vibely.data.model.enumerator.ChatState;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
 
@@ -33,6 +34,7 @@ class ChatEntityTest {
     private static final LocalDateTime LAST_ACTIVITY = LocalDateTime.now();
     private static final ChatType   TYPE   = ChatType.DIRECT_MESSAGE;
     private static final ChatStatus STATUS = ChatStatus.ACTIVE;
+    private static final ChatState STATE = ChatState.ENABLED;
     
     // <<-METHODS->>
     @Test
@@ -48,6 +50,7 @@ class ChatEntityTest {
         chat.setCreationDate(CREATION_DATE);
         chat.setType        (TYPE);
         chat.setStatus      (STATUS);
+        chat.setState		(STATE);
         chat.setTitle       (TITLE);
         chat.setLastActivity(LAST_ACTIVITY);
         chat.setParticipants(participants);
@@ -57,6 +60,7 @@ class ChatEntityTest {
         assertEquals(CREATION_DATE, chat.getCreationDate());
         assertEquals(TYPE,          chat.getType());
         assertEquals(STATUS,        chat.getStatus());
+        assertEquals(STATE,			chat.getState());		
         assertEquals(TITLE,         chat.getTitle());
         assertEquals(LAST_ACTIVITY, chat.getLastActivity());
         assertEquals(participants,  chat.getParticipants());
@@ -75,6 +79,7 @@ class ChatEntityTest {
                 CREATION_DATE,
                 TYPE,
                 STATUS,
+                STATE,
                 TITLE,
                 LAST_ACTIVITY,
                 participants,
