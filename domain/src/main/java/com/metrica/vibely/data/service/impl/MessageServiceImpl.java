@@ -59,39 +59,19 @@ public class MessageServiceImpl implements MessageService{
 
 	@Override
 	public MessageDTO update(MessageDTO dto) {
-	    Message message = this.messageRepository.findById(dto.getMessageId()).orElseThrow();
-		MessageDTO messageDto = MessageMapper.toDTO(message);
+	    Message message 	 = this.messageRepository.findById(dto.getMessageId()).orElseThrow();
 		
-		updateContent(dto.getMessageId(), dto.getContent());
-		updateStatus (dto.getMessageId(), dto.getStatus());
-		updateState	 (dto.getMessageId(), dto.getState());
-		return MessageMapper.toDTO(messageRepository.save(MessageMapper.toEntity(messageDto, message.getChat(), message.getSender())));
+	    MessageStatus status = message.getStatus();
+		MessageState state	 = message.getState();
+		String content       = message.getContent();
+		
+		if(status !=null)     message.setStatus(status);
+		if(state  !=null)	  message.setState(state);
+		if(content!=null)     message.setContent(content);
+		
+		return MessageMapper.toDTO(this.messageRepository.save(message));
 	}
 	
-	private MessageDTO updateContent(final UUID id, final String content) {
-		Message message = messageRepository.findById(id).orElseThrow();
-		
-		if(content != null && !content.equals(message.getContent())) message.setContent(content);
-		
-		return MessageMapper.toDTO(message);
-	}
-	
-	private MessageDTO updateStatus(final UUID id, final MessageStatus status) {
-		Message message = messageRepository.findById(id).orElseThrow();
-		
-		if(status!=null&&!status.equals(message.getStatus())) message.setStatus(status);
-		
-		return MessageMapper.toDTO(message);
-	}
-	
-	private MessageDTO updateState(final UUID id, final MessageState state) {
-		Message message = messageRepository.findById(id).orElseThrow();
-		
-		if(state!=null&&!state.equals(message.getState())) message.setState(state);
-		
-		return MessageMapper.toDTO(message);
-	}
-
 	@Override
 	public void deleteById(UUID id) {
 		messageRepository.deleteById(id);

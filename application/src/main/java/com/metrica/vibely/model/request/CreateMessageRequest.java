@@ -24,10 +24,6 @@ public class CreateMessageRequest {
 	
 	@NotNull
 	@NotBlank
-	private MessageStatus status;
-	
-	@NotNull
-	@NotBlank
 	private String content;
 	
 	@NotNull
@@ -61,14 +57,6 @@ public class CreateMessageRequest {
 
 	public void setCreationTimestamp(LocalDateTime creationTimestamp) {
 		this.creationTimestamp = creationTimestamp;
-	}
-
-	public MessageStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(MessageStatus status) {
-		this.status = status;
 	}
 
 	public String getContent() {
