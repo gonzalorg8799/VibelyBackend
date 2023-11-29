@@ -40,7 +40,6 @@ public class CreateMessageRequest {
 
 //	<<--CONSTRUCTOR-->>
 	public CreateMessageRequest() {
-		
 	}
 
 //	<<--METHODS-->>
