@@ -19,8 +19,8 @@ public class UpdateChatRequest {
 		ChatDTO chatDto = new ChatDTO();
 		
 		chatDto.setTitle(this.title);
-		chatDto.setType(type);
-		chatDto.setStatus(status);
+		chatDto.setType(this.type);
+		chatDto.setStatus(this.status);
 		
 		return chatDto;
 	}
