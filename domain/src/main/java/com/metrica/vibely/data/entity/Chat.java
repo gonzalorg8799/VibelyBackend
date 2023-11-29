@@ -1,9 +1,9 @@
 package com.metrica.vibely.data.entity;
 
+import com.metrica.vibely.data.model.enumerator.ChatState;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
 import com.metrica.vibely.data.util.Copyable;
-import com.metrica.vibely.data.util.DeepCopyGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +47,8 @@ public class Chat implements Copyable<Chat> {
     private ChatType type;
     @Enumerated(value = EnumType.ORDINAL)
     private ChatStatus status;
+    @Enumerated(value = EnumType.ORDINAL)
+    private ChatState state;
     private String title;
     @Column(name = "last_activity")
     private LocalDateTime lastActivity;
@@ -64,6 +66,9 @@ public class Chat implements Copyable<Chat> {
     
     // <<-CONSTRUCTORS->>
     public Chat() {
+    	this.setChatId(null);
+    	this.setParticipants(null);
+    	this.setMessages(null);
     }
 
     public Chat(
@@ -71,6 +76,7 @@ public class Chat implements Copyable<Chat> {
             LocalDateTime lastActivity,
             ChatType type,
             ChatStatus status,
+            ChatState state,
             String title,
             LocalDateTime creationDate,
             Set<User> participants,
@@ -79,6 +85,7 @@ public class Chat implements Copyable<Chat> {
         this.setLastActivity(lastActivity);
         this.setType        (type);
         this.setStatus      (status);
+        this.setState		(state);
         this.setTitle       (title);
         this.setCreationDate(creationDate);
         this.setParticipants(participants);
@@ -122,8 +129,6 @@ public class Chat implements Copyable<Chat> {
         copy.setStatus      (this.status);
         copy.setTitle       (this.title);
         copy.setCreationDate(this.creationDate);
-//        copy.setParticipants(this.participants);
-//        copy.setMessages    (this.messages);
         
         return copy;
     }
@@ -193,6 +198,18 @@ public class Chat implements Copyable<Chat> {
             this.status = status;
         }
     }
+    
+    public ChatState getState() {
+        return this.state;
+    }
+
+    public void setState(final ChatState state) {
+        if (state == null) {
+            this.state = ChatState.ENABLED;
+        } else {
+            this.state = state;
+        }
+    }
 
     public String getTitle() {
         return this.title;
@@ -215,24 +232,24 @@ public class Chat implements Copyable<Chat> {
     }
 
     public Set<User> getParticipants() {
-        return DeepCopyGenerator.generateCopy(this.participants);
+        return this.participants;
     }
 
     public void setParticipants(final Set<User> participants) {
         this.participants = new HashSet<>();
         if (participants != null) {
-            this.participants.addAll(DeepCopyGenerator.generateCopy(participants));
+            this.participants.addAll(participants);
         }
     }
 
     public Set<Message> getMessages() {
-        return DeepCopyGenerator.generateCopy(this.messages);
+        return this.messages;
     }
 
     public void setMessages(final Set<Message> messages) {
         this.messages = new HashSet<>();
         if (messages != null) {
-            this.messages.addAll(DeepCopyGenerator.generateCopy(messages));
+            this.messages.addAll(messages);
         }
     }
 
