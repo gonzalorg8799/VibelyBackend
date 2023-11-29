@@ -59,8 +59,8 @@ public class MessageServiceImpl implements MessageService{
 
 	@Override
 	public MessageDTO update(MessageDTO dto) {
-		MessageDTO messageDto = MessageMapper.toDTO(messageRepository.findById(dto.getMessageId()).get());
-		Message message = messageRepository.findById(dto.getMessageId()).orElseThrow();
+	    Message message = this.messageRepository.findById(dto.getMessageId()).orElseThrow();
+		MessageDTO messageDto = MessageMapper.toDTO(message);
 		
 		updateContent(dto.getMessageId(), dto.getContent());
 		updateStatus (dto.getMessageId(), dto.getStatus());
@@ -68,7 +68,7 @@ public class MessageServiceImpl implements MessageService{
 		return MessageMapper.toDTO(messageRepository.save(MessageMapper.toEntity(messageDto, message.getChat(), message.getSender())));
 	}
 	
-	private MessageDTO updateContent(final UUID id,final String content ) {
+	private MessageDTO updateContent(final UUID id, final String content) {
 		Message message = messageRepository.findById(id).orElseThrow();
 		
 		if(content != null && !content.equals(message.getContent())) message.setContent(content);
