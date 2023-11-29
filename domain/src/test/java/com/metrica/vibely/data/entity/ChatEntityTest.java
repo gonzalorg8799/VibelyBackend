@@ -106,6 +106,7 @@ class ChatEntityTest {
         chat.setCreationDate(null);
         chat.setType        (null);
         chat.setStatus      (null);
+        chat.setState       (null);
         chat.setLastActivity(null);
 
         assertNotNull(chat.getChatId());
