@@ -12,12 +12,16 @@ import java.util.Base64;
  * @version 1.0
  * @author Gonzalo, Alex
  */
-public abstract class ApiKeyGenerator {
+public class ApiKeyManager {
 
     // <<-CONSTANTS->>
     private static final int KEY_SIZE_BYTES = 32;
     private static final int LONG_SIZE_BYTES = Long.BYTES;
 
+    // <<-CONSTRUCTOR->>
+    private ApiKeyManager() {
+    }
+    
     // <<-METHODS->>
     /**
      * Generates a random API key using a secure random number generator.

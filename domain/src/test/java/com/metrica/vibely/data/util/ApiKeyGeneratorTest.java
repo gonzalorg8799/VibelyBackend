@@ -21,22 +21,22 @@ class ApiKeyGeneratorTest {
 
     @RepeatedTest(10)
     void generationTest() {
-        String apiKey1 = ApiKeyGenerator.generate();
-        String apiKey2 = ApiKeyGenerator.generate();
+        String apiKey1 = ApiKeyManager.generate();
+        String apiKey2 = ApiKeyManager.generate();
         assertNotEquals(apiKey1, apiKey2);
     }
 
     @Test
     void structureTest() {
         String apiKey = "apiKey";
-        assertThrows(IllegalArgumentException.class, () -> ApiKeyGenerator.getExpirationTime(apiKey));
+        assertThrows(IllegalArgumentException.class, () -> ApiKeyManager.getExpirationTime(apiKey));
     }
 
     @Test
     void timeExpirationTrueTest() {
-        String apiKey = ApiKeyGenerator.generate();
+        String apiKey = ApiKeyManager.generate();
 
-        long expirationTime = ApiKeyGenerator.getExpirationTime(apiKey);
+        long expirationTime = ApiKeyManager.getExpirationTime(apiKey);
         long currentTime = Instant.now().getEpochSecond() + 3601;
         boolean hasExpired = currentTime > expirationTime;
 
@@ -45,9 +45,9 @@ class ApiKeyGeneratorTest {
 
     @Test
     void timeExpirationFalseTest() {
-        String apiKey = ApiKeyGenerator.generate();
+        String apiKey = ApiKeyManager.generate();
 
-        long expirationTime = ApiKeyGenerator.getExpirationTime(apiKey);
+        long expirationTime = ApiKeyManager.getExpirationTime(apiKey);
         long currentTime = Instant.now().getEpochSecond();
         boolean hasExpired = currentTime > expirationTime;
 

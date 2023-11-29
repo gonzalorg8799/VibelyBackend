@@ -11,6 +11,10 @@ import java.util.stream.Collectors;
  * @author Alex
  */
 public class DeepCopyGenerator {
+
+    // <<-CONSTRUCTOR->>
+    private DeepCopyGenerator() {
+    }
     
     // <<-METHOD->>
     public static <T extends Copyable<T>> Set<T> generateCopy(Set<T> collection) {

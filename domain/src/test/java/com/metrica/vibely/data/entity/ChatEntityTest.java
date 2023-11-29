@@ -34,7 +34,7 @@ class ChatEntityTest {
     private static final LocalDateTime LAST_ACTIVITY = LocalDateTime.now();
     private static final ChatType   TYPE   = ChatType.DIRECT_MESSAGE;
     private static final ChatStatus STATUS = ChatStatus.ACTIVE;
-    private static final ChatState STATE = ChatState.ENABLED;
+    private static final ChatState  STATE  = ChatState.ENABLED;
     
     // <<-METHODS->>
     @Test
@@ -89,6 +89,7 @@ class ChatEntityTest {
         assertEquals(CREATION_DATE, chat.getCreationDate());
         assertEquals(TYPE,          chat.getType());
         assertEquals(STATUS,        chat.getStatus());
+        assertEquals(STATE,         chat.getState());
         assertEquals(TITLE,         chat.getTitle());
         assertEquals(LAST_ACTIVITY, chat.getLastActivity());
         assertEquals(participants,  chat.getParticipants());
@@ -114,6 +115,7 @@ class ChatEntityTest {
         assertEquals(now.format(formatter),   chat.getLastActivity().format(formatter));
         assertEquals(ChatType.DIRECT_MESSAGE, chat.getType());
         assertEquals(ChatStatus.ACTIVE,       chat.getStatus());
+        assertEquals(ChatState.ENABLED,       chat.getState());
     }
 
     @Test
