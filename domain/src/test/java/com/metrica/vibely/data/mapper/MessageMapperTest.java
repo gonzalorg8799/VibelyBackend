@@ -7,6 +7,7 @@ import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.Message;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.MessageDTO;
+import com.metrica.vibely.data.model.enumerator.MessageState;
 import com.metrica.vibely.data.model.enumerator.MessageStatus;
 import com.metrica.vibely.data.model.mapper.MessageMapper;
 
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * 
  * @since 2023-11-23
  * @version 1.0
- * @author Adrian
+ * @author Adrian, Gonzalo
  */
 class MessageMapperTest {
 
@@ -29,6 +30,7 @@ class MessageMapperTest {
     private static final UUID MESSAGE_ID = UUID.randomUUID();
     private static final LocalDateTime CREATION_TIMESTAMP = LocalDateTime.now();
     private static final MessageStatus STATUS = MessageStatus.SENT;
+    private static final MessageState STATE = MessageState.ENABLED;
     private static final String CONTENT = "This is a test message content";
     private static final UUID CHAT_ID = UUID.randomUUID();
     private static final UUID SENDER_ID = UUID.randomUUID();
@@ -40,6 +42,7 @@ class MessageMapperTest {
         messageDTO.setMessageId(MESSAGE_ID);
         messageDTO.setCreationTimestamp(CREATION_TIMESTAMP);
         messageDTO.setStatus(STATUS);
+        messageDTO.setState(STATE);
         messageDTO.setContent(CONTENT);
         messageDTO.setChat(CHAT_ID);
         messageDTO.setSender(SENDER_ID);
@@ -54,6 +57,7 @@ class MessageMapperTest {
         message.setMessageId(MESSAGE_ID);
         message.setCreationTimestamp(CREATION_TIMESTAMP);
         message.setStatus(STATUS);
+        message.setState(STATE);
         message.setContent(CONTENT);
 
         return message;
@@ -85,12 +89,14 @@ class MessageMapperTest {
 
         Message message = MessageMapper.toEntity(messageDTO, chat, sender);
 
-        assertEquals(messageDTO.getMessageId(), message.getMessageId());
+        assertEquals(messageDTO.getMessageId(), 		message.getMessageId());
         assertEquals(messageDTO.getCreationTimestamp(), message.getCreationTimestamp());
-        assertEquals(messageDTO.getStatus(), message.getStatus());
-        assertEquals(messageDTO.getContent(), message.getContent());
-        assertEquals(chat, message.getChat());
-        assertEquals(sender, message.getSender());
+        assertEquals(messageDTO.getStatus(), 			message.getStatus());
+        assertEquals(messageDTO.getState(),  			message.getState());
+        assertEquals(messageDTO.getContent(), 			message.getContent());
+        
+        assertEquals(chat,								message.getChat());
+        assertEquals(sender, 							message.getSender());
     }
 
     @Test
@@ -106,12 +112,13 @@ class MessageMapperTest {
 
         MessageDTO messageDTO = MessageMapper.toDTO(message);
 
-        assertEquals(message.getMessageId(), messageDTO.getMessageId());
+        assertEquals(message.getMessageId(), 		 messageDTO.getMessageId());
         assertEquals(message.getCreationTimestamp(), messageDTO.getCreationTimestamp());
-        assertEquals(message.getStatus(), messageDTO.getStatus());
-        assertEquals(message.getContent(), messageDTO.getContent());
-        assertEquals(chat.getChatId(), messageDTO.getChat());
-        assertEquals(sender.getUserId(), messageDTO.getSender());
+        assertEquals(message.getStatus(), 			 messageDTO.getStatus());
+        assertEquals(message.getState(), 			 messageDTO.getState());
+        assertEquals(message.getContent(), 			 messageDTO.getContent());
+        assertEquals(chat.getChatId(), 				 messageDTO.getChat());
+        assertEquals(sender.getUserId(), 			 messageDTO.getSender());
     }
 }
 
