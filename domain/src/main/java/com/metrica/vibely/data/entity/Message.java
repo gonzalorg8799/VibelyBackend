@@ -75,14 +75,6 @@ public class Message implements Copyable<Message> {
         this.setChat             (chat);
         this.setSender           (sender);
     }
-    
-    public MessageState getState() {
-		return state;
-	}
-
-	public void setState(MessageState state) {
-		this.state = state;
-	}
 
 	// <<-METHODS->>
     @Override
@@ -150,6 +142,18 @@ public class Message implements Copyable<Message> {
             this.status = MessageStatus.PENDING;
         } else {
             this.status = status;
+        }
+    }
+    
+    public MessageState getState() {
+        return this.state;
+    }
+
+    public void setState(MessageState state) {
+        if (state == null) {
+            this.state = MessageState.ENABLED;
+        } else {
+            this.state = state;
         }
     }
 
