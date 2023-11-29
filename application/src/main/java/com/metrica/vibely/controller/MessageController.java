@@ -76,6 +76,7 @@ public class MessageController {
             return ResponseEntity.badRequest().build();
 
         MessageDTO messageDto = createMessage.toDto();
+        
         messageDto.setMessageId(id);
         MessageDTO message = this.messageService.update(messageDto);
 

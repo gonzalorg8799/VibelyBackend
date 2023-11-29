@@ -57,41 +57,21 @@ public class MessageServiceImpl implements MessageService{
 		return MessageMapper.toDTO(messageRepository.save(message));
 	}
 
-	@Override
-	public MessageDTO update(MessageDTO dto) {
-	    Message message = this.messageRepository.findById(dto.getMessageId()).orElseThrow();
-		MessageDTO messageDto = MessageMapper.toDTO(message);
-		
-		updateContent(dto.getMessageId(), dto.getContent());
-		updateStatus (dto.getMessageId(), dto.getStatus());
-		updateState	 (dto.getMessageId(), dto.getState());
-		return MessageMapper.toDTO(messageRepository.save(MessageMapper.toEntity(messageDto, message.getChat(), message.getSender())));
-	}
-	
-	private MessageDTO updateContent(final UUID id, final String content) {
-		Message message = messageRepository.findById(id).orElseThrow();
-		
-		if(content != null && !content.equals(message.getContent())) message.setContent(content);
-		
-		return MessageMapper.toDTO(message);
-	}
-	
-	private MessageDTO updateStatus(final UUID id, final MessageStatus status) {
-		Message message = messageRepository.findById(id).orElseThrow();
-		
-		if(status!=null&&!status.equals(message.getStatus())) message.setStatus(status);
-		
-		return MessageMapper.toDTO(message);
-	}
-	
-	private MessageDTO updateState(final UUID id, final MessageState state) {
-		Message message = messageRepository.findById(id).orElseThrow();
-		
-		if(state!=null&&!state.equals(message.getState())) message.setState(state);
-		
-		return MessageMapper.toDTO(message);
-	}
+    @Override
+    public MessageDTO update(MessageDTO messageDTO) {
+        Message message = this.messageRepository.findById(messageDTO.getMessageId()).orElseThrow();
 
+        MessageStatus status = messageDTO.getStatus();
+        MessageState  state  = messageDTO.getState();
+        String content       = messageDTO.getContent();
+
+        if (status != null)  message.setStatus(status);
+        if (state != null)   message.setState(state);
+        if (content != null) message.setContent(content);
+
+        return MessageMapper.toDTO(this.messageRepository.save(message));
+    }
+	
 	@Override
 	public void deleteById(UUID id) {
 		messageRepository.deleteById(id);
