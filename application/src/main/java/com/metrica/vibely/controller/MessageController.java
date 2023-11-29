@@ -79,7 +79,7 @@ public class MessageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         this.messageService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
