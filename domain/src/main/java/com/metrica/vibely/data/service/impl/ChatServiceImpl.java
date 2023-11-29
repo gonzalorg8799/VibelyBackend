@@ -11,6 +11,7 @@ import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.Message;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.ChatDTO;
+import com.metrica.vibely.data.model.enumerator.ChatState;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
 import com.metrica.vibely.data.model.mapper.ChatMapper;
@@ -46,8 +47,9 @@ public class ChatServiceImpl implements ChatService {
         
         chat.setCreationDate(LocalDateTime.now());
         chat.setLastActivity(null);
-        chat.setStatus(ChatStatus.ACTIVE);
-        chat.setTitle(ChatDto.getTitle());
+        chat.setStatus		(ChatStatus.ACTIVE);
+        chat.setState 		(ChatState.ENABLED);
+        chat.setTitle 		(ChatDto.getTitle());
         if(participants.size() > 2) { chat.setType(ChatType.DIRECT_MESSAGE); } 
         else if(participants.size() > 1 && participants.size() == 2) { chat.setType(ChatType.DIRECT_MESSAGE); }
         
@@ -94,7 +96,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void deleteById(UUID chatId) {
-        chatRepository.deleteById(chatId);
+        chatRepository.findById(chatId).orElseThrow().setState(ChatState.DISABLED);;
     }
 
 	@Override
