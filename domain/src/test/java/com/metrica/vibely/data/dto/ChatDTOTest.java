@@ -1,13 +1,10 @@
 package com.metrica.vibely.data.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -16,7 +13,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.metrica.vibely.data.model.dto.ChatDTO;
-
+import com.metrica.vibely.data.model.enumerator.ChatState;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
 
@@ -36,6 +33,7 @@ class ChatDTOTest {
     private static final LocalDateTime LAST_ACTIVITY = LocalDateTime.now();
     private static final ChatType   TYPE   = ChatType.DIRECT_MESSAGE;
     private static final ChatStatus STATUS = ChatStatus.ACTIVE;
+    private static final ChatState STATE = ChatState.ENABLED;
     
     // <<-METHODS->>
     @Test
@@ -51,6 +49,7 @@ class ChatDTOTest {
         chat.setCreationDate(CREATION_DATE);
         chat.setType        (TYPE);
         chat.setStatus      (STATUS);
+        chat.setState		(STATE);
         chat.setTitle       (TITLE);
         chat.setLastActivity(LAST_ACTIVITY);
         chat.setParticipants(participants);
@@ -60,6 +59,7 @@ class ChatDTOTest {
         assertEquals(CREATION_DATE, chat.getCreationDate());
         assertEquals(TYPE,          chat.getType());
         assertEquals(STATUS,        chat.getStatus());
+        assertEquals(STATE,			chat.getState());
         assertEquals(TITLE,         chat.getTitle());
         assertEquals(LAST_ACTIVITY, chat.getLastActivity());
         assertEquals(participants,  chat.getParticipants());
@@ -78,6 +78,7 @@ class ChatDTOTest {
                 CREATION_DATE,
                 TYPE,
                 STATUS,
+                STATE,
                 TITLE,
                 LAST_ACTIVITY,
                 participants,
@@ -87,6 +88,7 @@ class ChatDTOTest {
         assertEquals(CREATION_DATE, chat.getCreationDate());
         assertEquals(TYPE,          chat.getType());
         assertEquals(STATUS,        chat.getStatus());
+        assertEquals(STATE, 		chat.getState());
         assertEquals(TITLE,         chat.getTitle());
         assertEquals(LAST_ACTIVITY, chat.getLastActivity());
         assertEquals(participants,  chat.getParticipants());
@@ -115,6 +117,7 @@ class ChatDTOTest {
         chat1.setCreationDate(CREATION_DATE);
         chat1.setType        (TYPE);
         chat1.setStatus      (STATUS);
+        chat1.setState		 (STATE);
         chat1.setTitle       (TITLE);
         chat1.setLastActivity(LAST_ACTIVITY);
 
@@ -122,6 +125,7 @@ class ChatDTOTest {
         chat2.setCreationDate(CREATION_DATE);
         chat2.setType        (TYPE);
         chat2.setStatus      (STATUS);
+        chat2.setState		 (STATE);
         chat2.setTitle       (TITLE);
         chat2.setLastActivity(LAST_ACTIVITY);
 
@@ -140,6 +144,7 @@ class ChatDTOTest {
         chat1.setCreationDate(CREATION_DATE);
         chat1.setType        (TYPE);
         chat1.setStatus      (STATUS);
+        chat1.setState		 (STATE);
         chat1.setTitle       (TITLE);
         chat1.setLastActivity(LAST_ACTIVITY);
 
@@ -147,6 +152,7 @@ class ChatDTOTest {
         chat2.setCreationDate(CREATION_DATE);
         chat2.setType        (TYPE);
         chat2.setStatus      (STATUS);
+        chat2.setState		 (STATE);
         chat2.setTitle       (TITLE);
         chat2.setLastActivity(LAST_ACTIVITY);
 
