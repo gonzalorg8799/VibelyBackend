@@ -1,11 +1,13 @@
 package com.metrica.vibely.controller;
 
 import com.metrica.vibely.data.model.dto.ChatDTO;
+import com.metrica.vibely.data.model.enumerator.ChatState;
 import com.metrica.vibely.data.service.ChatService;
 import com.metrica.vibely.model.request.AddRemoveChatRequest;
 import com.metrica.vibely.model.request.CreateChatRequest;
 import com.metrica.vibely.model.request.UpdateChatRequest;
 import com.metrica.vibely.model.response.CreateChatResponse;
+import com.metrica.vibely.model.response.UpdateChatResponse;
 
 import jakarta.validation.Valid;
 
@@ -46,8 +48,13 @@ public class ChatController {
 
     // <<-METHODS->>
     @GetMapping("/{id}")
-    public ChatDTO getById(@PathVariable UUID id) {
-        return chatService.getById(id);
+    public ResponseEntity<ChatDTO> getById(@PathVariable UUID id) {
+    	ChatDTO chatDto = chatService.getById(id); 
+    	
+    	if (chatDto.getState()   != ChatState.DISABLED) {
+                return ResponseEntity.ok().body(chatDto);
+    	}
+    	return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/create")
@@ -66,7 +73,7 @@ public class ChatController {
      }
 	
 	@PutMapping("/{id}")
-    public ResponseEntity<CreateChatResponse> updateById(
+    public ResponseEntity<UpdateChatResponse> updateById(
             @PathVariable
             UUID id,
             @RequestBody
@@ -82,7 +89,7 @@ public class ChatController {
         chatDTO.setChatId(id);
 
         ChatDTO updatedDTO = this.chatService.update(chatDTO);
-        return ResponseEntity.ok().body(new CreateChatResponse().generateResponse(updatedDTO));
+        return ResponseEntity.ok().body(new UpdateChatResponse().generateResponse(updatedDTO));
     }
 
     @DeleteMapping("/{id}")
