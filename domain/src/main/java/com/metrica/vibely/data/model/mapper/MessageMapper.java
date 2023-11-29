@@ -7,7 +7,7 @@ import com.metrica.vibely.data.model.dto.MessageDTO;
 
 /**
  * @since 2023-11-22
- * @author Adrian
+ * @author Adrian, Gonzalo
  * @version 1.0
  *
  */
@@ -20,6 +20,7 @@ public class MessageMapper {
         message.setMessageId		(messageDTO.getMessageId());
         message.setCreationTimestamp(messageDTO.getCreationTimestamp());
         message.setStatus			(messageDTO.getStatus());
+        message.setState			(messageDTO.getState());
         message.setContent			(messageDTO.getContent());
 
         // Mapping Relations
@@ -36,6 +37,7 @@ public class MessageMapper {
         messageDTO.setMessageId        (message.getMessageId());
         messageDTO.setCreationTimestamp(message.getCreationTimestamp());
         messageDTO.setStatus		   (message.getStatus());
+        messageDTO.setState			   (message.getState());
         messageDTO.setContent          (message.getContent());
 
         // Mapping Relations
