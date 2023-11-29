@@ -1,5 +1,6 @@
 package com.metrica.vibely.data.entity;
 
+import com.metrica.vibely.data.model.enumerator.MessageState;
 import com.metrica.vibely.data.model.enumerator.MessageStatus;
 import com.metrica.vibely.data.util.Copyable;
 
@@ -21,7 +22,7 @@ import java.util.UUID;
  * 
  * @since 2023-11-13
  * @version 1.0
- * @author Adrian, Alex
+ * @author Adrian, Alex, Gonzalo
  */
 @Entity
 public class Message implements Copyable<Message> {
@@ -36,6 +37,7 @@ public class Message implements Copyable<Message> {
     @Column(name = "creation_timestamp")
     private LocalDateTime creationTimestamp;
     private MessageStatus status;
+    private MessageState state;
     private String content;
 
     // Relations
@@ -61,18 +63,28 @@ public class Message implements Copyable<Message> {
             UUID messageId,
             LocalDateTime creationTimestamp,
             MessageStatus status,
+            MessageState state,
             String content,
             Chat chat,
             User sender) {
         this.setMessageId        (messageId);
         this.setCreationTimestamp(creationTimestamp);
         this.setStatus           (status);
+        this.setState			 (state);
         this.setContent          (content);
         this.setChat             (chat);
         this.setSender           (sender);
     }
     
-    // <<-METHODS->>
+    public MessageState getState() {
+		return state;
+	}
+
+	public void setState(MessageState state) {
+		this.state = state;
+	}
+
+	// <<-METHODS->>
     @Override
     public Message deepCopy() {
         Message copy = new Message();
