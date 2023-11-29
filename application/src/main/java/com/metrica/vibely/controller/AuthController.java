@@ -42,16 +42,13 @@ public class AuthController {
             AuthUserRequest authRequest,
             BindingResult bindingResult
     ) {
-        if (!bindingResult.getAllErrors().isEmpty()) {
+        if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
 
-        try {
-            String apiKey = authService.authenticate(authRequest.getUsername(), authRequest.getPassword());
-            return ResponseEntity.ok(java.util.Map.of("apiKey", apiKey));
-        } catch (Exception e) { // PONER LA EXCEPTION MÁS ESPECIFICA
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        String apiKey = this.authService.authenticate(authRequest.getUsername(), authRequest.getPassword());
+        return ResponseEntity.ok()
+                .body(java.util.Map.of("apiKey", apiKey));
     }
 
 }

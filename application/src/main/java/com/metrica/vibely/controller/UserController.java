@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -49,6 +50,24 @@ public class UserController {
     // <<-METHODS->>
     @GetMapping("/{id}")
     public ResponseEntity<BasicInfoResponse> getById(@PathVariable UUID id) {
+        
+        System.err.println("Estamos en el metodo get User by id");
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         UserDTO userDTO = this.userService.getById(id);
         
         if (userDTO.getState() != UserState.DISABLED) {
