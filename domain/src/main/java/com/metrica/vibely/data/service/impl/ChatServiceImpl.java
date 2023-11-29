@@ -53,26 +53,26 @@ public class ChatServiceImpl implements ChatService {
         if(participants.size() > 2) { chat.setType(ChatType.DIRECT_MESSAGE); } 
         else if(participants.size() > 1 && participants.size() == 2) { chat.setType(ChatType.DIRECT_MESSAGE); }
         
-        return ChatMapper.toDTO(chatRepository.save(chat)); 
+        return ChatMapper.toDTO(this.chatRepository.save(chat)); 
     }
 
     @Override
     public ChatDTO addMembers(UUID chatId, Set<UUID> membersToAdd) {
-        Chat chat = chatRepository.findById(chatId).orElseThrow();
+        Chat chat = this.chatRepository.findById(chatId).orElseThrow();
         
         Set<User> addedParts = chat.getParticipants();
         
         addedParts.addAll(membersToAdd.stream()
-        							  .map(p -> userRepository.findById(p).orElseThrow())
+        							  .map(p -> this.userRepository.findById(p).orElseThrow())
         							  .collect(Collectors.toSet()));
         chat.setParticipants(addedParts);
         
-        return ChatMapper.toDTO(chatRepository.save(chat));
+        return ChatMapper.toDTO(this.chatRepository.save(chat));
     }
 
     @Override
     public ChatDTO removeMembers(UUID chatId, Set<UUID> membersToRemove) {
-        Chat chat = chatRepository.findById(chatId).orElseThrow();
+        Chat chat = this.chatRepository.findById(chatId).orElseThrow();
         
         Set<User> removedParts = chat.getParticipants();
         
@@ -81,17 +81,17 @@ public class ChatServiceImpl implements ChatService {
         							  .collect(Collectors.toSet()));
         chat.setParticipants(removedParts);
         
-        return ChatMapper.toDTO(chatRepository.save(chat));
+        return ChatMapper.toDTO(this.chatRepository.save(chat));
     }
 
     @Override
     public Set<User> getMembers(UUID chatId) {
-        return chatRepository.findById(chatId).orElseThrow().getParticipants();
+        return this.chatRepository.findById(chatId).orElseThrow().getParticipants();
     }
 
     @Override
     public Set<Message> getMessages(UUID chatId) {
-        return chatRepository.findById(chatId).orElseThrow().getMessages();
+        return this.chatRepository.findById(chatId).orElseThrow().getMessages();
     }
 
     @Override
@@ -103,12 +103,12 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 		public ChatDTO getById(UUID id) {
-			return ChatMapper.toDTO(chatRepository.findById(id).orElseThrow());
+			return ChatMapper.toDTO(this.chatRepository.findById(id).orElseThrow());
 		}
 
 	@Override
 	public ChatDTO update(ChatDTO dto) {
-		Chat chat = chatRepository.findById(dto.getChatId()).orElseThrow();
+		Chat chat = this.chatRepository.findById(dto.getChatId()).orElseThrow();
 		
 		String newTitle = dto.getTitle();
 		ChatType newType = dto.getType();
@@ -118,6 +118,6 @@ public class ChatServiceImpl implements ChatService {
 		if(newType   != null) { chat.setType(newType); }
 		if(newStatus != null) { chat.setStatus(newStatus); }
 		
-		return ChatMapper.toDTO(chatRepository.save(chat));
+		return ChatMapper.toDTO(this.chatRepository.save(chat));
 	}	
 }
