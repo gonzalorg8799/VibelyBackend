@@ -10,7 +10,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
  
 /**
-* <h1>Password Hashing</h1>
+* <h1>Password Hasher</h1>
 *
 * @since 2023-01-XX
 * @version 2.0
@@ -22,6 +22,10 @@ public class PasswordHasher {
     private static final int SALT_SIZE_BYTES = 16;
     private static final int HASH_SIZE_BYTES = 32;
     private static final String ALGORITHM = "PBKDF2WithHmacSHA256";
+
+    // <<-CONSTRUCTOR->>
+    private PasswordHasher() {
+    }
     
     // <<-METHODS->>
     /**
