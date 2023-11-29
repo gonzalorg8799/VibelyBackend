@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import com.metrica.vibely.data.model.enumerator.ChatState;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
 
@@ -25,6 +26,7 @@ public class ChatDTO {
     private LocalDateTime creationDate;
     private ChatType type;
     private ChatStatus status;
+    private ChatState state;
     private String title;
     private LocalDateTime lastActivity;
 
@@ -42,6 +44,7 @@ public class ChatDTO {
     		LocalDateTime creationDate,
     		ChatType type, 
     		ChatStatus status, 
+    		ChatState state,
     		String title,
 			LocalDateTime lastActivity, 
 			Set<UUID> participants,
@@ -51,6 +54,7 @@ public class ChatDTO {
 		this.creationDate = creationDate;
 		this.type = type;
 		this.status = status;
+		this.state = state;
 		this.title = title;
 		this.lastActivity = lastActivity;
 		this.participants = participants;
@@ -125,6 +129,14 @@ public class ChatDTO {
 
     public void setStatus(final ChatStatus status) {
         this.status = status;
+    }
+    
+    public ChatState getState() {
+        return this.state;
+    }
+
+    public void setState(final ChatState state) {
+        this.state = state;
     }
 
     public String getTitle() {
