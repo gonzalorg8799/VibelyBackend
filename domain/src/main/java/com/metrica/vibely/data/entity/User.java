@@ -225,7 +225,7 @@ public class User implements Copyable<User> {
     }
 
     public String getApikey() {
-        return apikey;
+        return this.apikey;
     }
 
     public void setApikey(String apikey) {
