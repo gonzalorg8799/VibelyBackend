@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.Message;
-import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.ChatDTO;
+import com.metrica.vibely.data.model.enumerator.ChatState;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
 import com.metrica.vibely.data.model.enumerator.ChatType;
 import com.metrica.vibely.data.model.mapper.ChatMapper;
@@ -35,6 +35,7 @@ class ChatMapperTest {
     private static final LocalDateTime CREATION_DATE = LocalDateTime.now();
     private static final ChatType TYPE = ChatType.GROUP;
     private static final ChatStatus STATUS = ChatStatus.ACTIVE;
+    private static final ChatState STATE = ChatState.ENABLED;
     private static final String TITLE = "Test Chat";
     private static final LocalDateTime LAST_ACTIVITY = LocalDateTime.now();
     
@@ -47,6 +48,7 @@ class ChatMapperTest {
         chatDTO.setCreationDate(CREATION_DATE);
         chatDTO.setType(TYPE);
         chatDTO.setStatus(STATUS);
+        chatDTO.setState(STATE);
         chatDTO.setTitle(TITLE);
         chatDTO.setLastActivity(LAST_ACTIVITY);
 
@@ -60,6 +62,7 @@ class ChatMapperTest {
         chat.setCreationDate(CREATION_DATE);
         chat.setType(TYPE);
         chat.setStatus(STATUS);
+        chat.setState(STATE);
         chat.setTitle(TITLE);
         chat.setLastActivity(LAST_ACTIVITY);
 
@@ -81,6 +84,7 @@ class ChatMapperTest {
         assertEquals(chatDTO.getCreationDate(), chat.getCreationDate());
         assertEquals(chatDTO.getType(), chat.getType());
         assertEquals(chatDTO.getStatus(), chat.getStatus());
+        assertEquals(chatDTO.getState(), chat.getState());
         assertEquals(chatDTO.getTitle(), chat.getTitle());
         assertEquals(chatDTO.getLastActivity(), chat.getLastActivity());
         
@@ -105,6 +109,7 @@ class ChatMapperTest {
         assertEquals(chat.getCreationDate(), chatDTO.getCreationDate());
         assertEquals(chat.getType(), chatDTO.getType());
         assertEquals(chat.getStatus(), chatDTO.getStatus());
+        assertEquals(chat.getState(), chatDTO.getState());
         assertEquals(chat.getTitle(), chatDTO.getTitle());
         assertEquals(chat.getLastActivity(), chatDTO.getLastActivity());
         
