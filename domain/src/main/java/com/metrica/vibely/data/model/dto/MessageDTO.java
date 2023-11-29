@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.metrica.vibely.data.model.enumerator.MessageState;
 import com.metrica.vibely.data.model.enumerator.MessageStatus;
 
 /**
@@ -11,7 +12,7 @@ import com.metrica.vibely.data.model.enumerator.MessageStatus;
  * 
  * @since 2023-11-20
  * @version 1.0
- * @author Adri
+ * @author Adri, Gonzalo
  */
 public class MessageDTO {
 
@@ -22,6 +23,7 @@ public class MessageDTO {
     private UUID messageId;
     private LocalDateTime creationTimestamp;
     private MessageStatus status;
+    private MessageState state;
     private String content;
 
     // Relations
@@ -36,12 +38,14 @@ public class MessageDTO {
             UUID messageId,
             LocalDateTime creationTimestamp,
             MessageStatus status,
+            MessageState state,
             String content,
             UUID chat,
             UUID sender) {
         this.setMessageId        (messageId);
         this.setCreationTimestamp(creationTimestamp);
         this.setStatus           (status);
+        this.setState			 (state);
         this.setContent          (content);
         this.setChat             (chat);
         this.setSender           (sender);
@@ -49,7 +53,15 @@ public class MessageDTO {
     
     //<<-METHODS->>
     
-    @Override
+    public MessageState getState() {
+		return state;
+	}
+
+	public void setState(MessageState state) {
+		this.state = state;
+	}
+
+	@Override
     public int hashCode() {
         return Objects.hash(this.messageId);
     }
