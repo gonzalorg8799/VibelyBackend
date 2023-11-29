@@ -24,6 +24,7 @@ public class ChatMapper {
 	        chat.setCreationDate(chatDTO.getCreationDate());
 	        chat.setType		(chatDTO.getType());
 	        chat.setStatus		(chatDTO.getStatus());
+	        chat.setState		(chatDTO.getState());
 	        chat.setTitle		(chatDTO.getTitle());
 	        chat.setLastActivity(chatDTO.getLastActivity());
 
@@ -42,6 +43,7 @@ public class ChatMapper {
 	        chatDTO.setCreationDate(chat.getCreationDate());
 	        chatDTO.setType(chat.getType());
 	        chatDTO.setStatus(chat.getStatus());
+	        chatDTO.setState(chat.getState());
 	        chatDTO.setTitle(chat.getTitle());
 	        chatDTO.setLastActivity(chat.getLastActivity());
 
