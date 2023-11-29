@@ -96,7 +96,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void deleteById(UUID chatId) {
-        chatRepository.findById(chatId).orElseThrow().setState(ChatState.DISABLED);;
+        Chat chat = this.chatRepository.findById(chatId).orElseThrow();
+        chat.setState(ChatState.DISABLED);
+        this.chatRepository.save(chat);
     }
 
 	@Override
