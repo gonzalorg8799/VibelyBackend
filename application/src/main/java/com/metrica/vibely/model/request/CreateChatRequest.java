@@ -2,9 +2,7 @@ package com.metrica.vibely.model.request;
 
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.ChatDTO;
 
 import jakarta.validation.constraints.NotBlank;
