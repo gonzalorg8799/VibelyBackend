@@ -1,5 +1,7 @@
 package com.metrica.vibely.controller.util;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -50,27 +52,27 @@ public class ResponseManager {
 //	<<--CREATE RESPONSE-->>   
     public ResponseEntity<CreateUserResponse> generateCreateResponse(UserDTO userDto) {
     	CreateUserResponse userResponse = new CreateUserResponse();
-    	return ResponseEntity.ok().body(userResponse.generateResponse(userDto));
+    	return ResponseEntity.status(HttpStatus.CREATED).body(userResponse.generateResponse(userDto));
     }
     
     public ResponseEntity<CreateAdminResponse> generateCreateResponse(AdminDTO adminDto) {
     	CreateAdminResponse adminResponse = new CreateAdminResponse();
-    	return ResponseEntity.ok().body(adminResponse.generateResponse(adminDto));
+    	return ResponseEntity.status(HttpStatus.CREATED).body(adminResponse.generateResponse(adminDto));
     }
     
     public ResponseEntity<CreatePostResponse> generateCreateResponse(PostDTO postDto) {
     	CreatePostResponse postResponse = new CreatePostResponse();
-    	return ResponseEntity.ok().body(postResponse.generateResponse(postDto));
+    	return ResponseEntity.status(HttpStatus.CREATED).body(postResponse.generateResponse(postDto));
     }
     
     public ResponseEntity<CreateChatResponse> generateCreateResponse(ChatDTO chatDto) {
     	CreateChatResponse chatResponse = new CreateChatResponse();
-    	return ResponseEntity.ok().body(chatResponse.generateResponse(chatDto));
+    	return ResponseEntity.status(HttpStatus.CREATED).body(chatResponse.generateResponse(chatDto));
     }
     
     public ResponseEntity<CreateMessageResponse> generateCreateResponse(MessageDTO messageDto) {
     	CreateMessageResponse messageResponse = new CreateMessageResponse();
-    	return ResponseEntity.ok().body(messageResponse.generateResponse(messageDto));
+    	return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse.generateResponse(messageDto));
     }
     
 //	<<--UPDATE RESPONSE-->>
