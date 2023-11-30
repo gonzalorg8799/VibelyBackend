@@ -1,5 +1,6 @@
 package com.metrica.vibely.controller;
 
+import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
@@ -8,11 +9,11 @@ import com.metrica.vibely.model.request.CreateUserRequest;
 import com.metrica.vibely.model.request.UpdateUserRequest;
 import com.metrica.vibely.model.response.create.CreateUserResponse;
 import com.metrica.vibely.model.response.get.BasicInfoResponse;
+import com.metrica.vibely.model.response.update.UpdateUserResponse;
 
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,11 +39,13 @@ import jakarta.validation.Valid;
 public class UserController {
 
     // <<-FIELDS->>
+	private ResponseManager responseManager;
     private UserService userService;
 
     // <<-CONSTRUCTOR->>
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ResponseManager responseManager) {
+    	this.responseManager = responseManager;
         this.userService = userService;
     }
 
@@ -52,8 +55,7 @@ public class UserController {
         UserDTO userDTO = this.userService.getById(id);
         
         if (userDTO.getState() != UserState.DISABLED) {
-            return ResponseEntity.ok()
-                    .body(new BasicInfoResponse().generateResponse(userDTO));
+        	return this.responseManager.generateGetResponse(userDTO);
         }
         
         return ResponseEntity.notFound().build();
@@ -65,7 +67,7 @@ public class UserController {
         
         if (userDTO.getState()   != UserState.DISABLED &&
             userDTO.getPrivacy() == PrivacyType.PUBLIC) {
-            return ResponseEntity.ok().body(new BasicInfoResponse().generateResponse(userDTO));
+        	return this.responseManager.generateGetResponse(userDTO);
         }
         
         return ResponseEntity.notFound().build();
@@ -77,7 +79,7 @@ public class UserController {
         
         if (userDTO.getState()   != UserState.DISABLED &&
             userDTO.getPrivacy() == PrivacyType.PUBLIC) {
-            return ResponseEntity.ok().body(new BasicInfoResponse().generateResponse(userDTO));
+        	return this.responseManager.generateGetResponse(userDTO);
         }
         
         return ResponseEntity.notFound().build();
@@ -96,12 +98,11 @@ public class UserController {
         }
         
         UserDTO userDTO = this.userService.create(userRequest.toUserDTO());
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new CreateUserResponse().generateResponse(userDTO));
+        return this.responseManager.generateCreateResponse(userDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CreateUserResponse> updateById(
+    public ResponseEntity<UpdateUserResponse> updateById(
             @PathVariable
             UUID id,
             @RequestBody
@@ -115,8 +116,7 @@ public class UserController {
         UserDTO userDTO = userRequest.toDTO();
         userDTO.setUserId(id);
         UserDTO updatedDTO = this.userService.update(userDTO);
-        return ResponseEntity.ok()
-                .body(new CreateUserResponse().generateResponse(updatedDTO));
+        return this.responseManager.generateUpdateResponse(updatedDTO);
     }
 
     @DeleteMapping("/{id}")

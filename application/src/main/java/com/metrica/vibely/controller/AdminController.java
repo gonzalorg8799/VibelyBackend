@@ -9,13 +9,13 @@ import com.metrica.vibely.model.request.CreateAdminRequest;
 import com.metrica.vibely.model.request.UpdateAdminRequest;
 import com.metrica.vibely.model.response.create.CreateAdminResponse;
 import com.metrica.vibely.model.response.get.BasicInfoResponse;
+import com.metrica.vibely.model.response.update.UpdateAdminResponse;
 
 import jakarta.validation.Valid;
 
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,7 +64,7 @@ public class AdminController {
         
         if (adminDTO.getState()   != UserState.DISABLED &&
             adminDTO.getPrivacy() == PrivacyType.PUBLIC) {
-            return ResponseEntity.ok().body(new BasicInfoResponse().generateResponse(adminDTO));
+        	return this.responseManager.generateGetResponse(adminDTO);
         }
         
         return ResponseEntity.notFound().build();
@@ -76,7 +76,7 @@ public class AdminController {
         
         if (adminDTO.getState()   != UserState.DISABLED &&
             adminDTO.getPrivacy() == PrivacyType.PUBLIC) {
-            return ResponseEntity.ok().body(new BasicInfoResponse().generateResponse(adminDTO));
+        	return this.responseManager.generateGetResponse(adminDTO);
         }
         
         return ResponseEntity.notFound().build();
@@ -98,12 +98,11 @@ public class AdminController {
         }
         
         AdminDTO adminDTO = this.adminService.create(userRequest.toAdminDTO());
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new CreateAdminResponse().generateResponse(adminDTO));
+        return this.responseManager.generateCreateResponse(adminDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateById(
+    public ResponseEntity<UpdateAdminResponse> updateById(
             @PathVariable
             UUID id,
             @RequestBody
@@ -119,8 +118,7 @@ public class AdminController {
         adminDTO.setUserId(id);
         
         AdminDTO updatedDTO = this.adminService.update(adminDTO);
-        return ResponseEntity.ok()
-                .body(new CreateAdminResponse().generateResponse(updatedDTO));
+        return this.responseManager.generateUpdateResponse(updatedDTO);
     }
 
     @DeleteMapping("/{id}")
