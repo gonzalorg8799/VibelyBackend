@@ -7,6 +7,7 @@ import java.util.Base64;
 import java.util.UUID;
 
 import com.metrica.vibely.data.exception.ExpiredApiKeyException;
+import com.metrica.vibely.data.exception.InvalidFormatException;
 
 /**
  * <h1>API Key Generator</h1>
@@ -20,6 +21,7 @@ public class ApiKeyManager {
     // <<-CONSTANTS->>
     private static final int KEY_SIZE_BYTES = 32;
     private static final int LONG_SIZE_BYTES = Long.BYTES;
+    private static final int UUID_SIZE_BYTES = 36;
 
     // <<-CONSTRUCTOR->>
     private ApiKeyManager() {
@@ -39,27 +41,22 @@ public class ApiKeyManager {
         long currentTime = Instant.now().getEpochSecond();
         long expirationTime = currentTime + 3600;
 
-        ByteBuffer buffer = ByteBuffer.allocate(KEY_SIZE_BYTES + LONG_SIZE_BYTES);
+        ByteBuffer buffer = ByteBuffer.allocate(KEY_SIZE_BYTES + UUID_SIZE_BYTES + LONG_SIZE_BYTES);
         buffer.put(keyBytes);
+        byte[] uuidBytes = id.toString().getBytes();
+        buffer.put(uuidBytes);
         buffer.putLong(expirationTime);
-        buffer.put(id.toString().getBytes());
 
         byte[] concatenated = buffer.array();
+        
         return Base64.getEncoder().encodeToString(concatenated);
     }
     
-    
     public static UUID getId(String apiKey) {
-        byte[] concatenated = Base64.getDecoder().decode(apiKey);  
-        ByteBuffer buffer = ByteBuffer.wrap(concatenated, KEY_SIZE_BYTES, LONG_SIZE_BYTES + Integer.BYTES);
-        buffer.getLong();
-        int idLength = buffer.getInt();
-
-        byte[] idBytes = new byte[idLength];
-        buffer.get(idBytes);
-        String idString = new String(idBytes);
-        
-        return UUID.fromString(idString);
+        byte[] concatenated = Base64.getDecoder().decode(apiKey);
+        byte[] userIdBytes = new byte[UUID_SIZE_BYTES];
+        System.arraycopy(concatenated, KEY_SIZE_BYTES, userIdBytes, 0, UUID_SIZE_BYTES);
+        return UUID.fromString(new String(userIdBytes));
     }
     
     /**
@@ -71,51 +68,51 @@ public class ApiKeyManager {
      */
     public static long getExpirationTime(String apiKey) {
         byte[] concatenated = Base64.getDecoder().decode(apiKey);
-        
-        ByteBuffer buffer = ByteBuffer.wrap(concatenated, KEY_SIZE_BYTES, LONG_SIZE_BYTES);
+        ByteBuffer buffer = ByteBuffer.wrap(concatenated, KEY_SIZE_BYTES + UUID_SIZE_BYTES, LONG_SIZE_BYTES);
         return buffer.getLong();
     }
     
     private static boolean isValidFormatApikey(String apiKey) {
-    	if(apiKey==null) throw new IllegalArgumentException();
 		byte[] concatenated = Base64.getDecoder().decode(apiKey);
 
-		if (concatenated.length < (KEY_SIZE_BYTES + LONG_SIZE_BYTES)) 
-			throw new IllegalArgumentException("Invalid API key format"); 
-		else return true;
+		if (concatenated.length != (KEY_SIZE_BYTES + UUID_SIZE_BYTES + LONG_SIZE_BYTES)) {
+            return false; 
+		}
+		
+        return true;
 	}
     
-	private static boolean isValidExpirationTime(String apiKey) {
-			try {
-				long expirationTime = getExpirationTime(apiKey);
-				long currentTime = Instant.now().getEpochSecond();
-				if(expirationTime < currentTime) throw new ExpiredApiKeyException();
-				else return true;
-			}
-			catch(IllegalArgumentException e) {
-				return false;
-			}
-	}
-	private static boolean isValidApiKeyForUser(String apiKey, String savedaApiKey) {
-		if(apiKey.equals(savedaApiKey))return true;
-		else return false;
-	}
-
-	public static int isValid(String apiKey, String savedApiKey) {
+    private static boolean isValidExpirationTime(String apiKey) {
+        long expirationTime = getExpirationTime(apiKey);
+        long currentTime = Instant.now().getEpochSecond();
+        return expirationTime > currentTime;
+    }
+	
+	/**
+	 * 
+	 * @param apiKey
+	 * @param savedApiKey
+	 * @return
+	 */
+	public static int isValid(String apiKey) {
+        if (apiKey == null) {
+            return 1;
+        }
+        
+        // TODO Implement this instead of decode in each method
+//        byte[] info = Base64.getDecoder().decode(apiKey);
+        
 		try {
-			if(!isValidFormatApikey(apiKey))               throw new IllegalArgumentException();
-			if(!isValidExpirationTime(apiKey)) 			   throw new ExpiredApiKeyException();
-			if(!isValidApiKeyForUser(apiKey, savedApiKey)) throw new ExpiredApiKeyException();
+			if (!isValidFormatApikey(apiKey))   throw new InvalidFormatException("Invalid API key format");
+			if (!isValidExpirationTime(apiKey)) throw new ExpiredApiKeyException();
 			return 0;
-			
-		}
-		catch(IllegalArgumentException e) {
+		} catch (InvalidFormatException e) {
+	        System.err.println("InvalidFormatException");
 			return 1;
-		}
-		catch(ExpiredApiKeyException e) {
+		} catch (ExpiredApiKeyException e) {
+	        System.err.println("ExpiredApiKeyException");
 			return 2;
 		}
-
 	}
 
 }
