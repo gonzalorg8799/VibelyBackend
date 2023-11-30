@@ -6,8 +6,8 @@ import com.metrica.vibely.data.service.ChatService;
 import com.metrica.vibely.model.request.AddRemoveChatRequest;
 import com.metrica.vibely.model.request.CreateChatRequest;
 import com.metrica.vibely.model.request.UpdateChatRequest;
-import com.metrica.vibely.model.response.CreateChatResponse;
-import com.metrica.vibely.model.response.UpdateChatResponse;
+import com.metrica.vibely.model.response.create.CreateChatResponse;
+import com.metrica.vibely.model.response.update.UpdateChatResponse;
 
 import jakarta.validation.Valid;
 

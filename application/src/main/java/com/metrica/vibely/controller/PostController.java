@@ -4,7 +4,7 @@ import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.service.PostService;
 import com.metrica.vibely.model.request.CreatePostRequest;
 import com.metrica.vibely.model.request.UpdatePostRequest;
-import com.metrica.vibely.model.response.CreatePostResponse;
+import com.metrica.vibely.model.response.create.CreatePostResponse;
 
 import jakarta.validation.Valid;
 

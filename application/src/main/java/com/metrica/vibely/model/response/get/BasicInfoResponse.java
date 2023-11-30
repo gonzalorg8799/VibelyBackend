@@ -1,4 +1,4 @@
-package com.metrica.vibely.model.response;
+package com.metrica.vibely.model.response.get;
 
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;

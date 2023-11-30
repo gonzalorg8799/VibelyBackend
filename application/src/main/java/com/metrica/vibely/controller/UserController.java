@@ -6,8 +6,8 @@ import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.service.UserService;
 import com.metrica.vibely.model.request.CreateUserRequest;
 import com.metrica.vibely.model.request.UpdateUserRequest;
-import com.metrica.vibely.model.response.BasicInfoResponse;
-import com.metrica.vibely.model.response.CreateUserResponse;
+import com.metrica.vibely.model.response.create.CreateUserResponse;
+import com.metrica.vibely.model.response.get.BasicInfoResponse;
 
 import java.util.UUID;
 

@@ -7,8 +7,8 @@ import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.service.AdminService;
 import com.metrica.vibely.model.request.CreateAdminRequest;
 import com.metrica.vibely.model.request.UpdateAdminRequest;
-import com.metrica.vibely.model.response.BasicInfoResponse;
-import com.metrica.vibely.model.response.CreateAdminResponse;
+import com.metrica.vibely.model.response.create.CreateAdminResponse;
+import com.metrica.vibely.model.response.get.BasicInfoResponse;
 
 import jakarta.validation.Valid;
 
@@ -55,7 +55,7 @@ public class AdminController {
     @GetMapping("/{id}")
     public ResponseEntity<BasicInfoResponse> getById(@PathVariable UUID id) {
         AdminDTO adminDTO = this.adminService.getById(id);
-        return this.responseManager.generateResponse(adminDTO);
+        return this.responseManager.generateGetResponse(adminDTO);
     }
 
     @GetMapping("/username/{username}")
