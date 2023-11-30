@@ -560,7 +560,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PostCreation"
+                                "$ref": "#/components/schemas/Content"
                             },
                             "example": {
                                 "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -698,24 +698,29 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ChatCreation"
+                                "$ref": "#/components/schemas/Chat Creation"
                             },
                             "example": {
-                                "chatId": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
-                                "creation_date": "2023-11-30 15:22:24.426498",
-                                "title": "Lorem ipsum",
-                                "participants": [
-                                    "5542598a-f564-431d-9666-95b360b81932",
-                                    "9c28646f-0678-4765-bcd0-69de4f4f700c"
-                                ]
+                                "title": "Lorem ipsum"
                             }
-                            
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "CREATED: Resource created successfully"
+                        "description": "CREATED: Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "chatId": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "creation_date": "2023-11-30 15:22:24.426498",
+                                    "title": "Lorem ipsum",
+                                    "participants": [
+                                        "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "BAD REQUEST: The body is malformed or has invalid data"
@@ -848,22 +853,29 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/SendMessage"
+                                "$ref": "#/components/schemas/Content"
                             },
                             "example": {
-                                "messageId": "ba58801b-30e9-48e8-9354-d37f09742fde",
-                                "creation_timestamp": "2023-11-30 15:22:26.399178",
-                                "content": "Good morning!",
-                                "status": "PENDING",
-                                "chat": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
-                                "sender": "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
+                                "content": "Good morning!"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "CREATED: Resource created successfully"
+                        "description": "CREATED: Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "messageId": "ba58801b-30e9-48e8-9354-d37f09742fde",
+                                    "creation_timestamp": "2023-11-30 15:22:26.399178",
+                                    "content": "Good morning!",
+                                    "status": "SENT",
+                                    "chat": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "sender": "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "BAD REQUEST: The body is malformed or has invalid data"
@@ -1075,38 +1087,22 @@
                     "username":"jennifer"
                 }
             },
-            "ChatCreation":{
+            "Content":{
                 "type": "object",
                 "properties": {
-                    "members": {
-                        "type": "array",
-                        "description": "Members list"
-                    }
-                }
-            },
-            "SendMessage":{
-                "type": "object",
-                "properties": {
-                    "sender_username": {
-                        "type": "string",
-                        "description": "Sender's username"
-                    },
-                    "content": {
-                        "type": "string",
-                        "description": "content of the message"
-                    }
-                }
-            },
-            "PostCreation":{
-                "type": "object",
-                "properties": {
-                    "owner_username": {
-                        "type": "string",
-                        "description": "Post Owner username"
-                    },
                     "content": {
                         "type": "string",
                         "description": "Content of the post"
+                    }
+                },
+                "required": ["content"]
+            },
+            "Chat Creation": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Title of the chat"
                     }
                 }
             }
