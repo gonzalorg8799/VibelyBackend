@@ -1,17 +1,19 @@
 package com.metrica.vibely.controller;
 
+import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.service.PostService;
 import com.metrica.vibely.model.request.CreatePostRequest;
 import com.metrica.vibely.model.request.UpdatePostRequest;
-import com.metrica.vibely.model.response.CreatePostResponse;
+import com.metrica.vibely.model.response.create.CreatePostResponse;
+import com.metrica.vibely.model.response.get.GetPostResponse;
+import com.metrica.vibely.model.response.update.UpdatePostResponse;
 
 import jakarta.validation.Valid;
 
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,19 +37,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
     // <<-FIELDS->>
+	private ResponseManager responseManager;
     private PostService postService;
 
     // <<-CONSTRUCTOR->>
     @Autowired
-    public PostController(final PostService postService) {
+    public PostController(final PostService postService, final ResponseManager responseManager) {
+    	this.responseManager = responseManager;
         this.postService = postService;
     }
 
     // <<-METHODS->>
     @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> getById(@PathVariable UUID id) {
+    public ResponseEntity<GetPostResponse> getById(@PathVariable UUID id) {
         PostDTO postDTO = this.postService.getById(id);
-        return ResponseEntity.ok(postDTO);
+        return this.responseManager.generateGetResponse(postDTO);
     }
 	
 	@PostMapping("/create")
@@ -61,12 +65,11 @@ public class PostController {
             return ResponseEntity.badRequest().build();
         }
         PostDTO createdDTO = this.postService.create(createPostRequest.toPostDTO());
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new CreatePostResponse().generateResponse(createdDTO));
+        return this.responseManager.generateCreateResponse(createdDTO);
     }
 	
     @PutMapping("/{id}")
-    public ResponseEntity<CreatePostResponse> update(
+    public ResponseEntity<UpdatePostResponse> update(
             @PathVariable
             UUID id,
             @RequestBody
@@ -80,7 +83,7 @@ public class PostController {
        PostDTO postDTO = postRequest.toDTO();
        postDTO.setPostId(id);
        PostDTO updatedDTO = this.postService.update(postDTO);
-       return ResponseEntity.ok().body(new CreatePostResponse().generateResponse(updatedDTO));
+       return this.responseManager.generateUpdateResponse(updatedDTO);
    }
 
    @DeleteMapping("/{id}")

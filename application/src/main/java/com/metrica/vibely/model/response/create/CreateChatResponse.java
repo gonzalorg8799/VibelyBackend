@@ -1,4 +1,4 @@
-package com.metrica.vibely.model.response;
+package com.metrica.vibely.model.response.create;
 
 import java.util.Set;
 import java.util.UUID;

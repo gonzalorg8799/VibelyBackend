@@ -1,15 +1,18 @@
 package com.metrica.vibely.controller;
 
+import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.MessageDTO;
 import com.metrica.vibely.data.model.enumerator.MessageState;
 import com.metrica.vibely.data.service.MessageService;
 import com.metrica.vibely.model.request.CreateMessageRequest;
+import com.metrica.vibely.model.response.create.CreateMessageResponse;
+import com.metrica.vibely.model.response.get.GetMessageResponse;
+import com.metrica.vibely.model.response.update.UpdateMessageResponse;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,24 +36,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
     // <<-FIELDS->>
+	private ResponseManager responseManager;
     private MessageService messageService;
 
     // <<-CONSTRUCTOR->>
     @Autowired
-    public MessageController(MessageService messageService) {
+    public MessageController(MessageService messageService, ResponseManager responseManager) {
+    	this.responseManager = responseManager;
         this.messageService = messageService;
     }
 
     // <<-METHODS->>
     @GetMapping("/{id}")
-    public ResponseEntity<MessageDTO> getById(@PathVariable UUID id) {
+    public ResponseEntity<GetMessageResponse> getById(@PathVariable UUID id) {
     	MessageDTO messageDto = this.messageService.getById(id);
     	if(messageDto.getState()== MessageState.DISABLED) throw new NoSuchElementException();
-        return ResponseEntity.ok().body(this.messageService.getById(id));
+    	return this.responseManager.generateGetResponse(messageDto);
     }
     
 	@PostMapping("/create")
-	public ResponseEntity<MessageDTO> create(
+	public ResponseEntity<CreateMessageResponse> create(
             @RequestBody 
             CreateMessageRequest createMessage,
             BindingResult bindingResult
@@ -61,11 +66,11 @@ public class MessageController {
         MessageDTO messageDto = createMessage.toDto();
         MessageDTO message = this.messageService.create(messageDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+        return this.responseManager.generateCreateResponse(message);
     }
 	
     @PutMapping("/{id}")
-    public ResponseEntity<MessageDTO> update(
+    public ResponseEntity<UpdateMessageResponse> update(
             @PathVariable
             UUID id,
             @RequestBody
@@ -80,7 +85,7 @@ public class MessageController {
         messageDto.setMessageId(id);
         MessageDTO message = this.messageService.update(messageDto);
 
-        return ResponseEntity.ok(message);
+        return this.responseManager.generateUpdateResponse(message);
     }
 
     @DeleteMapping("/{id}")

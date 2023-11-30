@@ -1,20 +1,21 @@
 package com.metrica.vibely.controller;
 
+import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.model.enumerator.ChatState;
 import com.metrica.vibely.data.service.ChatService;
 import com.metrica.vibely.model.request.AddRemoveChatRequest;
 import com.metrica.vibely.model.request.CreateChatRequest;
 import com.metrica.vibely.model.request.UpdateChatRequest;
-import com.metrica.vibely.model.response.CreateChatResponse;
-import com.metrica.vibely.model.response.UpdateChatResponse;
+import com.metrica.vibely.model.response.create.CreateChatResponse;
+import com.metrica.vibely.model.response.get.GetChatResponse;
+import com.metrica.vibely.model.response.update.UpdateChatResponse;
 
 import jakarta.validation.Valid;
 
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,21 +39,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
 
     // <<-FIELDS->>
+	ResponseManager responseManager;
     private ChatService chatService;
 
     // <<-CONSTRUCTOR->>
     @Autowired
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatService chatService, ResponseManager responseManager) {
+    	this.responseManager = responseManager;
         this.chatService = chatService;
     }
 
     // <<-METHODS->>
     @GetMapping("/{id}")
-    public ResponseEntity<ChatDTO> getById(@PathVariable UUID id) {
+    public ResponseEntity<GetChatResponse> getById(@PathVariable UUID id) {
     	ChatDTO chatDto = chatService.getById(id); 
     	
     	if (chatDto.getState()   != ChatState.DISABLED) {
-                return ResponseEntity.ok().body(chatDto);
+    		return this.responseManager.generateGetResponse(chatDto);
     	}
     	return ResponseEntity.notFound().build();
     }
@@ -68,8 +71,7 @@ public class ChatController {
              return ResponseEntity.badRequest().build();
          }
          ChatDTO chatDto = this.chatService.create(chatRequest.toChatDTO());
-         return ResponseEntity.status(HttpStatus.CREATED)
-                 .body(new CreateChatResponse().generateResponse(chatDto));
+         return this.responseManager.generateCreateResponse(chatDto);
      }
 	
 	@PutMapping("/{id}")
@@ -89,7 +91,7 @@ public class ChatController {
         chatDTO.setChatId(id);
 
         ChatDTO updatedDTO = this.chatService.update(chatDTO);
-        return ResponseEntity.ok().body(new UpdateChatResponse().generateResponse(updatedDTO));
+        return this.responseManager.generateUpdateResponse(updatedDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -99,7 +101,7 @@ public class ChatController {
     }
 	
 	@PutMapping("/add/{id}")
-	public ResponseEntity<CreateChatResponse> addMember(
+	public ResponseEntity<UpdateChatResponse> addMember(
 			@PathVariable
 			UUID id,
 			@RequestBody
@@ -112,13 +114,13 @@ public class ChatController {
 
              ChatDTO updatedDto = this.chatService.addMembers(id, chatDto.getParticipants());
 
-             return ResponseEntity.ok().body(new CreateChatResponse().generateResponse(updatedDto));
+             return this.responseManager.generateUpdateResponse(updatedDto);
          }
          return ResponseEntity.badRequest().build();
      }
 	
 	@PutMapping("/remove/{id}")
-	public ResponseEntity<CreateChatResponse> removeMember(
+	public ResponseEntity<UpdateChatResponse> removeMember(
 			@PathVariable
 			UUID id,
 			@RequestBody
@@ -130,7 +132,7 @@ public class ChatController {
             chatDto.setChatId(id);
 
             ChatDTO updatedDto = this.chatService.removeMembers(id, chatDto.getParticipants());
-            return ResponseEntity.ok().body(new CreateChatResponse().generateResponse(updatedDto));
+            return this.responseManager.generateUpdateResponse(updatedDto);
         }
         return ResponseEntity.badRequest().build();
     }

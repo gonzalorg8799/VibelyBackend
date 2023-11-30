@@ -1,28 +1,22 @@
-package com.metrica.vibely.model.response;
+package com.metrica.vibely.model.response.update;
 
 import java.util.UUID;
 
 import com.metrica.vibely.data.model.dto.PostDTO;
 
-/**
- * 
- * @since 2023-11-27
- * @author Adri
- * @version 1.0
- */
-public class CreatePostResponse {
+public class UpdatePostResponse {
 
 	// <<-FIELDS->>
 	private UUID postId;
     private String content;
     
     // <<-CONSTRUCTOR->>
-    public CreatePostResponse() {
+    public UpdatePostResponse() {
     }
     
     // <<-METHODS->>
-    public CreatePostResponse generateResponse(PostDTO postDTO) {
-        CreatePostResponse postResponse = new CreatePostResponse();
+    public UpdatePostResponse generateResponse(PostDTO postDTO) {
+        UpdatePostResponse postResponse = new UpdatePostResponse();
 
         postResponse.setPostId (postDTO.getPostId());
         postResponse.setContent(postDTO.getContent());

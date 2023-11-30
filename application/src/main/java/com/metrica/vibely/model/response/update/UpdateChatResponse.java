@@ -1,4 +1,4 @@
-package com.metrica.vibely.model.response;
+package com.metrica.vibely.model.response.update;
 
 import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.model.enumerator.ChatStatus;
