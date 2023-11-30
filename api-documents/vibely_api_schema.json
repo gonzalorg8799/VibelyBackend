@@ -591,20 +591,29 @@
             "parameters": [
                 {
                     "$ref": "#/components/parameters/ApiKeyHeader"
+                },
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Post unique identifier"
                 }
             ],
             "get": {
                 "tags": ["POST"],
                 "summary": "Retrieves post information by ID",
-                "description": "Retrieves information form a specific post",
+                "description": "Retrieves information from a specific post",
                 "responses": {
                     "200": {
-                        "description": "Post information retrieved successfully",
+                        "description": "OK: Post information retrieved successfully",
                         "content": {
                             "application/json": {
                                 "example": {
                                     "postId": "a4422ee5-30a6-478f-ba09-621c83439001",
-                                    "ownerId": "5c78e091-59c9-42b9-bf72-a7e148ec46c1",
+                                    "owner": "5c78e091-59c9-42b9-bf72-a7e148ec46c1",
                                     "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                                     "likes": 30,
                                     "saves": 5
@@ -675,10 +684,15 @@
             }
         },
         "/chats/create":{
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                }
+            ],
             "post": {
                 "tags": ["CHAT"],
                 "summary": "Create a new chat",
-                "description": "Create a new chat",
+                "description": "Endpoint to create a new post",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -687,19 +701,24 @@
                                 "$ref": "#/components/schemas/ChatCreation"
                             },
                             "example": {
-                                "chat_name":"Chatting",
-                                "members": ["johndoe", "John_Doe2", "jhonnydoe"]
+                                "chatId": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                "creation_date": "2023-11-30 15:22:24.426498",
+                                "title": "Lorem ipsum",
+                                "participants": [
+                                    "5542598a-f564-431d-9666-95b360b81932",
+                                    "9c28646f-0678-4765-bcd0-69de4f4f700c"
+                                ]
                             }
                             
                         }
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Chat created successfully"
+                    "201": {
+                        "description": "CREATED: Resource created successfully"
                     },
                     "400": {
-                        "description": "Creation data is invalid"
+                        "description": "BAD REQUEST: The body is malformed or has invalid data"
                     }
                 }
             }
@@ -707,8 +726,11 @@
         "/chats/{id}": {
             "parameters": [
                 {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                },
+                {
                     "in": "path",
-                    "name": "ChatId",
+                    "name": "id",
                     "required": true,
                     "schema": {
                         "type": "string"
@@ -718,23 +740,27 @@
             ],
             "get": {
                 "tags": ["CHAT"],
-                "summary": "Get Chat information",
-                "description": "Retrieve information from a specific Chat identifier",
+                "summary": "Retrieves chat information by ID",
+                "description": "Retrieves information from a specific chat",
                 "responses": {
                     "200": {
-                        "description": "Chat information retrieved successfully",
+                        "description": "OK: Chat information retrieved successfully",
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "ChatName": "chating",
-                                    "ChatMembers": ["John Doe", "Jhon Doe2", "Jhon Doe3"],
-                                    "Messages": ["John Doe: Hello There", "Jhon Doe2: Hello World", "Jhon Doe3: Hello Chat"]
+                                    "chatId": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "creation_date": "2023-11-30 15:22:24.426498",
+                                    "title": "Lorem ipsum",
+                                    "participants": [
+                                        "5542598a-f564-431d-9666-95b360b81932",
+                                        "9c28646f-0678-4765-bcd0-69de4f4f700c"
+                                    ]
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Chat not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             },
@@ -742,17 +768,6 @@
                 "tags": ["CHAT"],
                 "summary": "Modifies Chat information",
                 "description": "Modifies Chat name or members",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -774,99 +789,96 @@
                                             }
                                         }
                                     }
-                                ],
-                                "example": {
-                                    "chat_name":"ChattingMore",
-                                    "members": ["johndoefriend", "John_Doe7", "jhonnydoe4"]
-                                }
+                                ]
+                            },
+                            "example": {
+                                "title": "Micro Minds"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Chat modification was successful",
+                        "description": "OK: The modification was successful",
                         "content": {
                             "application/json": {
-                                "example":{
-                                    "chat_name":"ChattingMore",
-                                    "members": ["johndoe", "John_Doe2", "jhonnydoe",
-                                    "johndoefriend", "John_Doe7", "jhonnydoe4"]
+                                "example": {
+                                    "chatId": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "creation_date": "2023-11-30 15:22:24.426498",
+                                    "title": "Micro Minds",
+                                    "participants": [
+                                        "5542598a-f564-431d-9666-95b360b81932",
+                                        "9c28646f-0678-4765-bcd0-69de4f4f700c"
+                                    ]
                                 }
                             }
                         }
                     },
                     "400": {
-                        "description": "Invalid request"
+                        "description": "BAD REQUEST: The body is malformed os has invalid data"
                     }
                 }
             },
             "delete": {
                 "tags": ["CHAT"],
                 "summary": "Delete a chat",
-                "description": "Deletes a chat",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
+                "description": "Deletes the specified chat",
                 "responses": {
                     "204": {
-                        "description": "Chat deleted successfully"
+                        "description": "NO CONTENT: The resource was deleted successfully"
                     },
                     "404": {
-                        "description": "Desired chat was not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             }
         },
-        "/messages/send":{
+        "/messages/create":{
             "parameters": [
                 {
-                    "in": "path",
-                    "name": "chatId",
-                    "required": true,
-                    "schema": {
-                        "type": "string"
-                    },
-                    "description": "Chat unique identifier"
+                    "$ref": "#/components/parameters/ApiKeyHeader"
                 }
             ],
             "post": {
                 "tags": ["MESSAGE"],
-                "summary": "Send a message to a chat",
-                "description": "Send a message to a chat",
+                "summary": "Create a new message",
+                "description": "Endpoint to create a new message",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/SendMessage"
+                            },
+                            "example": {
+                                "messageId": "ba58801b-30e9-48e8-9354-d37f09742fde",
+                                "creation_timestamp": "2023-11-30 15:22:26.399178",
+                                "content": "Good morning!",
+                                "status": "PENDING",
+                                "chat": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                "sender": "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Message sent successfully"
+                    "201": {
+                        "description": "CREATED: Resource created successfully"
                     },
                     "400": {
-                        "description": "Creation data is invalid"
+                        "description": "BAD REQUEST: The body is malformed or has invalid data"
                     }
                 }
             }
         },
-        "/messages": {
+        "/messages/{id}": {
             "parameters": [
                 {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                },
+                {
                     "in": "path",
-                    "name": "messageId",
+                    "name": "id",
                     "required": true,
                     "schema": {
                         "type": "string"
@@ -876,22 +888,26 @@
             ],
             "get": {
                 "tags": ["MESSAGE"],
-                "summary": "Get message information",
-                "description": "Retrieve information from a specific message identifier",
+                "summary": "Retrieves message information by ID",
+                "description": "Retrieves information from a specific message",
                 "responses": {
                     "200": {
-                        "description": "message information retrieved successfully",
+                        "description": "OK: message information retrieved successfully",
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "sender": "jhondoe",
-                                    "content": "Hello World"
+                                    "messageId": "ba58801b-30e9-48e8-9354-d37f09742fde",
+                                    "creation_timestamp": "2023-11-30 15:22:26.399178",
+                                    "content": "Good morning!",
+                                    "status": "SENT",
+                                    "chat": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "sender": "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Desired message was not found"
+                        "description": "NOT FOUND: Desired message was not found"
                     }
                 }
             },
@@ -899,17 +915,6 @@
                 "tags": ["MESSAGE"],
                 "summary": "Modifies message content",
                 "description": "Modifies message content",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -929,7 +934,7 @@
                                     }
                                 ],
                                 "example": {
-                                    "new_content": "Hello Chat"
+                                    "content": "Good evening!"
                                 }
                             }
                         }
@@ -937,34 +942,35 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Message content was updated"
+                        "description": "OK: The modification was successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "messageId": "ba58801b-30e9-48e8-9354-d37f09742fde",
+                                    "creation_timestamp": "2023-11-30 15:22:26.399178",
+                                    "content": "Good evening!",
+                                    "status": "SENT",
+                                    "chat": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "sender": "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Invalid request"
+                        "description": "BAD REQUEST: The body is malformed os has invalid data"
                     }
                 }
             },
             "delete": {
                 "tags": ["MESSAGE"],
-                "summary": "",
-                "description": "Deletes an MESSAGE from Chat",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
+                "summary": "Delete a message",
+                "description": "Delete the specified message",
                 "responses": {
                     "204": {
-                        "description": "Message was deleted successfully"
+                        "description": "NO CONTENT: The resource was deleted successfully"
                     },
                     "404": {
-                        "description": "Desired message was not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             }
