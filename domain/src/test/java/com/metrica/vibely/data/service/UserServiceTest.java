@@ -254,12 +254,22 @@ class UserServiceTest {
     	assertEquals(0, follower1  .getFollowers().size());
     	
     	//After following
+    	when(userRepository.findById(follower1.getUserId()))
+				.thenReturn(Optional.of(UserMapper.toEntity(follower1, null, null, null, null, null, null)));
     	when(userRepository.findById(follower2.getUserId()))
 				.thenReturn(Optional.of(UserMapper.toEntity(follower2, null, null, null, null, null, null)));
-    	when(userRepository.findById(follower1.getUserId()))
-		.thenReturn(Optional.of(UserMapper.toEntity(follower1, null, null, null, null, null, null)));
     	when(userRepository.findById(createdUser.getUserId()))
 				.thenReturn(Optional.of(UserMapper.toEntity(createdUser, null, null, null, null, null, null)));
+    	
+    	when(userRepository.save(UserMapper.toEntity(follower1, null, null, null, null, null, null)))
+				.thenReturn(UserMapper.toEntity(follower1, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(follower2, null, null, null, null, null, null)))
+    			.thenReturn(UserMapper.toEntity(follower2, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(follower3, null, null, null, null, null, null)))
+				.thenReturn(UserMapper.toEntity(follower3, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(createdUser, createdUser.getFollowers(), createdUser.getFollowing(), createdUser.getPosts(), createdUser.getChats(), createdUser.getLikes(), createdUser.getSaves())))
+				.thenReturn(UserMapper.toEntity(createdUser, createdUser.getFollowers(), createdUser.getFollowing(), createdUser.getPosts(), createdUser.getChats(), createdUser.getLikes(), createdUser.getSaves()));
+    	
     	userService.followUser(follower2.getUserId(), createdUser.getUserId());
     	userService.followUser(follower1.getUserId(), createdUser.getUserId());
     	userService.followUser(follower1.getUserId(), follower2  .getUserId());
@@ -268,6 +278,7 @@ class UserServiceTest {
     	createdUser = UserMapper.toDTO(userRepository.findById(createdUser.getUserId()).get());
     	follower1 	= UserMapper.toDTO(userRepository.findById(follower1  .getUserId()).get());
     	follower2 	= UserMapper.toDTO(userRepository.findById(follower2  .getUserId()).get());
+    	
     	
     	assertEquals(2, createdUser.getFollowers().size());
     	assertEquals(0, createdUser.getFollowing().size());
