@@ -10,10 +10,18 @@ import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.model.response.create.CreateAdminResponse;
 import com.metrica.vibely.model.response.create.CreateChatResponse;
+import com.metrica.vibely.model.response.create.CreateMessageResponse;
 import com.metrica.vibely.model.response.create.CreatePostResponse;
 import com.metrica.vibely.model.response.create.CreateUserResponse;
 import com.metrica.vibely.model.response.get.BasicInfoResponse;
+import com.metrica.vibely.model.response.get.GetChatResponse;
+import com.metrica.vibely.model.response.get.GetMessageResponse;
+import com.metrica.vibely.model.response.get.GetPostResponse;
+import com.metrica.vibely.model.response.update.UpdateAdminResponse;
 import com.metrica.vibely.model.response.update.UpdateChatResponse;
+import com.metrica.vibely.model.response.update.UpdateMessageResponse;
+import com.metrica.vibely.model.response.update.UpdatePostResponse;
+import com.metrica.vibely.model.response.update.UpdateUserResponse;
 
 @Component
 public class ResponseManager {
@@ -24,19 +32,19 @@ public class ResponseManager {
         return ResponseEntity.ok().body(basicResponse.generateResponse(userDto));
     }
     
-    public ResponsEntity<GetPostResponse> generateGetResponse(PostDTO postDto) {
+    public ResponseEntity<GetPostResponse> generateGetResponse(PostDTO postDto) {
     	GetPostResponse postResponse = new GetPostResponse();
         return ResponseEntity.ok().body(postResponse.generateResponse(postDto));
     }
     
-    public ResponsEntity<GetChatResponse> generateGetResponse(ChatDTO chatDto) {
+    public ResponseEntity<GetChatResponse> generateGetResponse(ChatDTO chatDto) {
     	GetChatResponse chatResponse = new GetChatResponse();
     	return ResponseEntity.ok().body(chatResponse.generateResponse(chatDto));
     }
     
-    public ResponsEntity<GetMessageResponse> generateGetResponse(MessageDTO messageDto) {
+    public ResponseEntity<GetMessageResponse> generateGetResponse(MessageDTO messageDto) {
     	GetMessageResponse messageResponse = new GetMessageResponse();
-    	return ResponseEntity.ok().body(postResponse.generateResponse(messageDto));
+    	return ResponseEntity.ok().body(messageResponse.generateResponse(messageDto));
     }
     
 //	<<--CREATE RESPONSE-->>   
@@ -74,6 +82,11 @@ public class ResponseManager {
     public ResponseEntity<UpdateAdminResponse> generateUpdateResponse(AdminDTO adminDto) {
     	UpdateAdminResponse adminResponse = new UpdateAdminResponse();
     	return ResponseEntity.ok().body(adminResponse.generateResponse(adminDto));
+    }
+    
+    public ResponseEntity<UpdatePostResponse> generateUpdateResponse(PostDTO postDto) {
+    	UpdatePostResponse postResponse = new UpdatePostResponse();
+    	return ResponseEntity.ok().body(postResponse.generateResponse(postDto));
     }
     
     public ResponseEntity<UpdateChatResponse> generateUpdateResponse(ChatDTO chatDto) {
