@@ -36,8 +36,10 @@ public class AuthServiceImpl implements AuthService {
 		
 		if (PasswordHasher.matches(password, user.getPassword())) {
 			user.setLogins(user.getLogins() + 1);
+			String apiKey = ApiKeyManager.generate(user.getUserId());
+			user.setApikey(apiKey);
 			userRepository.save(user);
-			return ApiKeyManager.generate();
+			return apiKey;
 		} else throw new InvalidCredentialsException();
 	}
 
