@@ -97,7 +97,7 @@ class AdminMapperTest {
         Set<Post> likes = new HashSet<>();
         Set<Post> saves = new HashSet<>();
 
-        Admin admin = AdminMapper.toEntity(adminDTO, followers, following, posts, chats, likes, saves);
+        Admin admin = AdminMapper.toEntity(adminDTO);
 
         assertEquals(adminDTO.getUserId(), admin.getUserId());
         assertEquals(adminDTO.getUsername(), admin.getUsername());
