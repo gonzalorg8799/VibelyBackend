@@ -6,7 +6,6 @@ import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.AdminDTO;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -30,15 +29,7 @@ public class AdminMapper {
      * @param saves
      * @return
      */
-	public static Admin toEntity(
-	        AdminDTO adminDTO, 
-			Set<User> followers,
-			Set<User> following,
-			Set<Post> posts, 
-			Set<Chat> chats,
-			Set<Post> likes,
-			Set<Post> saves) 
-	{
+	public static Admin toEntity(AdminDTO adminDTO) {
 	    Admin admin = new Admin();
 
         // Mapping Basics
@@ -56,12 +47,12 @@ public class AdminMapper {
         admin.setBlockedDate (adminDTO.getBlockedDate());
 
         // Mapping Relations
-        admin.setFollowers(followers);
-        admin.setFollowing(following);
-        admin.setPosts	  (posts);
-        admin.setChats    (chats);
-        admin.setLikes    (likes);
-        admin.setSaves    (saves);
+        admin.setFollowers(null);
+        admin.setFollowing(null);
+        admin.setPosts	  (null);
+        admin.setChats    (null);
+        admin.setLikes    (null);
+        admin.setSaves    (null);
 
         return admin;
     }
