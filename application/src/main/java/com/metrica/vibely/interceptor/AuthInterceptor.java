@@ -38,7 +38,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         return switch (ApiKeyManager.isValid(apiKey)) {
             case 0 -> {
                 UUID userId = ApiKeyManager.getId(apiKey);
-                System.err.println(userId);
                 
                 String userApiKey = this.authService.getApikey(userId);
                 yield userApiKey.equals(apiKey);
@@ -79,7 +78,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             Object handler,
             ModelAndView mAV
     ) {
-        System.err.println("Estamos en el interceptor otra vez");
+
     }
 
 }
