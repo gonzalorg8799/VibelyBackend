@@ -1,11 +1,5 @@
 package com.metrica.vibely.interceptor;
 
-import com.metrica.vibely.data.service.UserService;
-import com.metrica.vibely.data.util.ApiKeyManager;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +7,12 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.metrica.vibely.data.service.AuthService;
+import com.metrica.vibely.data.util.ApiKeyManager;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * <h1>Authentication Interceptor</h1>
@@ -25,12 +25,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthInterceptor implements HandlerInterceptor {
 	
     // <<-FIELD->>
-	private UserService userService;
+	private AuthService authService;
 
     // <<-CONSTRUCTOR->>
 	@Autowired
-	public AuthInterceptor(UserService userService) {
-		this.userService = userService;
+	public AuthInterceptor(AuthService authService) {
+		this.authService = authService;
 	}
 	
     // <<-METHODS->>
@@ -40,7 +40,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 UUID userId = ApiKeyManager.getId(apiKey);
                 System.err.println(userId);
                 
-                String userApiKey = this.userService.getById(userId).getApikey();
+                String userApiKey = this.authService.getApikey(userId);
                 yield userApiKey.equals(apiKey);
             }
             case 1 -> {
@@ -55,7 +55,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         };
     }
 	
-    @Override
+
+	@Override
     public boolean preHandle(
             @NonNull
             HttpServletRequest request,
