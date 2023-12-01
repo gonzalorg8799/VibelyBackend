@@ -1,5 +1,7 @@
 package com.metrica.vibely.data.service.impl;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +44,11 @@ public class AuthServiceImpl implements AuthService {
 			return apiKey;
 		} else throw new InvalidCredentialsException();
 	}
+
+	@Override
+	public String getApikey(UUID id) {
+		return userRepository.findApikeyByUserId(id).orElseThrow();
+	}
+	
 
 }
