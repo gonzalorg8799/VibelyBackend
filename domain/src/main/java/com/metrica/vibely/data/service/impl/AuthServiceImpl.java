@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public String getApikey(UUID id) {
-		return userRepository.findApikeyByUserId(id).orElseThrow();
+		return this.userRepository.findApikeyByUserId(id).orElseThrow();
 	}
 	
 
