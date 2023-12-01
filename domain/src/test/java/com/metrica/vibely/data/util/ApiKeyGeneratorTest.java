@@ -1,6 +1,7 @@
 package com.metrica.vibely.data.util;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.RepeatedTest;
@@ -18,11 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Alex
  */
 class ApiKeyGeneratorTest {
+    
+    // <<-CONSTANT->>
+    private static final UUID USER_ID = UUID.fromString("");
 
     @RepeatedTest(10)
     void generationTest() {
-        String apiKey1 = ApiKeyManager.generate();
-        String apiKey2 = ApiKeyManager.generate();
+        String apiKey1 = ApiKeyManager.generate(USER_ID);
+        String apiKey2 = ApiKeyManager.generate(USER_ID);
         assertNotEquals(apiKey1, apiKey2);
     }
 
@@ -34,7 +38,7 @@ class ApiKeyGeneratorTest {
 
     @Test
     void timeExpirationTrueTest() {
-        String apiKey = ApiKeyManager.generate();
+        String apiKey = ApiKeyManager.generate(USER_ID);
 
         long expirationTime = ApiKeyManager.getExpirationTime(apiKey);
         long currentTime = Instant.now().getEpochSecond() + 3601;
@@ -45,7 +49,7 @@ class ApiKeyGeneratorTest {
 
     @Test
     void timeExpirationFalseTest() {
-        String apiKey = ApiKeyManager.generate();
+        String apiKey = ApiKeyManager.generate(USER_ID);
 
         long expirationTime = ApiKeyManager.getExpirationTime(apiKey);
         long currentTime = Instant.now().getEpochSecond();
