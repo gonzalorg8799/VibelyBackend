@@ -106,8 +106,8 @@ class UserServiceTest {
 	void userCreationTest() {
 
 		UserDTO testUser = generateTestUser();
-		when(userRepository.save(UserMapper.toEntity(testUser, null, null, null, null, null, null)))
-				.thenReturn(UserMapper.toEntity(testUser, null, null, null, null, null, null));
+		when(userRepository.save(UserMapper.toEntity(testUser)))
+				.thenReturn(UserMapper.toEntity(testUser));
 		UserDTO databaseUser = userService.create(testUser);
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -136,11 +136,11 @@ class UserServiceTest {
 	@Order(2)
 	void userReadTest() {
 		UserDTO testUser = generateTestUser();
-		when(userRepository.save(UserMapper.toEntity(testUser, null, null, null, null, null, null)))
-				.thenReturn(UserMapper.toEntity(testUser, null, null, null, null, null, null));
+		when(userRepository.save(UserMapper.toEntity(testUser)))
+				.thenReturn(UserMapper.toEntity(testUser));
 		UserDTO databaseUser = userService.create(testUser);
 		when(userRepository.findByUsername(testUser.getUsername()))
-				.thenReturn(Optional.of(UserMapper.toEntity(testUser, null, null, null, null, null, null)));
+				.thenReturn(Optional.of(UserMapper.toEntity(testUser)));
 		UserDTO searchedUser = userService.getByUsername(testUser.getUsername());
 
 		assertEquals(databaseUser.getUserId(),  	searchedUser.getUserId());
@@ -167,14 +167,14 @@ class UserServiceTest {
     	UserDTO testUser1 = generateTestUser();
     	UserDTO testUser2 = generateTestUser();
     	UserDTO testUser3 = generateTestUser();
-    	when(userRepository.save(UserMapper.toEntity(testUser1, null, null, null, null, null, null)))
-				.thenReturn(UserMapper.toEntity(testUser1, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(testUser1)))
+				.thenReturn(UserMapper.toEntity(testUser1));
     	UserDTO createdUser 	= userService.create(testUser1);
-    	when(userRepository.save(UserMapper.toEntity(testUser2, null, null, null, null, null, null)))
-				.thenReturn(UserMapper.toEntity(testUser2, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(testUser2)))
+				.thenReturn(UserMapper.toEntity(testUser2));
     	UserDTO updatedDataDTO  = userService.create(testUser2);
-    	when(userRepository.save(UserMapper.toEntity(testUser3, null, null, null, null, null, null)))
-				.thenReturn(UserMapper.toEntity(testUser3, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(testUser3)))
+				.thenReturn(UserMapper.toEntity(testUser3));
     	UserDTO nonExistingUser = userService.create(testUser3);
         
         String newUsername  	= "New Username";
@@ -188,15 +188,15 @@ class UserServiceTest {
         updatedDataDTO.setPassword	(PasswordHasher.hash(newPassword));
         
         when(userRepository.findById(updatedDataDTO.getUserId()))
-				.thenReturn(Optional.of(UserMapper.toEntity(updatedDataDTO, null, null, null, null, null, null)));
-        when(userRepository.save(UserMapper.toEntity(updatedDataDTO, null, null, null, null, null, null)))
-				.thenReturn(UserMapper.toEntity(updatedDataDTO, null, null, null, null, null, null));
+				.thenReturn(Optional.of(UserMapper.toEntity(updatedDataDTO)));
+        when(userRepository.save(UserMapper.toEntity(updatedDataDTO)))
+				.thenReturn(UserMapper.toEntity(updatedDataDTO));
         userService.update(updatedDataDTO);
         
         userService.deleteByUsername(nonExistingUser.getUsername());
         
         when(userRepository.findByUsername(createdUser.getUsername()))
-        		.thenReturn(Optional.of(UserMapper.toEntity(updatedDataDTO, null, null, null, null, null, null)));
+        		.thenReturn(Optional.of(UserMapper.toEntity(updatedDataDTO)));
         UserDTO updatedUser = UserMapper.toDTO(userRepository.findByUsername(createdUser.getUsername()).get());
         
         //Basic
@@ -219,8 +219,8 @@ class UserServiceTest {
     void userDeleteTest() {
         UserDTO testUser 	= generateTestUser();
         UserDTO testUser2 	= generateTestUser();
-        when(userRepository.save(UserMapper.toEntity(testUser, null, null, null, null, null, null)))
-		.thenReturn(UserMapper.toEntity(testUser, null, null, null, null, null, null));
+        when(userRepository.save(UserMapper.toEntity(testUser)))
+		.thenReturn(UserMapper.toEntity(testUser));
         UserDTO createdUser = userService.create(testUser);
 
         userService.deleteByUsername(createdUser.getUsername());
@@ -235,17 +235,17 @@ class UserServiceTest {
     	UserDTO test2 = generateTestUser();
     	UserDTO test3 = generateTestUser();
     	UserDTO test4 = generateTestUser();
-    	when(userRepository.save(UserMapper.toEntity(test, null, null, null, null, null, null)))
-				.thenReturn(UserMapper.toEntity(test, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(test)))
+				.thenReturn(UserMapper.toEntity(test));
     	UserDTO createdUser 	= userService.create(test);
-    	when(userRepository.save(UserMapper.toEntity(test2, null, null, null, null, null, null)))
-		.thenReturn(UserMapper.toEntity(test2, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(test2)))
+		.thenReturn(UserMapper.toEntity(test2));
     	UserDTO follower1 		= userService.create(test2);
-    	when(userRepository.save(UserMapper.toEntity(test3, null, null, null, null, null, null)))
-		.thenReturn(UserMapper.toEntity(test3, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(test3)))
+		.thenReturn(UserMapper.toEntity(test3));
     	UserDTO follower2 		= userService.create(test3);
-    	when(userRepository.save(UserMapper.toEntity(test4, null, null, null, null, null, null)))
-		.thenReturn(UserMapper.toEntity(test4, null, null, null, null, null, null));
+    	when(userRepository.save(UserMapper.toEntity(test4)))
+		.thenReturn(UserMapper.toEntity(test4));
     	UserDTO follower3 		= userService.create(test4);
     	
     	// No followers
@@ -255,20 +255,20 @@ class UserServiceTest {
     	
     	//After following
     	when(userRepository.findById(follower1.getUserId()))
-				.thenReturn(Optional.of(UserMapper.toEntity(follower1, null, null, null, null, null, null)));
+				.thenReturn(Optional.of(UserMapper.toEntity(follower1)));
     	when(userRepository.findById(follower2.getUserId()))
-				.thenReturn(Optional.of(UserMapper.toEntity(follower2, null, null, null, null, null, null)));
+				.thenReturn(Optional.of(UserMapper.toEntity(follower2)));
     	when(userRepository.findById(createdUser.getUserId()))
-				.thenReturn(Optional.of(UserMapper.toEntity(createdUser, null, null, null, null, null, null)));
+				.thenReturn(Optional.of(UserMapper.toEntity(createdUser)));
     	
-    	when(userRepository.save(UserMapper.toEntity(follower1, null, null, null, null, null, null)))
-				.thenReturn(UserMapper.toEntity(follower1, null, null, null, null, null, null));
-    	when(userRepository.save(UserMapper.toEntity(follower2, null, null, null, null, null, null)))
-    			.thenReturn(UserMapper.toEntity(follower2, null, null, null, null, null, null));
-    	when(userRepository.save(UserMapper.toEntity(follower3, null, null, null, null, null, null)))
-				.thenReturn(UserMapper.toEntity(follower3, null, null, null, null, null, null));
-    	when(userRepository.save(UserMapper.toEntity(createdUser, createdUser.getFollowers(), createdUser.getFollowing(), createdUser.getPosts(), createdUser.getChats(), createdUser.getLikes(), createdUser.getSaves())))
-				.thenReturn(UserMapper.toEntity(createdUser, createdUser.getFollowers(), createdUser.getFollowing(), createdUser.getPosts(), createdUser.getChats(), createdUser.getLikes(), createdUser.getSaves()));
+    	when(userRepository.save(UserMapper.toEntity(follower1)))
+				.thenReturn(UserMapper.toEntity(follower1));
+    	when(userRepository.save(UserMapper.toEntity(follower2)))
+    			.thenReturn(UserMapper.toEntity(follower2));
+    	when(userRepository.save(UserMapper.toEntity(follower3)))
+				.thenReturn(UserMapper.toEntity(follower3));
+    	when(userRepository.save(UserMapper.toEntity(createdUser)))
+				.thenReturn(UserMapper.toEntity(createdUser));
     	
     	userService.followUser(follower2.getUserId(), createdUser.getUserId());
     	userService.followUser(follower1.getUserId(), createdUser.getUserId());
