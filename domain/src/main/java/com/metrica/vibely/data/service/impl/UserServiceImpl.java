@@ -6,13 +6,12 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.UserMapper;
-import com.metrica.vibely.data.entity.Admin;
-import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.UserService;
 import com.metrica.vibely.data.util.PasswordHasher;		
@@ -53,7 +52,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteByUsername(final String username) {
-	    userRepository.deleteByUsername(username);
+		User user = this.userRepository.findByUsername(username).orElseThrow();
+        user.setState(UserState.DISABLED);
+        this.userRepository.save(user);
 	}
 
 	
