@@ -89,7 +89,7 @@ class UserMapperTest {
         Set<Post> likes = new HashSet<>();
         Set<Post> saves = new HashSet<>();
 
-        User user = UserMapper.toEntity(userDTO, followers, following, posts, chats, likes, saves);
+        User user = UserMapper.toEntity(userDTO);
 
         assertEquals(userDTO.getUserId(), user.getUserId());
         assertEquals(userDTO.getUsername(), user.getUsername());
