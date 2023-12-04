@@ -50,9 +50,7 @@ public class ChatServiceImpl implements ChatService {
         chat.setStatus		(ChatStatus.ACTIVE);
         chat.setState 		(ChatState.ENABLED);
         chat.setTitle 		(ChatDto.getTitle());
-        if(participants.size() > 2) { chat.setType(ChatType.DIRECT_MESSAGE); } 
-        else if(participants.size() > 1 && participants.size() == 2) { chat.setType(ChatType.DIRECT_MESSAGE); }
-        
+        chat.setType		(ChatDto.getType());       
         return ChatMapper.toDTO(this.chatRepository.save(chat)); 
     }
 
