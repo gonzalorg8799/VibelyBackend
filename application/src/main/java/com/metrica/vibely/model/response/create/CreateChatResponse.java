@@ -10,6 +10,7 @@ public class CreateChatResponse {
 	
 	private UUID chatId;
 	private String title;
+	private String type;
 	private Set<UUID> participants;
 	
 //	<<-CONSTRUCTOR->>
@@ -21,6 +22,7 @@ public class CreateChatResponse {
 		this.setChatId(chatDto.getChatId());
 		this.setTitle(chatDto.getTitle());
 		this.setParticipants(chatDto.getParticipants());
+		this.setType(chatDto.getType().toString());
 		return this;
 	}
 
@@ -47,6 +49,14 @@ public class CreateChatResponse {
 
 	public void setParticipants(Set<UUID> set) {
 		this.participants = set;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }
