@@ -5,14 +5,18 @@ import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.UserMapper;
+import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.UserService;
 import com.metrica.vibely.data.util.PasswordHasher; 
 	
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;	
 
@@ -144,6 +148,27 @@ public class UserServiceImpl implements UserService {
         User user = this.userRepository.findById(id).orElseThrow();
         user.setState(UserState.DISABLED);
         this.userRepository.save(user);
+	}
+
+	@Override
+	public Set<UUID> getFriendNetwork(UUID id) {
+		User user = userRepository.findById(id).orElseThrow();
+		Set<UUID> followersIds = user.getFollowers().stream()
+									 .map(User::getUserId)
+									 .collect(Collectors.toSet());
+		Set<UUID> followingIds = user.getFollowing().stream()
+				 .map(User::getUserId)
+				 .collect(Collectors.toSet());
+		
+		Set<User> friends = followersIds.stream()
+								.map(m -> {
+									if(followingIds.contains(m)) return m;
+								})
+								.map(m -> userRepository.findById(m).orElseThrow())
+								.collect(Collectors.toSet());
+		
+		
+		return null;
 	}
 	
 }

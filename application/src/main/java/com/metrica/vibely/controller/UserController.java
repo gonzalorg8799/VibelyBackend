@@ -87,6 +87,7 @@ public class UserController {
         
         return ResponseEntity.notFound().build();
     }
+    
     /**
      * @TODO falta añadir la funcionalidad
      * @param id
@@ -94,11 +95,9 @@ public class UserController {
      */
     @GetMapping("/friendNetwork/{id}")
     public ResponseEntity<GetFriendNetworkResponse> getNetwork(@PathVariable UUID id){
-    	UserDTO userDTO = this.userService.getById(id);
-    	if (userDTO.getState()   != UserState.DISABLED &&
-            userDTO.getPrivacy() == PrivacyType.PUBLIC) {
-            return this.responseManager.generateGetNetworkResponse(userDTO);
-        }
+
+		this.userService.getFriendNetwork(id);
+
     	return ResponseEntity.notFound().build();
     	
     }
