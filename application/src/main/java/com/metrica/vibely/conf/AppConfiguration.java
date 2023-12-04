@@ -31,7 +31,8 @@ public class AppConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(this.authInterceptor)
             .addPathPatterns("/api/v1/**")
-            .excludePathPatterns("/api/v1/auth")
+            .excludePathPatterns("/api/v1/auth/username")
+            .excludePathPatterns("/api/v1/auth/email")
             .excludePathPatterns("/api/v1/users/signup")
             .excludePathPatterns("/api/v1/admin/users/signup");
     }
