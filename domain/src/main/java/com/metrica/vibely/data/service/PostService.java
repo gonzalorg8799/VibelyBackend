@@ -46,4 +46,11 @@ public interface PostService extends CrudService<PostDTO, UUID> {
 	 * @throws NoSuchElementException
 	 */
 	PostDTO addLikedBy(PostDTO postDTO);
+
+	/**
+	 * remove user to likedBy list
+	 * @param postDTO
+	 * @throws NoSuchElementException
+	 */
+	PostDTO removeLikedBy(PostDTO postDTO);
 }
