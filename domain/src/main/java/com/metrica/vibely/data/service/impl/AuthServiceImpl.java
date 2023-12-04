@@ -32,11 +32,24 @@ public class AuthServiceImpl implements AuthService {
 
 	// <<-METHODS->>
 	@Override
-	public String authenticate(final String username, final String password) {
+	public String usernameAuth(final String username, final String password) {
 		User user = this.userRepository.findByUsername(username)
-		        .orElseThrow(() -> new InvalidCredentialsException());
+		        		.orElseThrow(() -> new InvalidCredentialsException());
 		
 		if (PasswordHasher.matches(password, user.getPassword())) {
+			user.setLogins(user.getLogins() + 1);
+			String apiKey = ApiKeyManager.generate(user.getUserId());
+			user.setApikey(apiKey);
+			userRepository.save(user);
+			return apiKey;
+		} else throw new InvalidCredentialsException();
+	}  
+	
+	@Override
+	public String emailAuth(final String email, final String password) {
+		User user = this.userRepository.findByEmail(email)
+						.orElseThrow(() -> new InvalidCredentialsException());
+		if(PasswordHasher.matches(password, user.getPassword())) {
 			user.setLogins(user.getLogins() + 1);
 			String apiKey = ApiKeyManager.generate(user.getUserId());
 			user.setApikey(apiKey);
@@ -50,5 +63,12 @@ public class AuthServiceImpl implements AuthService {
 		return this.userRepository.findApikeyByUserId(id).orElseThrow();
 	}
 	
+	private String updateInfo(User user) {
+		user.setLogins(user.getLogins() + 1);
+		String apiKey = ApiKeyManager.generate(user.getUserId());
+		user.setApikey(apiKey);
+		userRepository.save(user);
+		return apiKey;
+	}
 
 }

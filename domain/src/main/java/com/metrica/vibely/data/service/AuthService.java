@@ -2,8 +2,6 @@ package com.metrica.vibely.data.service;
 
 import java.util.UUID;
 
-import com.metrica.vibely.data.model.dto.AdminDTO;
-
 /**
  * 
  * 
@@ -18,7 +16,15 @@ public interface AuthService {
      * @throws
      * @return
      */
-    String authenticate(String username, String password);
+    String usernameAuth(String username, String password);
+
+    /**
+     * @param email
+     * @param password
+     * @throws
+     * @return
+     */
+    String emailAuth(String email, String password);
     
     /**
      * 
