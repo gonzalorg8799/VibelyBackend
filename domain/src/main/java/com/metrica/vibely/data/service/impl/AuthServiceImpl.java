@@ -37,11 +37,7 @@ public class AuthServiceImpl implements AuthService {
 		        		.orElseThrow(() -> new InvalidCredentialsException());
 		
 		if (PasswordHasher.matches(password, user.getPassword())) {
-			user.setLogins(user.getLogins() + 1);
-			String apiKey = ApiKeyManager.generate(user.getUserId());
-			user.setApikey(apiKey);
-			userRepository.save(user);
-			return apiKey;
+			return updateInfo(user);
 		} else throw new InvalidCredentialsException();
 	}  
 	
@@ -50,11 +46,7 @@ public class AuthServiceImpl implements AuthService {
 		User user = this.userRepository.findByEmail(email)
 						.orElseThrow(() -> new InvalidCredentialsException());
 		if(PasswordHasher.matches(password, user.getPassword())) {
-			user.setLogins(user.getLogins() + 1);
-			String apiKey = ApiKeyManager.generate(user.getUserId());
-			user.setApikey(apiKey);
-			userRepository.save(user);
-			return apiKey;
+			return updateInfo(user);
 		} else throw new InvalidCredentialsException();
 	}
 
