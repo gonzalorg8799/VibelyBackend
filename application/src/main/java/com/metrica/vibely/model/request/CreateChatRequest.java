@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.metrica.vibely.data.model.dto.ChatDTO;
+import com.metrica.vibely.data.model.enumerator.ChatType;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,11 +18,11 @@ public class CreateChatRequest {
 	@NotNull
 	@NotBlank
 	private String title;
+	private String type;
 	private Set<UUID> participants;
 	
 //	<<--CONSTRUCTOR-->>
 	public CreateChatRequest() {
-		
 	}
 
 //	<<--METHODS-->>
@@ -29,6 +30,8 @@ public class CreateChatRequest {
 		ChatDTO chatDto = new ChatDTO();
 		
 		chatDto.setTitle	   (this.getTitle());
+		if(this.type.equals("DIRECT_MESSAGE")) { chatDto.setType(ChatType.DIRECT_MESSAGE); }
+		if(this.type.equals("GROUP")) { chatDto.setType(ChatType.GROUP); }
 		chatDto.setParticipants(this.getParticipants());
 		return chatDto;
 	}
@@ -48,6 +51,14 @@ public class CreateChatRequest {
 
 	public void setParticipants(Set<UUID> participants) {
 		this.participants = participants;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	
