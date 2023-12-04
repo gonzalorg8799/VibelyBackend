@@ -1,10 +1,12 @@
 package com.metrica.vibely.controller;
 
 import com.metrica.vibely.controller.util.ResponseManager;
+import com.metrica.vibely.data.model.dto.FollowDTO;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.service.UserService;
+import com.metrica.vibely.model.request.CreateFollowRequest;
 import com.metrica.vibely.model.request.CreateUserRequest;
 import com.metrica.vibely.model.request.UpdateUserRequest;
 import com.metrica.vibely.model.response.create.CreateUserResponse;
@@ -14,6 +16,7 @@ import com.metrica.vibely.model.response.update.UpdateUserResponse;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,22 +56,6 @@ public class UserController {
     // <<-METHODS->>
     @GetMapping("/{id}")
     public ResponseEntity<BasicInfoResponse> getById(@PathVariable UUID id) {
-        
-        System.err.println("Estamos en el metodo get User by id");
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         UserDTO userDTO = this.userService.getById(id);
@@ -142,6 +129,25 @@ public class UserController {
     public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
         this.userService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @PostMapping("/follow")
+    public ResponseEntity<UserDTO> follow(
+    		@RequestBody
+    		CreateFollowRequest followRequest
+    		) {
+    	System.out.println("prueba");
+    	UUID userId = followRequest.getUserId();
+        UUID userFollowId = followRequest.getUserFollowId();
+        System.out.println(followRequest.getUserId()+" "+followRequest.getUserFollowId());
+        
+        UserDTO updatedUser = this.userService.followUser(userId, userFollowId);
+        
+        
+        System.err.println(updatedUser.getFollowing().isEmpty());
+        updatedUser.getFollowing().forEach(System.err::println);
+        return ResponseEntity.ok().body(updatedUser);
+    	
     }
     
 }
