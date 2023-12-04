@@ -135,6 +135,14 @@ public class User implements Copyable<User> {
     }
     
     // <<-METHODS->>
+    public void addFollower(User user) {
+        this.followers.add(user);
+    }
+    
+    public void addFollowing(User user) {
+        this.following.add(user);
+    }
+    
     @Override
     public User deepCopy() {
         User copy = new User();

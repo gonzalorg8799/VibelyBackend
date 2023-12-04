@@ -116,17 +116,17 @@ public class UserServiceImpl implements UserService {
 		// userRepository .save (followedUser);
 		// }
 		if (!followedUser.equals(user) && !user.getFollowing().contains(followedUser)) {
-
-			
-			Set<User> following = user.getFollowing();
-			following.add(followedUser);
-			user.setFollowing(following);
-			// Guarda los cambios en ambos usuarios
-
+		    followedUser.addFollower(user);
+			System.err.println(followedUser.getUserId());
 		}
 
-		User userNew = this.userRepository.save(user);
+		User userNew = this.userRepository.save(followedUser);
 
+		User testEntity = this.userRepository.findById(user.getUserId()).orElseThrow();
+		
+		System.err.println("Prueba de si está vacio" + testEntity.getFollowing().isEmpty());
+		testEntity.getFollowing().forEach(System.err::println);
+		
 		return UserMapper.toDTO(userNew);
 	}
 
