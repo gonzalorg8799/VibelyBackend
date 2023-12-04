@@ -7,7 +7,7 @@ import com.metrica.vibely.data.model.dto.PostDTO;
 public class UpdateLikedByPostResponse {
 
 	// <<-FIELDS->>
-	private UUID postId;
+	private UUID 	postId;
     private Integer likes;
     
     // <<-CONSTRUCTOR->>
@@ -18,8 +18,8 @@ public class UpdateLikedByPostResponse {
     public UpdateLikedByPostResponse generateResponse(PostDTO postDTO) {
     	UpdateLikedByPostResponse likedByPostResponse = new UpdateLikedByPostResponse();
 
-    	likedByPostResponse.setPostId (postDTO.getPostId());
-    	likedByPostResponse.setLikes(postDTO.getLikes());
+    	likedByPostResponse.setPostId(postDTO.getPostId());
+    	likedByPostResponse.setLikes (postDTO.getLikes());
        
 
         return likedByPostResponse;

@@ -24,6 +24,7 @@ import com.metrica.vibely.model.response.update.UpdateChatResponse;
 import com.metrica.vibely.model.response.update.UpdateLikedByPostResponse;
 import com.metrica.vibely.model.response.update.UpdateMessageResponse;
 import com.metrica.vibely.model.response.update.UpdatePostResponse;
+import com.metrica.vibely.model.response.update.UpdateSavedByPostResponse;
 import com.metrica.vibely.model.response.update.UpdateUserResponse;
 
 @Component
@@ -108,6 +109,15 @@ public class ResponseManager {
      */
     public ResponseEntity<UpdateLikedByPostResponse> generateLikedByUpdateResponse(PostDTO postDTO) {
     	UpdateLikedByPostResponse postResponse = new UpdateLikedByPostResponse();
+    	return ResponseEntity.ok().body(postResponse.generateResponse(postDTO));
+    }
+    /**
+     * Generates a ResponseEntity for updating the 'savedBy' property of a Post.
+     * @param postDTO The PostDTO containing the updated 'savedBy' information.
+     * @return ResponseEntity with the updated 'savedBy' response.
+     */
+    public ResponseEntity<UpdateSavedByPostResponse> generateSavedByUpdateResponse(PostDTO postDTO) {
+    	UpdateSavedByPostResponse postResponse = new UpdateSavedByPostResponse();
     	return ResponseEntity.ok().body(postResponse.generateResponse(postDTO));
     }
 }
