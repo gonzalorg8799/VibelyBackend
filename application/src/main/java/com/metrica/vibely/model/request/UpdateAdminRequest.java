@@ -15,7 +15,7 @@ public class UpdateAdminRequest {
 
     // <<-FIELDS->>
     private String username;
-    @Pattern(regexp = "")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{12,}$")
     private String password;
     private String nickname;
     private String email;
