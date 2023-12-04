@@ -18,7 +18,7 @@ public class CreateChatRequest {
 	@NotNull
 	@NotBlank
 	private String title;
-	private String type;
+	private ChatType type;
 	private Set<UUID> participants;
 	
 //	<<--CONSTRUCTOR-->>
@@ -30,8 +30,7 @@ public class CreateChatRequest {
 		ChatDTO chatDto = new ChatDTO();
 		
 		chatDto.setTitle	   (this.getTitle());
-		if(this.type.equals("DIRECT_MESSAGE")) { chatDto.setType(ChatType.DIRECT_MESSAGE); }
-		if(this.type.equals("GROUP")) { chatDto.setType(ChatType.GROUP); }
+		chatDto.setType		   (this.getType());
 		chatDto.setParticipants(this.getParticipants());
 		return chatDto;
 	}
@@ -53,11 +52,11 @@ public class CreateChatRequest {
 		this.participants = participants;
 	}
 
-	public String getType() {
+	public ChatType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(ChatType type) {
 		this.type = type;
 	}
 
