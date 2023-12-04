@@ -140,7 +140,48 @@ public class PostServiceImpl implements PostService{
         return PostMapper.toDTO(this.postRepository.save(post));
 	}
 	
-
+	
+	@Override
+	public PostDTO addSavedBy(PostDTO postDTO) {
+        Post post = this.postRepository.findById(postDTO.getPostId()).orElseThrow();
+        
+        Set<UUID> savedBySet = postDTO.getSavedBy();
+        if(savedBySet.isEmpty()) {
+        	throw new NoSuchElementException();
+        }
+        UUID userId = savedBySet.stream().findFirst().get();
+        User user = this.userRepository.findById(userId).orElseThrow();
+        
+        Set<User> userList = post.getSavedBy();  
+        if(!userList.contains(user)) {
+            post.setTimesSaved(post.getTimesSaved() + 1);
+        }
+        userList.add(user);
+        post.setSavedBy(userList);
+        
+        return PostMapper.toDTO(this.postRepository.save(post));
+	}
+	
+	@Override
+	public PostDTO removeSavedBy(PostDTO postDTO) {
+        Post post = this.postRepository.findById(postDTO.getPostId()).orElseThrow();
+        
+        Set<UUID> unSavedBySet = postDTO.getSavedBy(); // in this case is 
+        if(unSavedBySet.isEmpty()) {
+        	throw new NoSuchElementException();
+        }
+        UUID userId = unSavedBySet.stream().findFirst().get();
+        User user = this.userRepository.findById(userId).orElseThrow();
+        
+        Set<User> userList = post.getSavedBy();  
+        if(userList.contains(user)) {
+            post.setTimesSaved(post.getTimesSaved() - 1);
+            userList.remove(user);
+        }
+        post.setSavedBy(userList);
+        
+        return PostMapper.toDTO(this.postRepository.save(post));
+	}
 	
 	
 
