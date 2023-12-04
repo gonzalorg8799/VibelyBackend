@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import com.metrica.vibely.data.exception.ExpiredApiKeyException;
 import com.metrica.vibely.data.exception.InvalidFormatException;
+import com.metrica.vibely.data.model.enumerator.HttpStatusEnum;
 
 /**
  * <h1>API Key Generator</h1>
@@ -94,24 +95,22 @@ public class ApiKeyManager {
 	 * @param savedApiKey
 	 * @return
 	 */
-	public static int isValid(String apiKey) {
-        if (apiKey == null) {
-            return 1;
-        }
+	public static HttpStatusEnum isValid(String apiKey) {
+        if (apiKey == null) { return HttpStatusEnum.BAD_REQUEST; }
         
         // TODO Implement this instead of decode in each method
-//        byte[] info = Base64.getDecoder().decode(apiKey);
+        // byte[] info = Base64.getDecoder().decode(apiKey);
         
 		try {
 			if (!isValidFormatApikey(apiKey))   throw new InvalidFormatException("Invalid API key format");
 			if (!isValidExpirationTime(apiKey)) throw new ExpiredApiKeyException();
-			return 0;
+			return HttpStatusEnum.OK;
 		} catch (InvalidFormatException e) {
 	        System.err.println("InvalidFormatException");
-			return 1;
+			return HttpStatusEnum.BAD_REQUEST;
 		} catch (ExpiredApiKeyException e) {
 	        System.err.println("ExpiredApiKeyException");
-			return 2;
+			return HttpStatusEnum.INVALID_CREDENTIALS;
 		}
 	}
 
