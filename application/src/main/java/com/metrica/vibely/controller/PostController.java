@@ -4,9 +4,11 @@ import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.service.PostService;
 import com.metrica.vibely.model.request.CreatePostRequest;
+import com.metrica.vibely.model.request.UpdateLikedByPostRequest;
 import com.metrica.vibely.model.request.UpdatePostRequest;
 import com.metrica.vibely.model.response.create.CreatePostResponse;
 import com.metrica.vibely.model.response.get.GetPostResponse;
+import com.metrica.vibely.model.response.update.UpdateLikedByPostResponse;
 import com.metrica.vibely.model.response.update.UpdatePostResponse;
 
 import jakarta.validation.Valid;
@@ -91,5 +93,24 @@ public class PostController {
        this.postService.deleteById(id);
        return ResponseEntity.noContent().build();
    }
+   
+   @PutMapping("addLikedBy/{postId}")
+   public ResponseEntity<UpdateLikedByPostResponse> addLikedBy(
+		   @PathVariable 
+		   UUID postId,
+		   @RequestBody
+           @Valid
+           UpdateLikedByPostRequest postRequest,
+           BindingResult bindingResult
+	){
+	   if (bindingResult.hasErrors()) {
+           return ResponseEntity.badRequest().build();
+       }
+	   PostDTO postDTO = postRequest.toDTO();
+       postDTO.setPostId(postId);
+       PostDTO updatedDTO = this.postService.addLikedBy(postDTO);
+       return this.responseManager.generateLikedByUpdateResponse(updatedDTO);
+   }
+ 
 
 }
