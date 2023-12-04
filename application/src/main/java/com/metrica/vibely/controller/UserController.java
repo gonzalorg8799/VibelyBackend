@@ -54,23 +54,6 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<BasicInfoResponse> getById(@PathVariable UUID id) {
         
-        System.err.println("Estamos en el metodo get User by id");
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         UserDTO userDTO = this.userService.getById(id);
         
         if (userDTO.getState() != UserState.DISABLED) {
