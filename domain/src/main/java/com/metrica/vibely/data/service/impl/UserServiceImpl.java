@@ -160,15 +160,19 @@ public class UserServiceImpl implements UserService {
 				 .map(User::getUserId)
 				 .collect(Collectors.toSet());
 		
-		Set<User> friends = followersIds.stream()
+		Set<UUID> friends = followersIds.stream()
 								.map(m -> {
 									if(followingIds.contains(m)) return m;
 								})
-								.map(m -> userRepository.findById(m).orElseThrow())
+								//.map(m -> userRepository.findById(m).orElseThrow())
 								.collect(Collectors.toSet());
 		
+		Set<Chat>chatsFriends=user.getChats().stream()
+				.filter(c->c.getParticipants().stream()
+						  	.anyMatch(friends::contains))
+				.collect(Collectors.toSet());
 		
-		return null;
+		return friends;
 	}
 	
 }
