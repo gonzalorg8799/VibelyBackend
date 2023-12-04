@@ -17,6 +17,7 @@ import com.metrica.vibely.model.response.create.CreatePostResponse;
 import com.metrica.vibely.model.response.create.CreateUserResponse;
 import com.metrica.vibely.model.response.get.BasicInfoResponse;
 import com.metrica.vibely.model.response.get.GetChatResponse;
+import com.metrica.vibely.model.response.get.GetFriendNetworkResponse;
 import com.metrica.vibely.model.response.get.GetMessageResponse;
 import com.metrica.vibely.model.response.get.GetPostResponse;
 import com.metrica.vibely.model.response.update.UpdateAdminResponse;
@@ -48,6 +49,11 @@ public class ResponseManager {
     public ResponseEntity<GetMessageResponse> generateGetResponse(MessageDTO messageDto) {
     	GetMessageResponse messageResponse = new GetMessageResponse();
     	return ResponseEntity.ok().body(messageResponse.generateResponse(messageDto));
+    }
+    
+    public ResponseEntity<GetFriendNetworkResponse> generateGetNetworkResponse(UserDTO userDto){
+    	GetFriendNetworkResponse friendNetworkResponse = new GetFriendNetworkResponse();
+    	return ResponseEntity.ok().body(friendNetworkResponse.generateResponse(userDto));
     }
     
     //	<<--CREATE RESPONSE-->>   
