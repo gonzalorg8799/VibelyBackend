@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.metrica.vibely.data.model.dto.UserDTO;
 
 public class UpdateUserResponse {
-	// <<-FIELDS->>
+		// <<-FIELDS->>
 		private UUID userId;
 	    private String username;
 	    private String nickname;
