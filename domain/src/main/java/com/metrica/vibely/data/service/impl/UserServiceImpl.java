@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 		user.setStatus		(UserStatus.ONLINE);
 		user.setLogins		(1);
 		user.setLastConnDate(LocalDateTime.now());
-        user.setPassword	(userDTO.getPassword());
+        user.setPassword	(PasswordHasher.hash(userDTO.getPassword()));
         
 		return UserMapper.toDTO(this.userRepository.save(user));
 	}
