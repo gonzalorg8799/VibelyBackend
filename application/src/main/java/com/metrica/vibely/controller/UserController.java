@@ -9,6 +9,7 @@ import com.metrica.vibely.model.request.CreateUserRequest;
 import com.metrica.vibely.model.request.UpdateUserRequest;
 import com.metrica.vibely.model.response.create.CreateUserResponse;
 import com.metrica.vibely.model.response.get.BasicInfoResponse;
+import com.metrica.vibely.model.response.get.GetFriendNetworkResponse;
 import com.metrica.vibely.model.response.update.UpdateUserResponse;
 
 import java.util.UUID;
@@ -85,6 +86,21 @@ public class UserController {
         }
         
         return ResponseEntity.notFound().build();
+    }
+    /**
+     * @TODO falta añadir la funcionalidad
+     * @param id
+     * @return
+     */
+    @GetMapping("/friendNetwork/{id}")
+    public ResponseEntity<GetFriendNetworkResponse> getNetwork(@PathVariable UUID id){
+    	UserDTO userDTO = this.userService.getById(id);
+    	if (userDTO.getState()   != UserState.DISABLED &&
+            userDTO.getPrivacy() == PrivacyType.PUBLIC) {
+            return this.responseManager.generateGetNetworkResponse(userDTO);
+        }
+    	return ResponseEntity.notFound().build();
+    	
     }
 
     @PostMapping("/signup")
