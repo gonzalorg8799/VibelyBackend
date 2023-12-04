@@ -111,6 +111,25 @@ public class PostController {
        PostDTO updatedDTO = this.postService.addLikedBy(postDTO);
        return this.responseManager.generateLikedByUpdateResponse(updatedDTO);
    }
+   
+   // DISLIKE
+   @PutMapping("removeLikedBy/{postId}")
+   public ResponseEntity<UpdateLikedByPostResponse> removeLikedBy(
+		   @PathVariable 
+		   UUID postId,
+		   @RequestBody
+           @Valid
+           UpdateLikedByPostRequest postRequest,
+           BindingResult bindingResult
+	){
+	   if (bindingResult.hasErrors()) {
+           return ResponseEntity.badRequest().build();
+       }
+	   PostDTO postDTO = postRequest.toDTO();
+       postDTO.setPostId(postId);
+       PostDTO updatedDTO = this.postService.removeLikedBy(postDTO);
+       return this.responseManager.generateLikedByUpdateResponse(updatedDTO);
+   }
  
 
 }
