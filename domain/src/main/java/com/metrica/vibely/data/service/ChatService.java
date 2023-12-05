@@ -19,7 +19,7 @@ public interface ChatService extends CrudService<ChatDTO, UUID> {
 	 * Adds users to the chat
 	 * @param users to add
 	 * @throws NoSuchElementException
-	 */
+	 */ 
 	ChatDTO addMembers(UUID chatId, Set<UUID> membersToAdd);
 	
 	/**

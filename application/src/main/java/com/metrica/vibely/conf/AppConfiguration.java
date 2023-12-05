@@ -1,5 +1,6 @@
 package com.metrica.vibely.conf;
 
+import com.metrica.vibely.interceptor.AdminAuthInterceptor;
 import com.metrica.vibely.interceptor.AuthInterceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,13 @@ public class AppConfiguration implements WebMvcConfigurer {
 
     // <<-FIELD->>
     private AuthInterceptor authInterceptor;
+    private AdminAuthInterceptor adminAuthInterceptor;
 
     // <<-CONSTRUCTOR->>
     @Autowired
-    public AppConfiguration(AuthInterceptor authInterceptor) {
+    public AppConfiguration(AuthInterceptor authInterceptor, AdminAuthInterceptor adminAuthInterceptor) {
         this.authInterceptor = authInterceptor;
+        this.adminAuthInterceptor = adminAuthInterceptor;
     }
 
     // <<-METHOD->>
@@ -35,6 +38,12 @@ public class AppConfiguration implements WebMvcConfigurer {
             .excludePathPatterns("/api/v1/auth/email")
             .excludePathPatterns("/api/v1/users/signup")
             .excludePathPatterns("/api/v1/admin/users/signup");
+        registry.addInterceptor(this.adminAuthInterceptor)
+        	.addPathPatterns("/api/v1/**")
+        	.excludePathPatterns("/api/v1/auth/admin/username")
+        	.excludePathPatterns("/api/v1/auth/admin/email")
+        	.excludePathPatterns("/api/v1/users/signup")
+        	.excludePathPatterns("/api/v1/admin/users/signup");
     }
 
 }
