@@ -16,7 +16,7 @@ public class AuthUserRequest {
     private String username;
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d@$!%^*#&]{12,}$")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{12,}$", message = "contraseña no valida")
     private String password;
 
     // <<-CONSTRUCTOR->>

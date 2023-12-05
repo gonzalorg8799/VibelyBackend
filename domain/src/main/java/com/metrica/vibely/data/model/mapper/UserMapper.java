@@ -1,30 +1,33 @@
 package com.metrica.vibely.data.model.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.UserDTO;
 
+import java.util.stream.Collectors;
+
 /**
+ * <h1>User Mapper</h1>
+ * 
  * @since 2023-11-14
- * @author Adrian
  * @version 1.0
- *
+ * @author Adrian
  */
 public class UserMapper {
 
-	public static User toEntity(
-			UserDTO userDTO, 
-			Set<User> followers,
-			Set<User> following,
-			Set<Post> posts, 
-			Set<Chat> chats,
-			Set<Post> likes,
-			Set<Post> saves) 
-	{
+    // <<-METHODS->>
+    /**
+     * Maps the information contained in the DTO into the Entity.
+     * 
+     * This method is mainly used when you create a new entity
+     * so it's really not important the values you assign to the
+     * relations fields.
+     * 
+     * @param userDTO the DTO to map
+     * @return the entity with the DTO info
+     */
+	public static User toEntity(UserDTO userDTO) {
 		User user = new User();
 		
 		// Mapping Basics
@@ -41,17 +44,22 @@ public class UserMapper {
 		user.setBlockedDate (userDTO.getBlockedDate());
 		user.setLastConnDate(userDTO.getLastConnDate());
 		
-		// Mapping Relations
-		user.setFollowers	(followers);
-		user.setFollowing	(following);
-		user.setPosts		(posts);
-		user.setChats	 	(chats);
-		user.setLikes		(likes);
-		user.setSaves	 	(saves);
-		
-		return user;
-	}
+        // Mapping Relations
+        user.setFollowers(null);
+        user.setFollowing(null);
+        user.setPosts    (null);
+        user.setChats    (null);
+        user.setLikes    (null);
+        user.setSaves    (null);
+
+        return user;
+    }
 	
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static UserDTO toDTO(User user) {
 		UserDTO userDTO = new UserDTO();
 
@@ -70,30 +78,32 @@ public class UserMapper {
 		userDTO.setLastConnDate(user.getLastConnDate());
 		
 		// Mapping Relations        
-		userDTO.setFollowers   (user.getFollowers().stream()  // Mapping to get only the id
-				                    .map(User::getUserId)
-				                    .collect(Collectors.toSet()));   
-		
-		userDTO.setFollowing   (user.getFollowing().stream() 
-				                    .map(User::getUserId)
-				                    .collect(Collectors.toSet()));   
-		
-		userDTO.setPosts   	   (user.getPosts().stream() 
-					                 .map(Post::getPostId)
-					                .collect(Collectors.toSet()));  
-		
-		userDTO.setChats	   (user.getChats().stream()
-							 	    .map(Chat::getChatId)
-							 	    .collect(Collectors.toSet()));
-		
-		userDTO.setLikes	   (user.getPosts().stream()
-		 	    					.map(Post::getPostId)
-		 	    					.collect(Collectors.toSet()));
-		
-		userDTO.setSaves	   (user.getSaves().stream()
-		 	    					.map(Post::getPostId)
-		 	    					.collect(Collectors.toSet()));
-		
-		return userDTO;
-	}
+		userDTO.setFollowers(user.getFollowers() // Mapping to get only the id
+                .stream()
+                .map(User::getUserId)
+                .collect(Collectors.toSet()));
+        userDTO.setFollowing(user.getFollowing()
+                .stream()
+                .map(User::getUserId)
+                .collect(Collectors.toSet()));
+        userDTO.setPosts(user.getPosts()
+                .stream()
+                .map(Post::getPostId)
+                .collect(Collectors.toSet()));
+        userDTO.setChats(user.getChats()
+                .stream()
+                .map(Chat::getChatId)
+                .collect(Collectors.toSet()));
+        userDTO.setLikes(user.getPosts()
+                .stream()
+                .map(Post::getPostId)
+                .collect(Collectors.toSet()));
+        userDTO.setSaves(user.getSaves()
+                .stream()
+                .map(Post::getPostId)
+                .collect(Collectors.toSet()));
+
+        return userDTO;
+    }
+	
 }

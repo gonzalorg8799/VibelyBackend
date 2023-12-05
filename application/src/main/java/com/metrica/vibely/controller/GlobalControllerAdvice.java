@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.metrica.vibely.data.exception.InvalidCredentialsException;
+
 /**
  * <h1>Global Controller Advice</h1>
  * 
@@ -22,6 +24,12 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Void> notFoundHandler() {
         return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Void> invalidCredentialsHandler() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     
 }

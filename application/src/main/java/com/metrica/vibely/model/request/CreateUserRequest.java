@@ -23,14 +23,14 @@ public class CreateUserRequest {
 
     @NotNull
     @NotBlank
-    //@Pattern(regexp = "^(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d@$!%^*#&]{12,}$")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{12,}$")
     private String password;
 
-    //@Pattern(regexp = "[a-zA-Z_-\\d]*")
+    @Pattern(regexp = "[a-zA-Z0-9_-]*")
     @NotBlank
     private String nickname;
 
-    //@Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
     @NotNull
     @NotBlank
     private String email;
@@ -65,7 +65,7 @@ public class CreateUserRequest {
     }
 
     public void setPassword(String password) {
-		this.password = PasswordHasher.hash(password);
+		this.password = password;
     }
 
     public String getNickname() {

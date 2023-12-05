@@ -39,4 +39,32 @@ public interface PostService extends CrudService<PostDTO, UUID> {
 	PostDTO changeVisibility(PostVisibility visibility); 
 
 	void deleteById(UUID postId);
+
+	/**
+	 * add user to likedBy list
+	 * @param postDTO
+	 * @throws NoSuchElementException
+	 */
+	PostDTO addLikedBy(PostDTO postDTO);
+
+	/**
+	 * remove user to likedBy list
+	 * @param postDTO
+	 * @throws NoSuchElementException
+	 */
+	PostDTO removeLikedBy(PostDTO postDTO);
+
+	/**
+	 * add user to savedBy list
+	 * @param postDTO
+	 * @throws NoSuchElementException
+	 */
+	PostDTO addSavedBy(PostDTO postDTO);
+	
+	/**
+	 * remove user to savedBy list
+	 * @param postDTO
+	 * @throws NoSuchElementException
+	 */
+	PostDTO removeSavedBy(PostDTO postDTO);
 }

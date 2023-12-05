@@ -60,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminDTO create(AdminDTO adminDTO) {
-        Admin admin = AdminMapper.toEntity(adminDTO, null, null, null, null, null, null);
+        Admin admin = AdminMapper.toEntity(adminDTO);
         
         admin.setState  (UserState.ENABLED);
         admin.setPrivacy(PrivacyType.PUBLIC);

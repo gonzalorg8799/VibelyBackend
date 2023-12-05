@@ -21,14 +21,16 @@ import com.metrica.vibely.model.response.get.GetMessageResponse;
 import com.metrica.vibely.model.response.get.GetPostResponse;
 import com.metrica.vibely.model.response.update.UpdateAdminResponse;
 import com.metrica.vibely.model.response.update.UpdateChatResponse;
+import com.metrica.vibely.model.response.update.UpdateLikedByPostResponse;
 import com.metrica.vibely.model.response.update.UpdateMessageResponse;
 import com.metrica.vibely.model.response.update.UpdatePostResponse;
+import com.metrica.vibely.model.response.update.UpdateSavedByPostResponse;
 import com.metrica.vibely.model.response.update.UpdateUserResponse;
 
 @Component
 public class ResponseManager {
 
-//	<<--GET RESPONSE-->> 
+	//	<<--GET RESPONSE-->> 
     public ResponseEntity<BasicInfoResponse> generateGetResponse(UserDTO userDto) {
         BasicInfoResponse basicResponse = new BasicInfoResponse();
         return ResponseEntity.ok().body(basicResponse.generateResponse(userDto));
@@ -49,7 +51,7 @@ public class ResponseManager {
     	return ResponseEntity.ok().body(messageResponse.generateResponse(messageDto));
     }
     
-//	<<--CREATE RESPONSE-->>   
+    //	<<--CREATE RESPONSE-->>   
     public ResponseEntity<CreateUserResponse> generateCreateResponse(UserDTO userDto) {
     	CreateUserResponse userResponse = new CreateUserResponse();
     	return ResponseEntity.status(HttpStatus.CREATED).body(userResponse.generateResponse(userDto));
@@ -75,7 +77,7 @@ public class ResponseManager {
     	return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse.generateResponse(messageDto));
     }
     
-//	<<--UPDATE RESPONSE-->>
+    //	<<--UPDATE RESPONSE-->>
     public ResponseEntity<UpdateUserResponse> generateUpdateResponse(UserDTO userDto) {
     	UpdateUserResponse userResponse = new UpdateUserResponse();
     	return ResponseEntity.ok().body(userResponse.generateResponse(userDto));
@@ -100,5 +102,22 @@ public class ResponseManager {
     	UpdateMessageResponse messageResponse = new UpdateMessageResponse();
     	return ResponseEntity.ok().body(messageResponse.generateResponse(messageDto));
     }
-    
+    /**
+     * Generates a ResponseEntity for updating the 'likedBy' property of a Post.
+     * @param postDTO The PostDTO containing the updated 'likedBy' information.
+     * @return ResponseEntity with the updated 'likedBy' response.
+     */
+    public ResponseEntity<UpdateLikedByPostResponse> generateLikedByUpdateResponse(PostDTO postDTO) {
+    	UpdateLikedByPostResponse postResponse = new UpdateLikedByPostResponse();
+    	return ResponseEntity.ok().body(postResponse.generateResponse(postDTO));
+    }
+    /**
+     * Generates a ResponseEntity for updating the 'savedBy' property of a Post.
+     * @param postDTO The PostDTO containing the updated 'savedBy' information.
+     * @return ResponseEntity with the updated 'savedBy' response.
+     */
+    public ResponseEntity<UpdateSavedByPostResponse> generateSavedByUpdateResponse(PostDTO postDTO) {
+    	UpdateSavedByPostResponse postResponse = new UpdateSavedByPostResponse();
+    	return ResponseEntity.ok().body(postResponse.generateResponse(postDTO));
+    }
 }

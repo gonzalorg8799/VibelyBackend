@@ -7,7 +7,7 @@
     "servers": [
         {
             "url": "http://localhost:8080/api/v1",
-            "description": "Backend server for Vibely"
+            "description": "Vibely Backend Server"
         }
     ],
     "security": [
@@ -19,21 +19,69 @@
         "/auth": {
             "post": {
                 "tags": ["AUTH"],
-                "summary": "Authenticate user",
-                "description": "Authenticate a user using username and password",
+                "summary": "Authenticate a user",
+                "description": "Authenticate a user using either username or email along with the password",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserLogin"
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "username": {
+                                                "type": "string",
+                                                "description": "Username"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "description": "User password"
+                                            }
+                                        },
+                                        "required": ["username", "password"]
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "email": {
+                                                "type": "string",
+                                                "description": "User email"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "description": "User password"
+                                            }
+                                        },
+                                        "required": ["email", "password"]
+                                    }
+                                ]
+                            },
+                            "examples": {
+                                "Username Authentication": {
+                                    "summary": "Authentication using username",
+                                    "description": "Example of authenticating with a username",
+                                    "value": {
+                                        "username": "jdoe",
+                                        "password": "i%PHUUBi#5N&"
+                                    }
+                                },
+                                "Email Authentication": {
+                                    "summary": "Authentication using email",
+                                    "description": "Example of authenticating with an email",
+                                    "value": {
+                                        "email": "sudo@email.com",
+                                        "password": "i%PHUUBi#5N&"
+                                    }
+                                }
+                                
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Authentication was successful",
+                        "description": "OK: Authentication was successful",
                         "content": {
                             "application/json": {
                                 "example": {
@@ -42,8 +90,52 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "BAD REQUEST: 'username', 'email' or 'password' was not provided or has an invalid format"
+                    },
                     "401": {
-                        "description": "Invalid credentials, authentication failed"
+                        "description": "UNAUTHORIZED: Invalid credentials, authentication failed"
+                    }
+                }
+            }
+        },
+        "/admin/users/signup": {
+            "post": {
+                "tags": ["ADMIN"],
+                "summary": "Creates a new admin user account",
+                "description": "This endpoint allows administrators to create a new user account with administrative privileges. It is used to register a new admin user within the system. The request must contain the necessary details for user creation, including username, password, nickname and email. Upon successful creation, the system will generate a new admin user profile.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User Sign-Up"
+                            },
+                            "example": {
+                                "username": "sudo",
+                                "password": "MR%uQK4uX$7K",
+                                "nickname":"Sudo Admin",
+                                "email": "sudo@email.com"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED: The resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "userId": "8bbdbe71-6c4c-4760-ad4c-3a8dd049746e",
+                                    "username": "sudo",
+                                    "nickname":"Sudo Admin",
+                                    "email": "sudo@email.com"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST: The body is malformed or has invalid data"
                     }
                 }
             }
@@ -51,22 +143,25 @@
         "/admin/users/{id}": {
             "parameters": [
                 {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                },
+                {
                     "in": "path",
                     "name": "id",
                     "required": true,
                     "schema": {
                         "type": "string"
                     },
-                    "description": "Users' unique identifier"
+                    "description": "Admin unique identifier"
                 }
             ],
             "get": {
                 "tags": ["ADMIN"],
                 "summary": "Retrieves admin information by ID",
-                "description": "Retrieves information form a specific admin",
+                "description": "Retrieves information from a specific admin",
                 "responses": {
                     "200": {
-                        "description": "Admin's information retrieved successfully",
+                        "description": "OK: Admin information retrieved successfully",
                         "content": {
                             "application/json": {
                                 "example": {
@@ -84,57 +179,58 @@
                         }
                     },
                     "404": {
-                        "description": "The admin was not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             },
             "put": {
                 "tags": ["ADMIN"],
-                "summary": "Modify admin information by ID",
-                "description": "Modifies admin's username, nickname, password or email",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "X-Api-Key",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
+                "summary": "Modify admin information",
+                "description": "Modifies admin username, nickname, password or email",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "oneOf": [
-                                    {
-                                        "type": "object",
-                                        "required": [
-                                            "password"
-                                        ],
-                                        "properties": {
-                                            "username": {
-                                                "type": "string",
-                                                "description": "Users' name"
-                                            },
-                                            "nickname": {
-                                                "type": "string",
-                                                "description": "Users' nickname"
-                                            },
-                                            "password": {
-                                                "type": "string",
-                                                "description": "Users' password"
-                                            },
-                                            "email": {
-                                                "type": "string",
-                                                "description": "Users' email"
-                                            }
-                                        }
+                                "$ref": "#/components/schemas/Modify User Properties"
+                            },
+                            "examples": {
+                                "Only username": {
+                                    "summary": "Username",
+                                    "description": "Valid example with only username",
+                                    "value": {
+                                        "username": "master"
                                     }
-                                ],
-                                "example": {
-                                    "username": "sudosu"
+                                },
+                                "Only password": {
+                                    "summary": "Password",
+                                    "description": "Valid example with only password",
+                                    "value": {
+                                        "password": "wS^24Vi!#WCq"
+                                    }
+                                },
+                                "Only nickname": {
+                                    "summary": "Nickname",
+                                    "description": "Valid example with only nickname",
+                                    "value": {
+                                        "nickname": "Master Admin"
+                                    }
+                                },
+                                "Only email": {
+                                    "summary": "Email",
+                                    "description": "Valid example with only email",
+                                    "value": {
+                                        "email": "master@email.com"
+                                    }
+                                },
+                                "All properties": {
+                                    "summary": "All Properties",
+                                    "description": "Example including all properties",
+                                    "value": {
+                                        "username": "master",
+                                        "password": "wS^24Vi!#WCq",
+                                        "nickname": "Master Admin",
+                                        "email": "master@email.com"
+                                    }
                                 }
                             }
                         }
@@ -142,96 +238,77 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "The modification was successful",
+                        "description": "OK: The modification was successful",
                         "content": {
                             "application/json": {
                                 "example":{
                                     "userId": "8bbdbe71-6c4c-4760-ad4c-3a8dd049746e",
-                                    "username": "sudosu",
-                                    "nickname": "Sudo Admin",
-                                    "email": "sudo@email.com"
+                                    "username": "master",
+                                    "nickname": "Master Admin",
+                                    "email": "master@email.com"
                                 }
                             }
                         }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "BAD REQUEST: The body is malformed or has invalid data"
                     },
                     "404": {
-                        "description": "Resource not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             },
             "delete": {
                 "tags": ["ADMIN"],
-                "summary": "Delete an admin by ID",
+                "summary": "Delete an admin user",
                 "description": "Deletes the specified admin",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "X-Api-key",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
                 "responses": {
                     "204": {
-                        "description": "Resource was deleted successfully"
+                        "description": "NO CONTENT: Resource was deleted successfully"
                     },
                     "404": {
-                        "description": "Resource not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             }
         },
-        "/admin/users/signup": {
+        "/users/signup": {
             "post": {
-                "tags": ["ADMIN"],
-                "summary": "Creates a new admin",
-                "description": "",
+                "tags": ["USER"],
+                "summary": "Creates a user account",
+                "description": "Allows users to create a new user account. It is used to register a new user within the system. The request must contain the necessary details for user creation, including username, password, nickname and email. Upon successful creation, the system will generate a new user profile.",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "username": {
-                                        "type": "string",
-                                        "description": "Admin's username"
-                                    },
-                                    "nickname": {
-                                        "type": "string",
-                                        "description": "Admin's nickname"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "description": "Admin's password"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "description": "Admin's email"
-                                    }
-                                },
-                                "example": {
-                                    "username": "sudo",
-                                    "nickname":"Sudo Admin",
-                                    "password": "MR%uQK4uX$7K",
-                                    "email": "sudo@email.com"
-                                  }
+                                "$ref": "#/components/schemas/User Sign-Up"
+                            },
+                            "example": {
+                                "username": "jdoe",
+                                "password": "i%PHUUBi#5N&",
+                                "nickname": "John Doe",
+                                "email": "johndoe@email.com"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Resource created successfully"
+                        "description": "CREATED: The resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "userId": "5c78e091-59c9-42b9-bf72-a7e148ec46c1",
+                                    "username": "jdoe",
+                                    "nickname": "John Doe",
+                                    "email": "johndoe@email.com"
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "BAD REQUEST: The body is malformed or has invalid data"
                     }
                 }
             }
@@ -239,22 +316,25 @@
         "/users/{id}": {
             "parameters": [
                 {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                },
+                {
                     "in": "path",
                     "name": "id",
                     "required": true,
                     "schema": {
                         "type": "string"
                     },
-                    "description": "Users' unique identifier"
+                    "description": "User unique identifier"
                 }
             ],
             "get": {
                 "tags": ["USER"],
-                "summary": "Get user information by id",
-                "description": "Retrieve information form a specific user identifier",
+                "summary": "Retrieves user information by ID",
+                "description": "Retrieves information form a specific user",
                 "responses": {
                     "200": {
-                        "description": "Users' information retrieved successfully",
+                        "description": "OK: User information retrieved successfully",
                         "content": {
                             "application/json": {
                                 "example": {
@@ -280,7 +360,7 @@
                         }
                     },
                     "404": {
-                        "description": "The user was not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             },
@@ -288,49 +368,50 @@
                 "tags": ["USER"],
                 "summary": "Modify user information by id",
                 "description": "Modifies users' username, nickname, password or email",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "X-Api-Key",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "oneOf": [
-                                    {
-                                        "type": "object",
-                                        "required": [
-                                            "password"
-                                        ],
-                                        "properties": {
-                                            "username": {
-                                                "type": "string",
-                                                "description": "Users' name"
-                                            },
-                                            "nickname": {
-                                                "type": "string",
-                                                "description": "Users' nickname"
-                                            },
-                                            "password": {
-                                                "type": "string",
-                                                "description": "Users' password"
-                                            },
-                                            "email": {
-                                                "type": "string",
-                                                "description": "Users' email"
-                                            }
-                                        }
+                                "$ref": "#/components/schemas/Modify User Properties"
+                            },
+                            "examples": {
+                                "Only username": {
+                                    "summary": "Username",
+                                    "description": "Valid example with only username",
+                                    "value": {
+                                        "username": "joedoe"
                                     }
-                                ],
-                                "example": {
-                                    "username": "joedoe"
+                                },
+                                "Only password": {
+                                    "summary": "Password",
+                                    "description": "Valid example with only password",
+                                    "value": {
+                                        "password": "wS^24Vi!#WCq"
+                                    }
+                                },
+                                "Only nickname": {
+                                    "summary": "Nickname",
+                                    "description": "Valid example with only nickname",
+                                    "value": {
+                                        "nickname": "Johnny Doe"
+                                    }
+                                },
+                                "Only email": {
+                                    "summary": "Email",
+                                    "description": "Valid example with only email",
+                                    "value": {
+                                        "email": "johnny@email.com"
+                                    }
+                                },
+                                "All properties": {
+                                    "summary": "All Properties",
+                                    "description": "Example including all properties",
+                                    "value": {
+                                        "username": "joedoe",
+                                        "password": "wS^24Vi!#WCq",
+                                        "nickname": "Johnny Doe",
+                                        "email": "johnny@email.com"
+                                    }
                                 }
                             }
                         }
@@ -338,80 +419,45 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Credentials modification was successful",
+                        "description": "OK: The modification was successful",
                         "content": {
                             "application/json": {
                                 "example":{
                                     "userId": "5c78e091-59c9-42b9-bf72-a7e148ec46c1",
                                     "username": "joedoe",
-                                    "nickname": "John Doe",
-                                    "email": "johndoe@email.com",
-                                    "state": "ENABLED",
-                                    "privacy": "PUBLIC"
+                                    "nickname": "Johnny Doe",
+                                    "email": "johnny@email.com"
                                 }
                             }
                         }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "BAD REQUEST: The body is malformed or has invalid data"
                     },
                     "404": {
-                        "description": "User not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             },
             "delete": {
                 "tags": ["USER"],
-                "summary": "Delete a User by id",
-                "description": "Deletes an user from Vibely",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "X-Api-key",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
+                "summary": "Delete a user",
+                "description": "Deletes the specified user",
                 "responses": {
                     "204": {
-                        "description": "User was deleted successfully"
+                        "description": "NO CONTENT: The resource was deleted successfully"
                     },
                     "404": {
-                        "description": "User not found"
-                    }
-                }
-            }
-        },
-        "/users/signup": {
-            "post": {
-                "tags": ["USER"],
-                "summary": "Sign up a new user",
-                "description": "",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserSignup"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User created successfully"
-                    },
-                    "400": {
-                        "description": "Invalid username or password"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             }
         },
         "/users/username/{username}": {
             "parameters": [
+                {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                },
                 {
                     "in": "query",
                     "name": "Username / Nickname",
@@ -432,18 +478,28 @@
                         "content": {
                             "application/json": {
                                 "example":{
-                                    "userId": "5c78e091-59c9-42b9-bf72-a7e148ec46c1",
-                                    "username": "joedoe",
+                                    "username": "jdoe",
                                     "nickname": "John Doe",
                                     "email": "johndoe@email.com",
                                     "state": "ENABLED",
-                                    "privacy": "PUBLIC"
+                                    "privacy": "PUBLIC",
+                                    "followers": [
+                                      "cc8ea183-e5d9-40b1-a7c3-0e66b7ec4a45",
+                                      "b668bc51-4842-48b9-a6f4-1caa51a6643a"
+                                    ],
+                                    "following": [
+                                      "cc8ea183-e5d9-40b1-a7c3-0e66b7ec4a45"
+                                    ],
+                                    "posts": [
+                                      "2c9cbb7a-0169-45f4-80f3-1c785e2f7f70",
+                                      "bb314292-4996-41cf-af52-f28c55f84bef"
+                                    ]
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "No user was found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             }
@@ -489,41 +545,197 @@
                 
             }
         },
-        "/chats/create":{
+        "/posts/create":{
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                }
+            ],
             "post": {
-                "tags": ["CHAT"],
-                "summary": "Create a new chat",
-                "description": "Create a new chat",
+                "tags": ["POST"],
+                "summary": "Create a Post",
+                "description": "Endpoint to create a new post",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ChatCreation"
+                                "$ref": "#/components/schemas/Content"
                             },
                             "example": {
-                                "chat_name":"Chatting",
-                                "members": ["johndoe", "John_Doe2", "jhonnydoe"]
+                                "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                             }
-                            
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED: Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "postId": "a4422ee5-30a6-478f-ba09-621c83439001",
+                                    "ownerId": "5c78e091-59c9-42b9-bf72-a7e148ec46c1",
+                                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST: The body is malformed or has invalid data"
+                    }
+                }
+            }
+        },
+        "/posts/{id}": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                },
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    },
+                    "description": "Post unique identifier"
+                }
+            ],
+            "get": {
+                "tags": ["POST"],
+                "summary": "Retrieves post information by ID",
+                "description": "Retrieves information from a specific post",
+                "responses": {
+                    "200": {
+                        "description": "OK: Post information retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "postId": "a4422ee5-30a6-478f-ba09-621c83439001",
+                                    "owner": "5c78e091-59c9-42b9-bf72-a7e148ec46c1",
+                                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                                    "likes": 30,
+                                    "saves": 5
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND: The resource was not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["POST"],
+                "summary": "Modifies post information",
+                "description": "Modifies post content",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "description": "Modified content of the post"
+                                    }
+                                },
+                                "required": ["content"]
+                            },
+                            "example": {
+                                "content": "Hello World"
+                            }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Chat created successfully"
+                        "description": "OK: The modification was successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "postId": "a4422ee5-30a6-478f-ba09-621c83439001",
+                                    "ownerId": "5c78e091-59c9-42b9-bf72-a7e148ec46c1",
+                                    "content": "Hello World",
+                                    "likes": 30,
+                                    "saves": 5
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Creation data is invalid"
+                        "description": "BAD REQUEST: The body is malformed os has invalid data"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["POST"],
+                "summary": "Delete a post",
+                "description": "Deletes the specified post",
+                "responses": {
+                    "204": {
+                        "description": "NO CONTENT: The resource was deleted successfully"
+                    },
+                    "404": {
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             }
         },
-        "/chats/{chatname}": {
+        "/chats/create":{
             "parameters": [
                 {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                }
+            ],
+            "post": {
+                "tags": ["CHAT"],
+                "summary": "Create a new chat",
+                "description": "Endpoint to create a new post",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Chat Creation"
+                            },
+                            "example": {
+                                "title": "Lorem ipsum"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED: Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "chatId": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "creation_date": "2023-11-30 15:22:24.426498",
+                                    "title": "Lorem ipsum",
+                                    "participants": [
+                                        "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "BAD REQUEST: The body is malformed or has invalid data"
+                    }
+                }
+            }
+        },
+        "/chats/{id}": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                },
+                {
                     "in": "path",
-                    "name": "ChatId",
+                    "name": "id",
                     "required": true,
                     "schema": {
                         "type": "string"
@@ -533,23 +745,27 @@
             ],
             "get": {
                 "tags": ["CHAT"],
-                "summary": "Get Chat information",
-                "description": "Retrieve information from a specific Chat identifier",
+                "summary": "Retrieves chat information by ID",
+                "description": "Retrieves information from a specific chat",
                 "responses": {
                     "200": {
-                        "description": "Chat information retrieved successfully",
+                        "description": "OK: Chat information retrieved successfully",
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "ChatName": "chating",
-                                    "ChatMembers": ["John Doe", "Jhon Doe2", "Jhon Doe3"],
-                                    "Messages": ["John Doe: Hello There", "Jhon Doe2: Hello World", "Jhon Doe3: Hello Chat"]
+                                    "chatId": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "creation_date": "2023-11-30 15:22:24.426498",
+                                    "title": "Lorem ipsum",
+                                    "participants": [
+                                        "5542598a-f564-431d-9666-95b360b81932",
+                                        "9c28646f-0678-4765-bcd0-69de4f4f700c"
+                                    ]
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Chat not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             },
@@ -557,17 +773,6 @@
                 "tags": ["CHAT"],
                 "summary": "Modifies Chat information",
                 "description": "Modifies Chat name or members",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -589,99 +794,103 @@
                                             }
                                         }
                                     }
-                                ],
-                                "example": {
-                                    "chat_name":"ChattingMore",
-                                    "members": ["johndoefriend", "John_Doe7", "jhonnydoe4"]
-                                }
+                                ]
+                            },
+                            "example": {
+                                "title": "Micro Minds"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Chat modification was successful",
+                        "description": "OK: The modification was successful",
                         "content": {
                             "application/json": {
-                                "example":{
-                                    "chat_name":"ChattingMore",
-                                    "members": ["johndoe", "John_Doe2", "jhonnydoe",
-                                    "johndoefriend", "John_Doe7", "jhonnydoe4"]
+                                "example": {
+                                    "chatId": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "creation_date": "2023-11-30 15:22:24.426498",
+                                    "title": "Micro Minds",
+                                    "participants": [
+                                        "5542598a-f564-431d-9666-95b360b81932",
+                                        "9c28646f-0678-4765-bcd0-69de4f4f700c"
+                                    ]
                                 }
                             }
                         }
                     },
                     "400": {
-                        "description": "Invalid request"
+                        "description": "BAD REQUEST: The body is malformed os has invalid data"
                     }
                 }
             },
             "delete": {
                 "tags": ["CHAT"],
                 "summary": "Delete a chat",
-                "description": "Deletes a chat",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
+                "description": "Deletes the specified chat",
                 "responses": {
                     "204": {
-                        "description": "Chat deleted successfully"
+                        "description": "NO CONTENT: The resource was deleted successfully"
                     },
                     "404": {
-                        "description": "Desired chat was not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             }
         },
-        "/messages/send":{
+        "/messages/create":{
             "parameters": [
                 {
-                    "in": "path",
-                    "name": "chatId",
-                    "required": true,
-                    "schema": {
-                        "type": "string"
-                    },
-                    "description": "Chat unique identifier"
+                    "$ref": "#/components/parameters/ApiKeyHeader"
                 }
             ],
             "post": {
                 "tags": ["MESSAGE"],
-                "summary": "Send a message to a chat",
-                "description": "Send a message to a chat",
+                "summary": "Create a new message",
+                "description": "Endpoint to create a new message",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/SendMessage"
+                                "$ref": "#/components/schemas/Content"
+                            },
+                            "example": {
+                                "content": "Good morning!"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Message sent successfully"
+                    "201": {
+                        "description": "CREATED: Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "messageId": "ba58801b-30e9-48e8-9354-d37f09742fde",
+                                    "creation_timestamp": "2023-11-30 15:22:26.399178",
+                                    "content": "Good morning!",
+                                    "status": "SENT",
+                                    "chat": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "sender": "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Creation data is invalid"
+                        "description": "BAD REQUEST: The body is malformed or has invalid data"
                     }
                 }
             }
         },
-        "/messages": {
+        "/messages/{id}": {
             "parameters": [
                 {
+                    "$ref": "#/components/parameters/ApiKeyHeader"
+                },
+                {
                     "in": "path",
-                    "name": "messageId",
+                    "name": "id",
                     "required": true,
                     "schema": {
                         "type": "string"
@@ -691,22 +900,26 @@
             ],
             "get": {
                 "tags": ["MESSAGE"],
-                "summary": "Get message information",
-                "description": "Retrieve information from a specific message identifier",
+                "summary": "Retrieves message information by ID",
+                "description": "Retrieves information from a specific message",
                 "responses": {
                     "200": {
-                        "description": "message information retrieved successfully",
+                        "description": "OK: message information retrieved successfully",
                         "content": {
                             "application/json": {
                                 "example": {
-                                    "sender": "jhondoe",
-                                    "content": "Hello World"
+                                    "messageId": "ba58801b-30e9-48e8-9354-d37f09742fde",
+                                    "creation_timestamp": "2023-11-30 15:22:26.399178",
+                                    "content": "Good morning!",
+                                    "status": "SENT",
+                                    "chat": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "sender": "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Desired message was not found"
+                        "description": "NOT FOUND: Desired message was not found"
                     }
                 }
             },
@@ -714,17 +927,6 @@
                 "tags": ["MESSAGE"],
                 "summary": "Modifies message content",
                 "description": "Modifies message content",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -744,7 +946,7 @@
                                     }
                                 ],
                                 "example": {
-                                    "new_content": "Hello Chat"
+                                    "content": "Good evening!"
                                 }
                             }
                         }
@@ -752,168 +954,35 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Message content was updated"
+                        "description": "OK: The modification was successful",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "messageId": "ba58801b-30e9-48e8-9354-d37f09742fde",
+                                    "creation_timestamp": "2023-11-30 15:22:26.399178",
+                                    "content": "Good evening!",
+                                    "status": "SENT",
+                                    "chat": "a40f6204-5ddc-4984-8004-3bd4481a0c44",
+                                    "sender": "5c78e091-59c9-42b9-bf72-a7e148ec46c1"
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Invalid request"
+                        "description": "BAD REQUEST: The body is malformed os has invalid data"
                     }
                 }
             },
             "delete": {
                 "tags": ["MESSAGE"],
-                "summary": "",
-                "description": "Deletes an MESSAGE from Chat",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
+                "summary": "Delete a message",
+                "description": "Delete the specified message",
                 "responses": {
                     "204": {
-                        "description": "Message was deleted successfully"
+                        "description": "NO CONTENT: The resource was deleted successfully"
                     },
                     "404": {
-                        "description": "Desired message was not found"
-                    }
-                }
-            }
-        },
-        "/posts/create":{
-            "post": {
-                "tags": ["POST"],
-                "summary": "Create a Post",
-                "description": "Create a Post",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PostCreation"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Post created successfully"
-                    },
-                    "400": {
-                        "description": "Creation data is invalid"
-                    }
-                }
-            }
-        },
-        "/posts": {
-            "parameters": [
-                {
-                    "in": "path",
-                    "name": "PostId",
-                    "required": true,
-                    "schema": {
-                        "type": "string"
-                    },
-                    "description": "Post unique identifier"
-                }
-            ],
-            "get": {
-                "tags": ["POST"],
-                "summary": "Get POST information",
-                "description": "Retrieve information from a specific Chat identifier",
-                "responses": {
-                    "200": {
-                        "description": "Post information retrieved successfully",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "Owner": "johndoe",
-                                    "content": "Hello World",
-                                    "likes": "30",
-                                    "saves": "15"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Desired post was not found"
-                    }
-                }
-            },
-            "put": {
-                "tags": ["POST"],
-                "summary": "Modifies POST information",
-                "description": "Modifies post information",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "oneOf": [
-                                    {
-                                        "type": "object",
-                                        "required": [
-                                            "new_content"
-                                        ],
-                                        "properties": {
-                                            "new_content": {
-                                                "type": "string",
-                                                "description": "content to modify"
-                                            }
-                                        }
-                                    }
-                                ],
-                                "example": {
-                                    "new_content": "Hello World"
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Post update was successful"
-                    },
-                    "400": {
-                        "description": "Invalid request"
-                    }
-                }
-            },
-            "delete": {
-                "tags": ["POST"],
-                "summary": "",
-                "description": "Deletes a POST",
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "Authorization",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "API Key"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Post was deleted successfully"
-                    },
-                    "404": {
-                        "description": "Desired post was not found"
+                        "description": "NOT FOUND: The resource was not found"
                     }
                 }
             }
@@ -928,56 +997,83 @@
                 "description": "Provide your API key in the 'X-Api-Key' header."
             }
         },
+        "parameters": {
+            "ApiKeyHeader": {
+                "in": "header",
+                "name": "X-Api-Key",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                },
+                "description": "API Key"
+            }
+        },
         "schemas": {
-            "UserGet": {
-
-            },
-            "UserPut": {
-
-            },
-            "UserLogin": {
+            "User Sign-Up": {
                 "type": "object",
                 "properties": {
                     "username": {
                         "type": "string",
-                        "description": "Users' name"
+                        "description": "Username"
                     },
                     "password": {
                         "type": "string",
-                        "description": "Users' password"
-                    }
-                },
-                "example": {
-                    "username": "jdoe",
-                    "password": "i%PHUUBi#5N&"
-                }
-            },
-            "UserSignup": {
-                "type": "object",
-                "properties": {
-                    "username": {
-                        "type": "string",
-                        "description": "Users' username"
+                        "description": "User password"
                     },
                     "nickname": {
                         "type": "string",
-                        "description": "Users' nickname"
-                    },
-                    "password": {
-                        "type": "string",
-                        "description": "Users' password"
+                        "description": "User nickname"
                     },
                     "email": {
                         "type": "string",
-                        "description": "Users' email"
-                    }
-                },
-                "example": {
-                    "username": "jdoe",
-                    "nickname": "John Doe",
-                    "password": "i%PHUUBi#5N&",
-                    "email": "johndoe@email.com"
+                        "description": "User email"
+                    },
+                    "required": ["username", "password", "nickname", "email"]
                 }
+            },
+            "Modify User Properties": {
+                "anyOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "username": {
+                                "type": "string",
+                                "description": "Username"
+                            }
+                        },
+                        "required": ["username"]
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "password": {
+                                "type": "string",
+                                "description": "User password"
+                            }
+                        },
+                        "required": ["password"]
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "nickname": {
+                                "type": "string",
+                                "description": "User nickname"
+                            }
+                        },
+                        "required": ["nickname"]
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "email": {
+                                "type": "string",
+                                "description": "Users' email"
+                            }
+                        },
+                        "required": ["email"]
+                    }
+                ]
             },
             "UserFollow": {
                 "type":"object",
@@ -991,38 +1087,22 @@
                     "username":"jennifer"
                 }
             },
-            "ChatCreation":{
+            "Content":{
                 "type": "object",
                 "properties": {
-                    "members": {
-                        "type": "array",
-                        "description": "Members list"
-                    }
-                }
-            },
-            "SendMessage":{
-                "type": "object",
-                "properties": {
-                    "sender_username": {
-                        "type": "string",
-                        "description": "Sender's username"
-                    },
-                    "content": {
-                        "type": "string",
-                        "description": "content of the message"
-                    }
-                }
-            },
-            "PostCreation":{
-                "type": "object",
-                "properties": {
-                    "owner_username": {
-                        "type": "string",
-                        "description": "Post Owner username"
-                    },
                     "content": {
                         "type": "string",
                         "description": "Content of the post"
+                    }
+                },
+                "required": ["content"]
+            },
+            "Chat Creation": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Title of the chat"
                     }
                 }
             }

@@ -24,16 +24,15 @@ public class CreateAdminRequest {
     @NotNull
     @NotBlank
     @Size(min = 12)
-    // TODO: FIX PATTERNS !!!
-//    @Pattern(regexp = "(?=.*[@$!^%#*&])(?=.*[a-z])(?=.*\\d)(?=.*[A-Z])[A-Za-z0-9@$!%^*#&]{12,}")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&]{12,}$")
     private String password;
     @NotBlank
     @Size(min = 4)
-//    @Pattern(regexp = "[a-zA-Z0-9_-]*")
+    @Pattern(regexp = "[a-zA-Z0-9_-]*")
     private String nickname;
     @NotNull
     @NotBlank
-//    @Pattern(regexp = "[A-Za-z0-9+_.-]+@(.+)")
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$")
     private String email;
 
     // <<-CONSTRUCTOR->>
