@@ -14,6 +14,7 @@ import com.metrica.vibely.data.service.UserService;
 import com.metrica.vibely.data.util.PasswordHasher; 
 	
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -181,23 +182,24 @@ public class UserServiceImpl implements UserService {
 				.collect(Collectors.toSet());
 	
 
-		Map<UUID, Integer> points4 = chatsFriends.stream()
+		Map<UUID, Integer> messagePoints = chatsFriends.stream()
 		        .flatMap(chat -> chat.getMessages().stream())
 		        .collect(Collectors.groupingBy(
 		                m->m.getSender().getUserId(),
 		                Collectors.summingInt(message -> 1)
 		        ));
-		Map<UUID, Double> points42 = friendsComments.stream()
+		Map<UUID, Double> commentsPoints = friendsComments.stream()
 		        .collect(Collectors.groupingBy(
 		                p->p.getOwner().getUserId(),
 		                Collectors.summingDouble(post->0.5)
 		        ));
 		
+		// suma de la puntuacion total de cada usuario
 		Map<UUID, Double> resultMap = new HashMap<>();
-
-        points4.forEach((key, value) -> resultMap.merge(key, value.doubleValue(), Double::sum));
-        points42.forEach((key, value) -> resultMap.merge(key, value, Double::sum));
-        return resultMap;
+		
+        messagePoints.forEach((key, value) -> resultMap.merge(key, value.doubleValue(), Double::sum));
+        commentsPoints.forEach((key, value) -> resultMap.merge(key, value, Double::sum));
+        Set<Map.Entry<UUID, Double>> setdemapa;
 	}
 
 
