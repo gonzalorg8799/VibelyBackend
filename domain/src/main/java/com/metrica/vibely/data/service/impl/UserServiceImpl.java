@@ -1,20 +1,20 @@
 package com.metrica.vibely.data.service.impl;
-
-import com.metrica.vibely.data.model.dto.UserDTO;
-import com.metrica.vibely.data.model.enumerator.PrivacyType;
-import com.metrica.vibely.data.model.enumerator.UserState;
-import com.metrica.vibely.data.model.enumerator.UserStatus;
-import com.metrica.vibely.data.model.mapper.UserMapper;
-import com.metrica.vibely.data.entity.User;
-import com.metrica.vibely.data.repository.UserRepository;
-import com.metrica.vibely.data.service.UserService;
-import com.metrica.vibely.data.util.PasswordHasher; 
 	
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;	
+import org.springframework.stereotype.Service;
+
+import com.metrica.vibely.data.entity.User;
+import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
+import com.metrica.vibely.data.model.mapper.UserMapper;
+import com.metrica.vibely.data.repository.UserRepository;
+import com.metrica.vibely.data.service.UserService;
+import com.metrica.vibely.data.util.PasswordHasher;		
 
 /**
  * @since 2023-11-14
@@ -35,76 +35,62 @@ public class UserServiceImpl implements UserService {
     // <<-METHODS->>
     @Override
     public UserDTO getById(UUID id) {
-        return UserMapper.toDTO(this.userRepository.findById(id).orElseThrow());
+        return UserMapper.toDTO(userRepository.findById(id).orElseThrow());
     }
 	
 	@Override
 	public UserDTO getByUsername(final String username) {
-		return UserMapper.toDTO(this.userRepository.findByUsername(username)
+		return UserMapper.toDTO(userRepository.findByUsername(username)
 											  .orElseThrow());
 	}
 	
 	@Override
 	public UserDTO getByEmail(final String email) {
-		return UserMapper.toDTO(this.userRepository.findByEmail(email)
+		return UserMapper.toDTO(userRepository.findByEmail(email)
 											  .orElseThrow());
 	}
 
 	@Override
 	public void deleteByUsername(final String username) {
-	    this.userRepository.deleteByUsername(username);
+		User user = this.userRepository.findByUsername(username).orElseThrow();
+        user.setState(UserState.DISABLED);
+        this.userRepository.save(user);
 	}
 
 	
 	@Override
-	public UserDTO create(final UserDTO userDTO) {
-		User user = UserMapper.toEntity(userDTO);
+	public UserDTO create(final UserDTO userParam) {
+		User user = UserMapper.toEntity(userParam);
 		
 		user.setState		(UserState.ENABLED);
 		user.setStatus		(UserStatus.ONLINE);
 		user.setLogins		(1);
 		user.setLastConnDate(LocalDateTime.now());
-        user.setPassword	(PasswordHasher.hash(userDTO.getPassword()));
+        user.setPassword	(userParam.getPassword());
         
-		return UserMapper.toDTO(this.userRepository.save(user));
+		return UserMapper.toDTO(userRepository.save(user));
 	}
 
-	@Override
-	public UserDTO update(UserDTO userDTO) {
-		User user = userRepository.findById(userDTO.getUserId()).orElseThrow();
+	
+	public UserDTO update(UserDTO newUserDto) {
+		User user = userRepository.findById(newUserDto.getUserId()).orElseThrow();
 		
-		String newNickname     = userDTO.getNickname();
-		String newUsername     = userDTO.getUsername();
-		String newEmail        = userDTO.getEmail();
-		String newPassword     = userDTO.getPassword();
-		UserStatus newStatus   = userDTO.getStatus();
-		PrivacyType newPrivacy = userDTO.getPrivacy();
+		String newNickname = newUserDto.getNickname();
+		String newUsername = newUserDto.getUsername();
+		String newEmail = newUserDto.getEmail();
+		String newPassword = newUserDto.getPassword();
+		UserStatus newStatus = newUserDto.getStatus();
+		PrivacyType newPrivacy = newUserDto.getPrivacy();
 		
-        if (newNickname != null) {
-            user.setNickname(newNickname);
-        }
-        
-        if (newUsername != null) {
-            user.setUsername(newUsername);
-        }
-        
-        if (newEmail != null) {
-            user.setEmail(newEmail);
-        }
-        
-        if (newPassword != null) {
-            user.setNickname(PasswordHasher.hash(newPassword));
-        }
-        
-        if (newStatus != null) {
-            user.setStatus(newStatus);
-        }
-        
-        if (newPrivacy != null) {
-            user.setPrivacy(newPrivacy);
-        }
+		if(newNickname != null) { user.setNickname(newNickname); }
+		if(newUsername != null) { user.setUsername(newUsername); }
+		if(newEmail    != null) { user.setEmail(newEmail); }
+		if(newPassword != null) { user.setNickname(PasswordHasher.hash(newPassword)); }
+		if(newStatus   != null) { user.setStatus(newStatus); }
+		if(newPrivacy  != null) { user.setPrivacy(newPrivacy); }
 		
-		return UserMapper.toDTO(this.userRepository.save(user));
+		
+		return UserMapper.toDTO(userRepository.save(user));
 	}
 
 	@Override

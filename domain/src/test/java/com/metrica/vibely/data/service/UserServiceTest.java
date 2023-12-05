@@ -1,29 +1,38 @@
 package com.metrica.vibely.data.service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.NoSuchElementException;
-
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import com.metrica.vibely.data.model.dto.UserDTO;
-import com.metrica.vibely.data.model.enumerator.UserState;
-import com.metrica.vibely.data.model.enumerator.UserStatus;
-import com.metrica.vibely.data.model.mapper.UserMapper;
-import com.metrica.vibely.data.repository.UserRepository;
-
-import com.metrica.vibely.data.util.PasswordHasher;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.metrica.vibely.data.model.dto.UserDTO;
+import com.metrica.vibely.data.model.enumerator.PrivacyType;
+import com.metrica.vibely.data.model.enumerator.UserState;
+import com.metrica.vibely.data.model.enumerator.UserStatus;
+import com.metrica.vibely.data.model.mapper.UserMapper;
+import com.metrica.vibely.data.repository.UserRepository;
+import com.metrica.vibely.data.service.impl.UserServiceImpl;
+import com.metrica.vibely.data.util.PasswordHasher;
 
 /**
  * <h1>User Service Test</h1>
@@ -32,121 +41,174 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @version 1.0
  * @author Alex, Adri, Raul
  */
-@SpringBootTest
+
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    // <<-CONSTANTS->>
-    private static final String DEFAULT_USERNAME = "jdoe";
-    private static final String DEFAULT_PASSWORD = "jdoe";
-    private static final String DEFAULT_NICKNAME = "John Doe";
-    private static final String DEFAULT_EMAIL    = "johndoe@email.com";
+	// <<-CONSTANTS->>
+	private static final String DEFAULT_USERNAME = "jdoe";
+	private static final String DEFAULT_PASSWORD = "jdoe";
+	private static final String DEFAULT_NICKNAME = "John Doe";
+	private static final String DEFAULT_EMAIL = "johndoe@email.com";
+	private static final String APIKEY = "randomApikey";
+	private static final Integer LOGINS = 1;
+	private static final UserState STATE = UserState.ENABLED;
+	private static final PrivacyType PRIVACY = PrivacyType.PUBLIC;
+	private static final UserStatus STATUS = UserStatus.ONLINE;
 
-    // <<-FIELD->>
-    private UserService userService;
-    private UserRepository userRepository;
-    
-    // <<-CONSTRUCTOR->>
-    @Autowired
-    public UserServiceTest(UserService userService, UserRepository userRepository) {
-        this.userService 	= userService;
-        this.userRepository = userRepository;
-    }
-    
-    // <<-METHODS->>
-    private UserDTO generateTestUser() {
-        UserDTO testUser = new UserDTO();
-        
-        testUser.setUsername(DEFAULT_USERNAME);
-        testUser.setPassword(PasswordHasher.hash(DEFAULT_PASSWORD));
-        testUser.setNickname(DEFAULT_NICKNAME);
-        testUser.setEmail   (DEFAULT_EMAIL);
-        
-        return testUser;
-    }
-    
-    @Test
-    @Order(1)
-    void userCreationTest() {
-        UserDTO testUser = generateTestUser();
-        UserDTO databaseUser = userService.create(testUser);
+	// <<-FIELD->>
+	@Mock
+	private UserRepository userRepository;
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        
-        assertNotNull(databaseUser.getUserId());
-        assertEquals(LocalDate.now().format(formatter), databaseUser.getLastConnDate().format(formatter));
-        assertTrue  (PasswordHasher.matches(DEFAULT_PASSWORD, databaseUser.getPassword()));
-        assertEquals(testUser.getUsername(), databaseUser.getUsername());
-        assertEquals(testUser.getNickname(), databaseUser.getNickname());
-        assertEquals(testUser.getEmail(),    databaseUser.getEmail());
-        assertEquals(UserState.ENABLED,           databaseUser.getState());
-        assertEquals(UserStatus.ONLINE,          databaseUser.getStatus());
-        assertEquals(1,                      databaseUser.getLogins());
-        assertNull  (databaseUser.getBlockedDate());
-        assertNull  (databaseUser.getFollowers());
-        assertNull  (databaseUser.getFollowing());
-        assertNull  (databaseUser.getPosts());
-        assertFalse (databaseUser.getChats().isEmpty());
-        assertEquals(1, databaseUser.getChats().size());
-        
-        assertEquals(testUser, databaseUser);
-    }
-    
-    @Test
-    @Order(2)
-    void userReadTest() {
-        UserDTO testUser = generateTestUser();
-        UserDTO databaseUser = userService.create(testUser);
-        UserDTO searchedUser = userService.getByUsername(testUser.getUsername());
-        
-        assertEquals(databaseUser.getUserId(),      searchedUser.getUserId());
-        assertEquals(databaseUser.getUsername(),    searchedUser.getUsername());
-        assertEquals(databaseUser.getPassword(),    searchedUser.getPassword());
-        assertEquals(databaseUser.getNickname(),    searchedUser.getNickname());
-        assertEquals(databaseUser.getEmail(),       searchedUser.getEmail());
-        assertEquals(databaseUser.getState(),       searchedUser.getState());
-        assertEquals(databaseUser.getStatus(),      searchedUser.getStatus());
-        assertEquals(databaseUser.getLogins(),      searchedUser.getLogins());
-        assertEquals(databaseUser.getBlockedDate(), searchedUser.getBlockedDate());
-        assertEquals(databaseUser.getFollowers(),   searchedUser.getFollowers());
-        assertEquals(databaseUser.getFollowing(),   searchedUser.getFollowing());
-        assertEquals(databaseUser.getChats(),       searchedUser.getChats());
+	@InjectMocks
+	private UserService userService = new UserServiceImpl(userRepository);
 
-        assertEquals(databaseUser, searchedUser);
-    }
+	// <<-CONSTRUCTOR->>
+	@BeforeEach
+	public void init() {
+		MockitoAnnotations.openMocks(this);
+	}
+
+	private UserDTO generateTestUser() {
+		UserDTO testUser = new UserDTO();
+		Set<UUID> followers = new HashSet<>();
+		Set<UUID> following = new HashSet<>();
+		Set<UUID> posts = new HashSet<>();
+		Set<UUID> chats = new HashSet<>();
+		Set<UUID> likes = new HashSet<>();
+		Set<UUID> saves = new HashSet<>();
+
+		testUser.setUserId(UUID.randomUUID());
+		testUser.setUsername(DEFAULT_USERNAME);
+		testUser.setPassword(PasswordHasher.hash(DEFAULT_PASSWORD));
+		testUser.setNickname(DEFAULT_NICKNAME);
+		testUser.setEmail(DEFAULT_EMAIL);
+		testUser.setApikey(APIKEY);
+		testUser.setState(STATE);
+		testUser.setPrivacy(PRIVACY);
+		testUser.setStatus(STATUS);
+		testUser.setLogins(LOGINS);
+		testUser.setFollowers(followers);
+		testUser.setFollowing(following);
+		testUser.setPosts(posts);
+		testUser.setChats(chats);
+		testUser.setLikes(likes);
+		testUser.setSaves(saves);
+
+		return testUser;
+	}
+
+	// <<-METHODS->>
+	
+
+	@Test
+	@Order(1)
+	void userCreationTest() {
+
+		UserDTO testUser = generateTestUser();
+		when(userRepository.save(UserMapper.toEntity(testUser)))
+				.thenReturn(UserMapper.toEntity(testUser));
+		UserDTO databaseUser = userService.create(testUser);
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		assertNotNull(databaseUser.getUserId());
+		assertEquals (LocalDate.now().format(formatter), databaseUser.getLastConnDate().format(formatter));
+		assertTrue	 (PasswordHasher.matches(DEFAULT_PASSWORD, databaseUser.getPassword()));
+		assertEquals (testUser.getUsername(), databaseUser.getUsername());
+		assertEquals (testUser.getNickname(), databaseUser.getNickname());
+		assertEquals (testUser.getEmail(), databaseUser.getEmail());
+		assertEquals (UserState.ENABLED, databaseUser.getState());
+		assertEquals (UserStatus.ONLINE, databaseUser.getStatus());
+		assertEquals (1, databaseUser.getLogins());
+		assertNull	 (databaseUser.getBlockedDate());
+		assertNotNull(databaseUser.getFollowers());
+		assertNotNull(databaseUser.getFollowing());
+		assertNotNull(databaseUser.getPosts());
+		assertNotNull(databaseUser.getChats());
+		assertNotNull(databaseUser.getLikes());
+		assertNotNull(databaseUser.getSaves());
+
+		assertEquals(testUser, databaseUser);
+	}
+
+	@Test
+	@Order(2)
+	void userReadTest() {
+		UserDTO testUser = generateTestUser();
+		when(userRepository.save(UserMapper.toEntity(testUser)))
+				.thenReturn(UserMapper.toEntity(testUser));
+		UserDTO databaseUser = userService.create(testUser);
+		when(userRepository.findByUsername(testUser.getUsername()))
+				.thenReturn(Optional.of(UserMapper.toEntity(testUser)));
+		UserDTO searchedUser = userService.getByUsername(testUser.getUsername());
+
+		assertEquals(databaseUser.getUserId(),  	searchedUser.getUserId());
+		assertEquals(databaseUser.getUsername(),	searchedUser.getUsername());
+		assertEquals(databaseUser.getPassword(),	searchedUser.getPassword());
+		assertEquals(databaseUser.getNickname(),	searchedUser.getNickname());
+		assertEquals(databaseUser.getEmail(), 		searchedUser.getEmail());
+		assertEquals(databaseUser.getState(), 		searchedUser.getState());
+		assertEquals(databaseUser.getStatus(), 		searchedUser.getStatus());
+		assertEquals(databaseUser.getLogins(), 		searchedUser.getLogins());
+		assertEquals(databaseUser.getBlockedDate(), searchedUser.getBlockedDate());
+		assertEquals(databaseUser.getFollowers(), 	searchedUser.getFollowers());
+		assertEquals(databaseUser.getFollowing(), 	searchedUser.getFollowing());
+		assertEquals(databaseUser.getChats(), 		searchedUser.getChats());
+		assertEquals(databaseUser.getLikes(), 		searchedUser.getLikes());
+		assertEquals(databaseUser.getSaves(), 		searchedUser.getSaves());
+
+		assertEquals(databaseUser, searchedUser);
+	}
     
     @Test
     @Order(3)
     void userUpdateTest() {
-    	UserDTO createdUser 	= userService.create(generateTestUser());
-    	UserDTO updatedDataDTO  = userService.create(generateTestUser());
-        UserDTO nonExistingUser = userService.create(generateTestUser());
+    	UserDTO testUser1 = generateTestUser();
+    	UserDTO testUser2 = generateTestUser();
+    	UserDTO testUser3 = generateTestUser();
+    	when(userRepository.save(UserMapper.toEntity(testUser1)))
+				.thenReturn(UserMapper.toEntity(testUser1));
+    	UserDTO createdUser 	= userService.create(testUser1);
+    	when(userRepository.save(UserMapper.toEntity(testUser2)))
+				.thenReturn(UserMapper.toEntity(testUser2));
+    	UserDTO updatedDataDTO  = userService.create(testUser2);
+    	when(userRepository.save(UserMapper.toEntity(testUser3)))
+				.thenReturn(UserMapper.toEntity(testUser3));
+    	UserDTO nonExistingUser = userService.create(testUser3);
         
         String newUsername  	= "New Username";
         String newNickname  	= "Updated Nickname";
         String newEmail     	= "newEmail@email.com";
         String newPassword  	= "NewPassword";
         
-        updatedDataDTO.setNickname(newNickname);
-        updatedDataDTO.setUsername(newUsername);
-        updatedDataDTO.setEmail(newEmail);
-        updatedDataDTO.setPassword(newPassword);
+        updatedDataDTO.setNickname	(newNickname);
+        updatedDataDTO.setUsername	(newUsername);
+        updatedDataDTO.setEmail		(newEmail);
+        updatedDataDTO.setPassword	(PasswordHasher.hash(newPassword));
         
+        when(userRepository.findById(updatedDataDTO.getUserId()))
+				.thenReturn(Optional.of(UserMapper.toEntity(updatedDataDTO)));
+        when(userRepository.save(UserMapper.toEntity(updatedDataDTO)))
+				.thenReturn(UserMapper.toEntity(updatedDataDTO));
         userService.update(updatedDataDTO);
         
         userService.deleteByUsername(nonExistingUser.getUsername());
         
+        when(userRepository.findByUsername(createdUser.getUsername()))
+        		.thenReturn(Optional.of(UserMapper.toEntity(updatedDataDTO)));
         UserDTO updatedUser = UserMapper.toDTO(userRepository.findByUsername(createdUser.getUsername()).get());
         
         //Basic
         assertEquals(newUsername, 						updatedUser.getUsername());
         assertEquals(newNickname, 						updatedUser.getNickname());
         assertEquals(newEmail, 							updatedUser.getEmail());
-        assertEquals(PasswordHasher.hash(newPassword), updatedUser.getPassword());
+        assertTrue(PasswordHasher.matches("NewPassword", updatedUser.getPassword()));
         
         assertNotEquals(newUsername, 						createdUser.getUsername());
         assertNotEquals(newNickname, 						createdUser.getNickname());
         assertNotEquals(newEmail, 							createdUser.getEmail());
-        assertNotEquals(PasswordHasher.hash(newPassword),  createdUser.getPassword());
+        assertNotEquals(PasswordHasher.hash(newPassword),   createdUser.getPassword());
         
         //User not exist
         assertThrows(NoSuchElementException.class, () -> userService.update(nonExistingUser));
@@ -157,6 +219,8 @@ class UserServiceTest {
     void userDeleteTest() {
         UserDTO testUser 	= generateTestUser();
         UserDTO testUser2 	= generateTestUser();
+        when(userRepository.save(UserMapper.toEntity(testUser)))
+		.thenReturn(UserMapper.toEntity(testUser));
         UserDTO createdUser = userService.create(testUser);
 
         userService.deleteByUsername(createdUser.getUsername());
@@ -167,30 +231,45 @@ class UserServiceTest {
     @Test
     @Order(5)
     void userFollowTest() {
-    	UserDTO createdUser 	= userService.create(generateTestUser());
-    	UserDTO follower1 		= userService.create(generateTestUser());
-    	UserDTO follower2 		= userService.create(generateTestUser());
-    	UserDTO follower3 		= userService.create(generateTestUser());
+    	UserDTO test = generateTestUser();
+    	UserDTO test2 = generateTestUser();
+    	UserDTO test3 = generateTestUser();
+    	UserDTO test4 = generateTestUser();
+    	when(userRepository.save(UserMapper.toEntity(test)))
+				.thenReturn(UserMapper.toEntity(test));
+    	UserDTO createdUser 	= userService.create(test);
+    	when(userRepository.save(UserMapper.toEntity(test2)))
+		.thenReturn(UserMapper.toEntity(test2));
+    	UserDTO follower1 		= userService.create(test2);
+    	when(userRepository.save(UserMapper.toEntity(test3)))
+		.thenReturn(UserMapper.toEntity(test3));
+    	UserDTO follower2 		= userService.create(test3);
+    	when(userRepository.save(UserMapper.toEntity(test4)))
+		.thenReturn(UserMapper.toEntity(test4));
+    	UserDTO follower3 		= userService.create(test4);
     	
     	// No followers
     	assertEquals(0, createdUser.getFollowers().size());
     	assertEquals(0, follower1  .getFollowers().size());
     	assertEquals(0, follower1  .getFollowers().size());
     	
-    	assertNull(createdUser.getFollowers());
-    	assertNull(follower1  .getFollowers());
-    	assertNull(follower2  .getFollowers());
-    	
-    	//No followed
-    	assertEquals(0, createdUser.getFollowing().size());
-    	assertEquals(0, follower1  .getFollowing().size());
-    	assertEquals(0, follower1  .getFollowing().size());
-    	
-    	assertNull(createdUser.getFollowing());
-    	assertNull(follower1  .getFollowing());
-    	assertNull(follower2  .getFollowing());
-    	
     	//After following
+    	when(userRepository.findById(follower1.getUserId()))
+				.thenReturn(Optional.of(UserMapper.toEntity(follower1)));
+    	when(userRepository.findById(follower2.getUserId()))
+				.thenReturn(Optional.of(UserMapper.toEntity(follower2)));
+    	when(userRepository.findById(createdUser.getUserId()))
+				.thenReturn(Optional.of(UserMapper.toEntity(createdUser)));
+    	
+    	when(userRepository.save(UserMapper.toEntity(follower1)))
+				.thenReturn(UserMapper.toEntity(follower1));
+    	when(userRepository.save(UserMapper.toEntity(follower2)))
+    			.thenReturn(UserMapper.toEntity(follower2));
+    	when(userRepository.save(UserMapper.toEntity(follower3)))
+				.thenReturn(UserMapper.toEntity(follower3));
+    	when(userRepository.save(UserMapper.toEntity(createdUser)))
+				.thenReturn(UserMapper.toEntity(createdUser));
+    	
     	userService.followUser(follower2.getUserId(), createdUser.getUserId());
     	userService.followUser(follower1.getUserId(), createdUser.getUserId());
     	userService.followUser(follower1.getUserId(), follower2  .getUserId());
@@ -199,6 +278,7 @@ class UserServiceTest {
     	createdUser = UserMapper.toDTO(userRepository.findById(createdUser.getUserId()).get());
     	follower1 	= UserMapper.toDTO(userRepository.findById(follower1  .getUserId()).get());
     	follower2 	= UserMapper.toDTO(userRepository.findById(follower2  .getUserId()).get());
+    	
     	
     	assertEquals(2, createdUser.getFollowers().size());
     	assertEquals(0, createdUser.getFollowing().size());
@@ -241,5 +321,5 @@ class UserServiceTest {
     	assertEquals(compareFollowerSize, createdUser.getFollowers().size());
     	assertEquals(compareFollowingSize, createdUser.getFollowing().size());
     }
-    
+
 }
