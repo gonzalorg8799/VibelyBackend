@@ -37,13 +37,14 @@ public class AppConfiguration implements WebMvcConfigurer {
             .excludePathPatterns("/api/v1/auth/username")
             .excludePathPatterns("/api/v1/auth/email")
             .excludePathPatterns("/api/v1/users/signup")
-            .excludePathPatterns("/api/v1/admin/users/signup");
+            .excludePathPatterns("/api/v1/admin/**");
+
+         
         registry.addInterceptor(this.adminAuthInterceptor)
-        	.addPathPatterns("/api/v1/**")
-        	.excludePathPatterns("/api/v1/auth/admin/username")
-        	.excludePathPatterns("/api/v1/auth/admin/email")
-        	.excludePathPatterns("/api/v1/users/signup")
-        	.excludePathPatterns("/api/v1/admin/users/signup");
+        	.addPathPatterns("/api/v1/admin/**")
+        	.excludePathPatterns("/api/v1/admin/auth/username")
+            .excludePathPatterns("/api/v1/admin/auth/email")
+            .excludePathPatterns("/api/v1/admin/users/signup");
     }
 
 }

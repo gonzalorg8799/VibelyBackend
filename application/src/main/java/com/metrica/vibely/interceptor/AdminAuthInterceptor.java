@@ -28,20 +28,19 @@ public class AdminAuthInterceptor implements HandlerInterceptor {
 	
     // <<-FIELD->>
 	private AuthService authService;
-	private AdminRepository adminRepository;
 
     // <<-CONSTRUCTOR->>
 	@Autowired
-	public AdminAuthInterceptor(AuthService authService, AdminRepository adminRepository) {
+	public AdminAuthInterceptor(AdminRepository adminRepository, AuthService authService) {
 		this.authService = authService;
-		this.adminRepository = adminRepository;
 	}
 	
     // <<-METHODS->>
     private boolean setStatus(HttpServletResponse response, String apiKey) {
     	if(ApiKeyManager.isValid(apiKey) == HttpStatusEnum.OK) {
-    		UUID adminId = ApiKeyManager.getId(apiKey);
-    		return adminRepository.existsById(adminId);
+    		UUID userId = ApiKeyManager.getId(apiKey);
+    		System.out.println("tamo en japon");
+    		return this.authService.getAdminApikey(userId).equals(apiKey);
     	}
     	if(ApiKeyManager.isValid(apiKey) == HttpStatusEnum.BAD_REQUEST) { 
     		response.setStatus(HttpStatusEnum.BAD_REQUEST.getStatus()); 

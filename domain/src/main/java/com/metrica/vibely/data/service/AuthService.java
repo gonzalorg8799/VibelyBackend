@@ -27,10 +27,28 @@ public interface AuthService {
     String emailAuth(String email, String password);
     
     /**
+     * @param username
+     * @param password
+     * @throws
+     * @return
+     */
+    String adminUsernameAuth(String username, String password);
+
+    /**
+     * @param email
+     * @param password
+     * @throws
+     * @return
+     */
+    String adminEmailAuth(String email, String password);
+    
+    /**
      * 
      * @param id
      * @return
      */
     String getApikey(UUID id);
+    
+    String getAdminApikey(UUID id);
 
 }

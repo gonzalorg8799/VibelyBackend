@@ -45,7 +45,7 @@ public class ApiKeyManager {
         ByteBuffer buffer = ByteBuffer.allocate(KEY_SIZE_BYTES + UUID_SIZE_BYTES + LONG_SIZE_BYTES);
         buffer.put(keyBytes);
         byte[] uuidBytes = id.toString().getBytes();
-        buffer.put(uuidBytes);
+        buffer.put(uuidBytes); 
         buffer.putLong(expirationTime);
 
         byte[] concatenated = buffer.array();
@@ -89,13 +89,13 @@ public class ApiKeyManager {
         return expirationTime > currentTime;
     }
 	
-	/**
+	/** 
 	 * 
 	 * @param apiKey
 	 * @param savedApiKey
 	 * @return
 	 */
-	public static HttpStatusEnum isValid(String apiKey) {
+	public static HttpStatusEnum isValid(String apiKey) { 
         if (apiKey == null) { return HttpStatusEnum.BAD_REQUEST; }
         
         // TODO Implement this instead of decode in each method
@@ -110,7 +110,7 @@ public class ApiKeyManager {
 			return HttpStatusEnum.BAD_REQUEST;
 		} catch (ExpiredApiKeyException e) {
 	        System.err.println("ExpiredApiKeyException");
-			return HttpStatusEnum.INVALID_CREDENTIALS;
+			return HttpStatusEnum.INVALID_CREDENTIALS; 
 		}
 	}
 

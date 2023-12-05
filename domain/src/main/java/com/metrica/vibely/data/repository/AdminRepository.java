@@ -3,8 +3,10 @@ package com.metrica.vibely.data.repository;
 import com.metrica.vibely.data.entity.Admin;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -38,5 +40,7 @@ public interface AdminRepository extends JpaRepository<Admin, java.util.UUID> {
 	 * @throws NoSuchElementException
 	 */
 //	void deleteByUsername(String username);
+    @Query("SELECT a.apikey FROM Admin a WHERE a.userId=:id")
+	Optional<String> findApikeyByUserId(UUID id);
 
 }

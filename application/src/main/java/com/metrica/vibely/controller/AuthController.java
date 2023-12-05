@@ -61,7 +61,7 @@ public class AuthController {
     ) {
     	if(bindingResult.hasErrors()) { return ResponseEntity.badRequest().build(); }
     	
-    	String apiKey = this.authService.emailAuth(authRequest.getEmail(), authRequest.getPassword());
+    	String apiKey = this.authService.adminEmailAuth(authRequest.getEmail(), authRequest.getPassword());
     	return ResponseEntity.ok().body(Map.of("apiKey", apiKey));
     }
     
@@ -73,9 +73,9 @@ public class AuthController {
             AdminAuthUserRequest authRequest,
             BindingResult bindingResult
     ) {
-        if (bindingResult.hasErrors()) { return ResponseEntity.badRequest().build(); }
+        if (bindingResult.hasErrors()) { return ResponseEntity.badRequest().build(); } 
 
-        String apiKey = this.authService.usernameAuth(authRequest.getUsername(), authRequest.getPassword());
+        String apiKey = this.authService.adminUsernameAuth(authRequest.getUsername(), authRequest.getPassword());
         return ResponseEntity.ok()
                 .body(java.util.Map.of("apiKey", apiKey));
     } 
