@@ -6,12 +6,16 @@ import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.entity.Chat;
+import com.metrica.vibely.data.entity.Message;
+import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.data.service.UserService;
 import com.metrica.vibely.data.util.PasswordHasher; 
 	
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -151,28 +155,51 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Set<UUID> getFriendNetwork(UUID id) {
+	public Map<UUID, Double> getFriendNetwork(UUID id) {
 		User user = userRepository.findById(id).orElseThrow();
 		Set<UUID> followersIds = user.getFollowers().stream()
 									 .map(User::getUserId)
 									 .collect(Collectors.toSet());
 		Set<UUID> followingIds = user.getFollowing().stream()
-				 .map(User::getUserId)
-				 .collect(Collectors.toSet());
+				 					 .map(User::getUserId)
+				 					 .collect(Collectors.toSet());
 		
-		Set<UUID> friends = followersIds.stream()
-								.map(m -> {
-									if(followingIds.contains(m)) return m;
-								})
+		Set<UUID> friends = followingIds.stream()
+								.filter(f->followersIds.contains(f))
 								//.map(m -> userRepository.findById(m).orElseThrow())
 								.collect(Collectors.toSet());
 		
 		Set<Chat>chatsFriends=user.getChats().stream()
 				.filter(c->c.getParticipants().stream()
+							.filter(f->!user.getUserId().equals(f.getUserId()))
 						  	.anyMatch(friends::contains))
 				.collect(Collectors.toSet());
 		
-		return friends;
+		Set<Post>friendsComments=user.getPosts().stream()
+				.flatMap(p->p.getComments().stream())
+				.filter(p->friends.contains(p.getOwner()))
+				.collect(Collectors.toSet());
+	
+
+		Map<UUID, Integer> points4 = chatsFriends.stream()
+		        .flatMap(chat -> chat.getMessages().stream())
+		        .collect(Collectors.groupingBy(
+		                m->m.getSender().getUserId(),
+		                Collectors.summingInt(message -> 1)
+		        ));
+		Map<UUID, Double> points42 = friendsComments.stream()
+		        .collect(Collectors.groupingBy(
+		                p->p.getOwner().getUserId(),
+		                Collectors.summingDouble(post->0.5)
+		        ));
+		
+		Map<UUID, Double> resultMap = new HashMap<>();
+
+        points4.forEach((key, value) -> resultMap.merge(key, value.doubleValue(), Double::sum));
+        points42.forEach((key, value) -> resultMap.merge(key, value, Double::sum));
+        return resultMap;
 	}
+
+
 	
 }
