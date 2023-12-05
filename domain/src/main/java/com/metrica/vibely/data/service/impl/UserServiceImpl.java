@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public UserDTO create(final UserDTO userParam) {
-		User user = UserMapper.toEntity(userParam, null, null, null, null, null, null);
+		User user = UserMapper.toEntity(userParam);
 		
 		user.setState		(UserState.ENABLED);
 		user.setStatus		(UserStatus.ONLINE);
