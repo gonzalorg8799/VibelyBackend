@@ -62,6 +62,7 @@ public class AdminServiceImpl implements AdminService {
     public AdminDTO create(AdminDTO adminDTO) {
         Admin admin = AdminMapper.toEntity(adminDTO);
         
+        admin.setPassword(PasswordHasher.hash(admin.getPassword()));
         admin.setState  (UserState.ENABLED);
         admin.setPrivacy(PrivacyType.PUBLIC);
         admin.setLogins (0);
