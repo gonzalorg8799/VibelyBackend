@@ -1,4 +1,4 @@
-package com.metrica.vibely.data.service.impl;
+package com.metrica.vibely.service.impl;
 
 import com.metrica.vibely.data.entity.Admin;
 import com.metrica.vibely.data.model.dto.AdminDTO;
@@ -7,8 +7,8 @@ import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.AdminMapper;
 import com.metrica.vibely.data.repository.AdminRepository;
-import com.metrica.vibely.data.service.AdminService;
 import com.metrica.vibely.data.util.PasswordHasher;
+import com.metrica.vibely.service.AdminService;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;

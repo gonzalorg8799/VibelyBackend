@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.metrica.vibely.data.exception.InvalidCredentialsException;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.util.PasswordHasher;
+import com.metrica.vibely.service.AuthService;
 
 /**
   * @since 2023-11-16

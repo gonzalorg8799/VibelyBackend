@@ -3,11 +3,11 @@ package com.metrica.vibely.controller;
 import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.MessageDTO;
 import com.metrica.vibely.data.model.enumerator.MessageState;
-import com.metrica.vibely.data.service.MessageService;
 import com.metrica.vibely.model.request.CreateMessageRequest;
 import com.metrica.vibely.model.response.create.CreateMessageResponse;
 import com.metrica.vibely.model.response.get.GetMessageResponse;
 import com.metrica.vibely.model.response.update.UpdateMessageResponse;
+import com.metrica.vibely.service.MessageService;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;

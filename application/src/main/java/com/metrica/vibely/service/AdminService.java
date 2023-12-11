@@ -1,4 +1,4 @@
-package com.metrica.vibely.data.service;
+package com.metrica.vibely.service;
 
 import com.metrica.vibely.data.model.dto.AdminDTO;
 

@@ -1,4 +1,4 @@
-package com.metrica.vibely.data.service;
+package com.metrica.vibely.service;
 
 /**
  * <h1>CRUD Service</h1>

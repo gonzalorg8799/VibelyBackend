@@ -1,4 +1,4 @@
-package com.metrica.vibely.data.service.impl;
+package com.metrica.vibely.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -17,7 +17,7 @@ import com.metrica.vibely.data.model.enumerator.ChatType;
 import com.metrica.vibely.data.model.mapper.ChatMapper;
 import com.metrica.vibely.data.repository.ChatRepository;
 import com.metrica.vibely.data.repository.UserRepository;
-import com.metrica.vibely.data.service.ChatService;
+import com.metrica.vibely.service.ChatService;
 
 /**
  * @since 2023-11-23

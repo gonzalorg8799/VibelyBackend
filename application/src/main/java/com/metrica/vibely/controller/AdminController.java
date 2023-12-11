@@ -4,12 +4,12 @@ import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.AdminDTO;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
-import com.metrica.vibely.data.service.AdminService;
 import com.metrica.vibely.model.request.CreateAdminRequest;
 import com.metrica.vibely.model.request.UpdateAdminRequest;
 import com.metrica.vibely.model.response.create.CreateAdminResponse;
 import com.metrica.vibely.model.response.get.BasicInfoResponse;
 import com.metrica.vibely.model.response.update.UpdateAdminResponse;
+import com.metrica.vibely.service.AdminService;
 
 import jakarta.validation.Valid;
 

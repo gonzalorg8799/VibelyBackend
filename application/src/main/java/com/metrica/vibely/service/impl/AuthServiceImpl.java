@@ -1,4 +1,4 @@
-package com.metrica.vibely.data.service.impl;
+package com.metrica.vibely.service.impl;
 
 import java.util.UUID;
 
@@ -9,9 +9,9 @@ import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.exception.InvalidCredentialsException;
 import com.metrica.vibely.data.repository.AdminRepository;
 import com.metrica.vibely.data.repository.UserRepository;
-import com.metrica.vibely.data.service.AuthService;
 import com.metrica.vibely.data.util.ApiKeyManager;
 import com.metrica.vibely.data.util.PasswordHasher;
+import com.metrica.vibely.service.AuthService;
 
 /**
  * 

@@ -31,7 +31,8 @@ import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.data.model.enumerator.UserStatus;
 import com.metrica.vibely.data.model.mapper.UserMapper;
 import com.metrica.vibely.data.repository.UserRepository;
-import com.metrica.vibely.data.service.impl.UserServiceImpl;
+import com.metrica.vibely.service.UserService;
+import com.metrica.vibely.service.impl.UserServiceImpl;
 import com.metrica.vibely.data.util.PasswordHasher;
 
 /**

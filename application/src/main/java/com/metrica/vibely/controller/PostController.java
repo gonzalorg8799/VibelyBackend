@@ -2,7 +2,6 @@ package com.metrica.vibely.controller;
 
 import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.PostDTO;
-import com.metrica.vibely.data.service.PostService;
 import com.metrica.vibely.model.request.CreatePostRequest;
 import com.metrica.vibely.model.request.UpdateLikedByPostRequest;
 import com.metrica.vibely.model.request.UpdatePostRequest;
@@ -12,6 +11,7 @@ import com.metrica.vibely.model.response.get.GetPostResponse;
 import com.metrica.vibely.model.response.update.UpdateLikedByPostResponse;
 import com.metrica.vibely.model.response.update.UpdatePostResponse;
 import com.metrica.vibely.model.response.update.UpdateSavedByPostResponse;
+import com.metrica.vibely.service.PostService;
 
 import jakarta.validation.Valid;
 

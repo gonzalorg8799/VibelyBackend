@@ -3,6 +3,7 @@ package com.metrica.vibely.data.service;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.mapper.UserMapper;
+import com.metrica.vibely.service.UserService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.metrica.vibely.data.service;
+package com.metrica.vibely.service;
 
 import java.util.UUID;
 

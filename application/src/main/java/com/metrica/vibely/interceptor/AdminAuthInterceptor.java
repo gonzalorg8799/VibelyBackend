@@ -10,8 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.metrica.vibely.data.model.enumerator.HttpStatusEnum;
 import com.metrica.vibely.data.repository.AdminRepository;
-import com.metrica.vibely.data.service.AuthService;
 import com.metrica.vibely.data.util.ApiKeyManager;
+import com.metrica.vibely.service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

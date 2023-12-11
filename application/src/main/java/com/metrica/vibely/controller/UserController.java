@@ -18,12 +18,12 @@ import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.UserDTO;
 import com.metrica.vibely.data.model.enumerator.PrivacyType;
 import com.metrica.vibely.data.model.enumerator.UserState;
-import com.metrica.vibely.data.service.UserService;
 import com.metrica.vibely.model.request.CreateUserRequest;
 import com.metrica.vibely.model.request.UpdateUserRequest;
 import com.metrica.vibely.model.response.create.CreateUserResponse;
 import com.metrica.vibely.model.response.get.BasicInfoResponse;
 import com.metrica.vibely.model.response.update.UpdateUserResponse;
+import com.metrica.vibely.service.UserService;
 
 import jakarta.validation.Valid;
 
@@ -90,11 +90,11 @@ public class UserController {
      * @param id
      * @return
      */
-    @GetMapping("/friendNetwork/{id}")
-    public ResponseEntity<GetFriendNetworkResponse> getNetwork(@PathVariable UUID id){
-		Set<UUID> participantIds = this.userService.getFriendNetwork(id);
-        return this.responseManager.generateGetNetworkResponse(participantIds);  	
-    }
+//    @GetMapping("/friendNetwork/{id}")
+//    public ResponseEntity<GetFriendNetworkResponse> getNetwork(@PathVariable UUID id){
+//		Set<UUID> participantIds = this.userService.getFriendNetwork(id);
+//        return this.responseManager.generateGetNetworkResponse(participantIds);  	
+//    }
 
     @PostMapping("/signup")
     public ResponseEntity<CreateUserResponse> create(

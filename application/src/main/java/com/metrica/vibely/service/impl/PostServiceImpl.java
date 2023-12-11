@@ -1,4 +1,4 @@
-package com.metrica.vibely.data.service.impl;
+package com.metrica.vibely.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -21,7 +21,7 @@ import com.metrica.vibely.data.model.mapper.ChatMapper;
 import com.metrica.vibely.data.model.mapper.PostMapper;
 import com.metrica.vibely.data.repository.PostRepository;
 import com.metrica.vibely.data.repository.UserRepository;
-import com.metrica.vibely.data.service.PostService;
+import com.metrica.vibely.service.PostService;
 
 /**
  * <h1>Post Service Impl</h1>
