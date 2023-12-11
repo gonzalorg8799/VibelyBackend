@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,22 +52,22 @@ public class AuthServiceTest {
     void correctAuthenticationTest() {
         UserDTO testUser = generateTestUser();
         UserDTO testUser2 = generateTestUser();
-        assertInstanceOf(String.class, authService.authenticate(testUser.getUsername(), testUser.getPassword()));
-        assertNotNull	(authService.authenticate(testUser.getUsername(), testUser.getPassword()));
-        assertNotEquals ("",authService.authenticate(testUser.getUsername(), testUser.getPassword()));
-        assertNotEquals	(authService.authenticate(testUser.getUsername(), testUser.getPassword()), 
-        				 authService.authenticate(testUser2.getUsername(), testUser2.getPassword()));
+        assertInstanceOf(String.class, authService.usernameAuth(testUser.getUsername(), testUser.getPassword()));
+        assertNotNull	(authService.usernameAuth(testUser.getUsername(), testUser.getPassword()));
+        assertNotEquals ("",authService.usernameAuth(testUser.getUsername(), testUser.getPassword()));
+        assertNotEquals	(authService.usernameAuth(testUser.getUsername(), testUser.getPassword()), 
+        				 authService.usernameAuth(testUser2.getUsername(), testUser2.getPassword()));
         
-        assertEquals	(authService.authenticate(testUser.getUsername(), testUser.getPassword()),
-        			 	 authService.authenticate(testUser.getUsername(), testUser.getPassword()));
+        assertEquals	(authService.usernameAuth(testUser.getUsername(), testUser.getPassword()),
+        			 	 authService.usernameAuth(testUser.getUsername(), testUser.getPassword()));
         
         
     }
     @Test
     void failAuthenticationTest() {
     	UserDTO testUser = generateTestUser();
-    	assertThrows 	(InvalidCredentialsException.class,() -> authService.authenticate("", testUser.getPassword()));
-    	assertThrows 	(InvalidCredentialsException.class,() -> authService.authenticate(testUser.getUsername(),""));
-    	assertThrows 	(InvalidCredentialsException.class,() -> authService.authenticate("",""));
+    	assertThrows 	(InvalidCredentialsException.class,() -> authService.usernameAuth("", testUser.getPassword()));
+    	assertThrows 	(InvalidCredentialsException.class,() -> authService.usernameAuth(testUser.getUsername(),""));
+    	assertThrows 	(InvalidCredentialsException.class,() -> authService.usernameAuth("",""));
     }
 }
