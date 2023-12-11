@@ -15,8 +15,8 @@ public class GetFriendNetworkResponse {
 	}
 	
 // <<--METHODS-->>
-	public GetFriendNetworkResponse generateResponse(UserDTO userDto) {
-		this.setFollowers(userDto.getFollowers());
+	public GetFriendNetworkResponse generateResponse(Set<UUID> participantIds) {
+		this.setFollowers(participantIds);
 		return this;
 	}
 // <<--GETTERS & SETTERS-->>

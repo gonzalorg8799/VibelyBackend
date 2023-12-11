@@ -1,5 +1,8 @@
 package com.metrica.vibely.controller.util;
 
+import java.util.Set;
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -51,9 +54,9 @@ public class ResponseManager {
     	return ResponseEntity.ok().body(messageResponse.generateResponse(messageDto));
     }
     
-    public ResponseEntity<GetFriendNetworkResponse> generateGetNetworkResponse(UserDTO userDto){
+    public ResponseEntity<GetFriendNetworkResponse> generateGetNetworkResponse(Set<UUID> participantIds){
     	GetFriendNetworkResponse friendNetworkResponse = new GetFriendNetworkResponse();
-    	return ResponseEntity.ok().body(friendNetworkResponse.generateResponse(userDto));
+    	return ResponseEntity.ok().body(friendNetworkResponse.generateResponse(participantIds));
     }
     
     //	<<--CREATE RESPONSE-->>   
