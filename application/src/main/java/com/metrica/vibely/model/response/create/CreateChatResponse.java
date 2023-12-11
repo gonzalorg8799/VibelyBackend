@@ -4,12 +4,14 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.metrica.vibely.data.model.dto.ChatDTO;
+import com.metrica.vibely.data.model.enumerator.ChatType;
 
 public class CreateChatResponse {
 //	<<-FIELDS->>
 	
 	private UUID chatId;
 	private String title;
+	private ChatType type;
 	private Set<UUID> participants;
 	
 //	<<-CONSTRUCTOR->>
@@ -21,6 +23,7 @@ public class CreateChatResponse {
 		this.setChatId(chatDto.getChatId());
 		this.setTitle(chatDto.getTitle());
 		this.setParticipants(chatDto.getParticipants());
+		this.setType(chatDto.getType());
 		return this;
 	}
 
@@ -47,6 +50,14 @@ public class CreateChatResponse {
 
 	public void setParticipants(Set<UUID> set) {
 		this.participants = set;
+	}
+
+	public ChatType getType() {
+		return type;
+	}
+
+	public void setType(ChatType type) {
+		this.type = type;
 	}
 	
 }
