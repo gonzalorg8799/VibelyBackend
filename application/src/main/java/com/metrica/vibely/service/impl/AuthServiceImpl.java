@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
 	private AdminRepository adminRepository;
 
 	// <<-CONSTRUCTOR->>
-	@Autowired
+	@Autowired 
 	public AuthServiceImpl(UserRepository userRepository, AdminRepository adminRepository) {
 		this.userRepository = userRepository;
 		this.adminRepository = adminRepository;
