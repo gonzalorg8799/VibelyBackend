@@ -3,13 +3,13 @@ package com.metrica.vibely.controller;
 import com.metrica.vibely.controller.util.ResponseManager;
 import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.model.enumerator.ChatState;
-import com.metrica.vibely.data.service.ChatService;
 import com.metrica.vibely.model.request.AddRemoveChatRequest;
 import com.metrica.vibely.model.request.CreateChatRequest;
 import com.metrica.vibely.model.request.UpdateChatRequest;
 import com.metrica.vibely.model.response.create.CreateChatResponse;
 import com.metrica.vibely.model.response.get.GetChatResponse;
 import com.metrica.vibely.model.response.update.UpdateChatResponse;
+import com.metrica.vibely.service.ChatService;
 
 import jakarta.validation.Valid;
 

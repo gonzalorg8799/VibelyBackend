@@ -1,5 +1,13 @@
 package com.metrica.vibely.controller;
 
+import com.metrica.vibely.model.request.AdminAuthEmailRequest;
+import com.metrica.vibely.model.request.AdminAuthUserRequest;
+import com.metrica.vibely.model.request.AuthEmailRequest;
+import com.metrica.vibely.model.request.AuthUserRequest;
+import com.metrica.vibely.service.AuthService;
+
+import jakarta.validation.Valid;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,20 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.metrica.vibely.data.service.AuthService;
-import com.metrica.vibely.model.request.AdminAuthEmailRequest;
-import com.metrica.vibely.model.request.AdminAuthUserRequest;
-import com.metrica.vibely.model.request.AuthEmailRequest;
-import com.metrica.vibely.model.request.AuthUserRequest;
-
-import jakarta.validation.Valid;
-
-
 /**
  * <h1>Authentication Controller</h1>
  * 
  * @since 2023-11-14
  * @version 1.0
+ * @author Gonzalo
  */
 @RestController
 @RequestMapping("/api/v1")

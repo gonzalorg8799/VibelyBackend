@@ -16,9 +16,10 @@
     <packaging>jar</packaging>
     
     <name>application</name>
-    <description>Application submodule</description>
+    <description>Application module</description>
 
     <dependencies>
+        <!-- [ Spring Boot ] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -28,23 +29,24 @@
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
         
+        <!-- [ Modules: domain ] -->
         <dependency>
         	<groupId>com.metrica.vibely</groupId>
-        	<artifactId>domain</artifactId>
+        	<artifactId>data</artifactId>
         	<version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
     </dependencies>
 

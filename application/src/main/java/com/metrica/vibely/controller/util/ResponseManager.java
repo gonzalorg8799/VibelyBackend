@@ -1,12 +1,5 @@
 package com.metrica.vibely.controller.util;
 
-import java.util.Set;
-import java.util.UUID;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-
 import com.metrica.vibely.data.model.dto.AdminDTO;
 import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.model.dto.MessageDTO;
@@ -30,10 +23,23 @@ import com.metrica.vibely.model.response.update.UpdatePostResponse;
 import com.metrica.vibely.model.response.update.UpdateSavedByPostResponse;
 import com.metrica.vibely.model.response.update.UpdateUserResponse;
 
+import java.util.Set;
+import java.util.UUID;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+/**
+ * 
+ * @since 2023-11-
+ * @version 1.0
+ * @author Raul
+ */
 @Component
 public class ResponseManager {
 
-	//	<<--GET RESPONSE-->> 
+    // <<-GET RESPONSE->>
     public ResponseEntity<BasicInfoResponse> generateGetResponse(UserDTO userDto) {
         BasicInfoResponse basicResponse = new BasicInfoResponse();
         return ResponseEntity.ok().body(basicResponse.generateResponse(userDto));
@@ -58,8 +64,8 @@ public class ResponseManager {
     	GetFriendNetworkResponse friendNetworkResponse = new GetFriendNetworkResponse();
     	return ResponseEntity.ok().body(friendNetworkResponse.generateResponse(participantIds));
     }
-    
-    //	<<--CREATE RESPONSE-->>   
+
+    // <<-CREATE RESPONSE->>
     public ResponseEntity<CreateUserResponse> generateCreateResponse(UserDTO userDto) {
     	CreateUserResponse userResponse = new CreateUserResponse();
     	return ResponseEntity.status(HttpStatus.CREATED).body(userResponse.generateResponse(userDto));
@@ -84,8 +90,8 @@ public class ResponseManager {
     	CreateMessageResponse messageResponse = new CreateMessageResponse();
     	return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse.generateResponse(messageDto));
     }
-    
-    //	<<--UPDATE RESPONSE-->>
+
+    // <<-UPDATE RESPONSE->>
     public ResponseEntity<UpdateUserResponse> generateUpdateResponse(UserDTO userDto) {
     	UpdateUserResponse userResponse = new UpdateUserResponse();
     	return ResponseEntity.ok().body(userResponse.generateResponse(userDto));
@@ -128,4 +134,5 @@ public class ResponseManager {
     	UpdateSavedByPostResponse postResponse = new UpdateSavedByPostResponse();
     	return ResponseEntity.ok().body(postResponse.generateResponse(postDTO));
     }
+    
 }

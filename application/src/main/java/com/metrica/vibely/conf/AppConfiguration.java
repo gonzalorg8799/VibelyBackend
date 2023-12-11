@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * <h1></h1>
+ * <h1>App Configuration</h1>
  * 
  * @since 2023-11-29
  * @version 1.0
@@ -18,14 +18,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class AppConfiguration implements WebMvcConfigurer {
 
-    // <<-FIELD->>
+    // <<-FIELDS->>
     private AuthInterceptor authInterceptor;
     private AdminAuthInterceptor adminAuthInterceptor;
 
     // <<-CONSTRUCTOR->>
     @Autowired
-    public AppConfiguration(AuthInterceptor authInterceptor, AdminAuthInterceptor adminAuthInterceptor) {
-        this.authInterceptor = authInterceptor;
+    public AppConfiguration(
+            AuthInterceptor      authInterceptor,
+            AdminAuthInterceptor adminAuthInterceptor
+    ) {
+        this.authInterceptor      = authInterceptor;
         this.adminAuthInterceptor = adminAuthInterceptor;
     }
 
