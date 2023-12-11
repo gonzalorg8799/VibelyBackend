@@ -30,7 +30,7 @@ public class AppConfiguration implements WebMvcConfigurer {
     }
 
     // <<-METHOD->>
-    @Override
+    @Override 
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(this.authInterceptor)
             .addPathPatterns("/api/v1/**")

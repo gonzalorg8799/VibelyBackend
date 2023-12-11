@@ -39,7 +39,6 @@ public class AdminAuthInterceptor implements HandlerInterceptor {
     private boolean setStatus(HttpServletResponse response, String apiKey) {
     	if(ApiKeyManager.isValid(apiKey) == HttpStatusEnum.OK) {
     		UUID userId = ApiKeyManager.getId(apiKey);
-    		System.out.println("tamo en japon");
     		return this.authService.getAdminApikey(userId).equals(apiKey);
     	}
     	if(ApiKeyManager.isValid(apiKey) == HttpStatusEnum.BAD_REQUEST) { 

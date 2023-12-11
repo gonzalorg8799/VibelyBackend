@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.metrica.vibely.data.service.AuthService;
+import com.metrica.vibely.model.request.AdminAuthEmailRequest;
 import com.metrica.vibely.model.request.AdminAuthUserRequest;
 import com.metrica.vibely.model.request.AuthEmailRequest;
 import com.metrica.vibely.model.request.AuthUserRequest;
@@ -78,6 +79,20 @@ public class AuthController {
         String apiKey = this.authService.adminUsernameAuth(authRequest.getUsername(), authRequest.getPassword());
         return ResponseEntity.ok()
                 .body(java.util.Map.of("apiKey", apiKey));
+    } 
+    
+    @PostMapping("/admin/auth/email") 
+    public ResponseEntity<?> login(
+    		@RequestBody
+    		@Valid
+    		AdminAuthEmailRequest authRequest,
+    		BindingResult bindingResult
+    		) {
+    	if (bindingResult.hasErrors()) { return ResponseEntity.badRequest().build(); } 
+    	
+    	String apiKey = this.authService.adminEmailAuth(authRequest.getEmail(), authRequest.getPassword());
+    	return ResponseEntity.ok()
+    			.body(java.util.Map.of("apiKey", apiKey));
     } 
 
 }
