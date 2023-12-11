@@ -54,7 +54,7 @@ public interface UserService extends CrudService<UserDTO, UUID>{
 	 * @return Set<UUID>
 	 * @throws NoSuchElementException
 	 */
-	Map<UUID, Double> getFriendNetwork(UUID id);
+	Set<UUID> getFriendNetwork(UUID id);
 
 	
 }

@@ -14,6 +14,7 @@ import com.metrica.vibely.model.response.update.UpdateUserResponse;
 
 import java.util.UUID;
 
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -96,10 +97,9 @@ public class UserController {
     @GetMapping("/friendNetwork/{id}")
     public ResponseEntity<GetFriendNetworkResponse> getNetwork(@PathVariable UUID id){
 
-		this.userService.getFriendNetwork(id);
+		Set<UUID> participantIds = this.userService.getFriendNetwork(id);
 
-    	return ResponseEntity.notFound().build();
-    	
+        return this.responseManager.generateGetNetworkResponse(participantIds);  	
     }
 
     @PostMapping("/signup")

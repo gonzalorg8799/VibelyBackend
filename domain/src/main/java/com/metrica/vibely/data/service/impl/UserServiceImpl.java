@@ -15,7 +15,10 @@ import com.metrica.vibely.data.util.PasswordHasher;
 	
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -156,7 +159,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Map<UUID, Double> getFriendNetwork(UUID id) {
+	public Set<UUID> getFriendNetwork(UUID id) {
 		User user = userRepository.findById(id).orElseThrow();
 		Set<UUID> followersIds = user.getFollowers().stream()
 									 .map(User::getUserId)
@@ -194,12 +197,38 @@ public class UserServiceImpl implements UserService {
 		                Collectors.summingDouble(post->0.5)
 		        ));
 		
-		// suma de la puntuacion total de cada usuario
+		// Sumamos la puntuacion total de cada usuario
 		Map<UUID, Double> resultMap = new HashMap<>();
 		
         messagePoints.forEach((key, value) -> resultMap.merge(key, value.doubleValue(), Double::sum));
         commentsPoints.forEach((key, value) -> resultMap.merge(key, value, Double::sum));
-        Set<Map.Entry<UUID, Double>> setdemapa;
+        
+        // Cogemos una lista con los valores K, V ordenados y limitamos a los primeros 5 elementos
+        List<Map.Entry<UUID, Double>> listOfValuesOrderedByValue = resultMap.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(5)
+                .collect(Collectors.toList());
+
+        // Volvemos a meter los valores ordenados en un mapa
+        // Usamos LinkedHashMap para que mantenga el orden de los valores introducidos
+        Map<UUID, Double> linkedMapFriendNetwork = listOfValuesOrderedByValue.stream()
+                .collect(Collectors
+                		.toMap(Map.Entry::getKey,
+                				Map.Entry::getValue, 
+                				(e1, e2) -> e1,  //esta linea es para la resolucion de conflictos,
+                				//en nuestro caso no hace falta ya que no deben llegar duplicados hasta aqui,
+                				//pero la interfaz Collector te obliga.
+                				LinkedHashMap::new));
+        
+
+	     // Obtenemos solo los UUID de los primeros cinco elementos
+	     Set<UUID> listFriendNetwork = listOfValuesOrderedByValue.stream()
+	             .map(Map.Entry::getKey)
+	             .collect(Collectors.toSet());
+	     
+	     return listFriendNetwork;
+        
 	}
 
 
