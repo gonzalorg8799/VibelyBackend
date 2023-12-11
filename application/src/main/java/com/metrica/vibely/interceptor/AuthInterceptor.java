@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.metrica.vibely.data.model.enumerator.HttpStatusEnum;
 import com.metrica.vibely.data.service.AuthService;
 import com.metrica.vibely.data.util.ApiKeyManager;
 
@@ -35,23 +36,17 @@ public class AuthInterceptor implements HandlerInterceptor {
 	
     // <<-METHODS->>
     private boolean setStatus(HttpServletResponse response, String apiKey) {
-        return switch (ApiKeyManager.isValid(apiKey)) {
-            case 0 -> {
-                UUID userId = ApiKeyManager.getId(apiKey);
-                
-                String userApiKey = this.authService.getApikey(userId);
-                yield userApiKey.equals(apiKey);
-            }
-            case 1 -> {
-                response.setStatus(400);
-                yield false;
-            }
-            case 2 -> {
-                response.setStatus(401);
-                yield false;
-            }
-            default -> false;
-        };
+    	if(ApiKeyManager.isValid(apiKey) == HttpStatusEnum.OK) {
+    		UUID userId = ApiKeyManager.getId(apiKey);
+    		return this.authService.getApikey(userId).equals(apiKey);
+    	}
+    	if(ApiKeyManager.isValid(apiKey) == HttpStatusEnum.BAD_REQUEST) { 
+    		response.setStatus(HttpStatusEnum.BAD_REQUEST.getStatus()); 
+    	}
+    	if(ApiKeyManager.isValid(apiKey) == HttpStatusEnum.INVALID_CREDENTIALS) {
+    		response.setStatus(HttpStatusEnum.INVALID_CREDENTIALS.getStatus());
+    	}
+    	return false;
     }
 	
 

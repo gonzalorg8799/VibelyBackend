@@ -1,0 +1,40 @@
+package com.metrica.vibely.model.request;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import com.metrica.vibely.data.model.dto.PostDTO;
+
+import jakarta.validation.constraints.NotNull;
+
+public class UpdateSavedByPostRequest {
+
+	// <<-FIELDS->>
+		@NotNull
+		private UUID userId;
+		
+		// <<-CONSTRUCTOR->>
+	    public UpdateSavedByPostRequest() {
+	    }
+	    
+	    // <<-METHODS->>
+	    public PostDTO toDTO() {
+	    	PostDTO postDTO = new PostDTO();
+	    	Set<UUID> savedBySet = new HashSet<>();
+	    	savedBySet.add(userId);
+	        
+	    	postDTO.setSavedBy(savedBySet);
+	        
+	        return postDTO;
+	    }
+
+	    // <<-GETTERS & SETTERS->>
+		public UUID getUserId() {
+			return userId;
+		}
+
+		public void setUserId(UUID userId) {
+			this.userId = userId;
+		}
+}
