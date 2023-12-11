@@ -1,10 +1,8 @@
 package com.metrica.vibely.service;
 
-import java.util.UUID;
-
-import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.model.dto.MessageDTO;
-import com.metrica.vibely.data.model.dto.UserDTO;
+
+import java.util.UUID;
 
 /**
  * <h1>Message Service</h1>

@@ -1,11 +1,5 @@
 package com.metrica.vibely.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.Message;
 import com.metrica.vibely.data.entity.User;
@@ -17,6 +11,12 @@ import com.metrica.vibely.data.repository.ChatRepository;
 import com.metrica.vibely.data.repository.MessageRepository;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.service.MessageService;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @since 2023-11-27
@@ -93,6 +93,6 @@ public class MessageServiceImpl implements MessageService{
 	public UUID getChat(UUID messageId) {
 		MessageDTO messageDto = MessageMapper.toDTO(messageRepository.findById(messageId).get());
 		return messageDto.getChat();
-	}
+    }
 
 }

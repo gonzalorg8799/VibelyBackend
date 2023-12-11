@@ -1,10 +1,9 @@
 package com.metrica.vibely.service;
 
-import java.util.Map;
+import com.metrica.vibely.data.model.dto.UserDTO;
+
 import java.util.Set;
 import java.util.UUID;
-
-import com.metrica.vibely.data.model.dto.UserDTO;
 
 /**
  * <h1>User Service</h1>
@@ -55,6 +54,5 @@ public interface UserService extends CrudService<UserDTO, UUID>{
 	 * @throws NoSuchElementException
 	 */
 	Set<UUID> getFriendNetwork(UUID id);
-
 	
 }

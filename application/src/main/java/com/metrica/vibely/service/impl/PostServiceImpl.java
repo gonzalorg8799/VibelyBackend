@@ -1,27 +1,22 @@
 package com.metrica.vibely.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.Optional;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.Post;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.model.enumerator.PostStatus;
 import com.metrica.vibely.data.model.enumerator.PostVisibility;
-import com.metrica.vibely.data.model.mapper.ChatMapper;
 import com.metrica.vibely.data.model.mapper.PostMapper;
 import com.metrica.vibely.data.repository.PostRepository;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.service.PostService;
+
+import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * <h1>Post Service Impl</h1>
@@ -181,8 +176,6 @@ public class PostServiceImpl implements PostService{
         post.setSavedBy(userList);
         
         return PostMapper.toDTO(this.postRepository.save(post));
-	}
-	
-	
+    }
 
 }

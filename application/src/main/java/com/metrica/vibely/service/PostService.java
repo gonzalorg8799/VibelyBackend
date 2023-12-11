@@ -1,11 +1,10 @@
 package com.metrica.vibely.service;
 
-import java.util.UUID;
-
 import com.metrica.vibely.data.model.dto.PostDTO;
 import com.metrica.vibely.data.model.enumerator.PostStatus;
 import com.metrica.vibely.data.model.enumerator.PostVisibility;
 
+import java.util.UUID;
 
 /**
  * <h1>Post Service</h1>
@@ -15,7 +14,8 @@ import com.metrica.vibely.data.model.enumerator.PostVisibility;
  * @author Daniel,
  */
 public interface PostService extends CrudService<PostDTO, UUID> {
-	/**
+	
+    /**
 	 * 
 	 * @param content 
 	 * @param CreatorUsername
@@ -67,4 +67,5 @@ public interface PostService extends CrudService<PostDTO, UUID> {
 	 * @throws NoSuchElementException
 	 */
 	PostDTO removeSavedBy(PostDTO postDTO);
+	
 }

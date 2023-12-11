@@ -1,11 +1,11 @@
 package com.metrica.vibely.service;
 
-import java.util.Set;
-import java.util.UUID;
-
 import com.metrica.vibely.data.entity.Message;
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.model.dto.ChatDTO;
+
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * <h1>Chat Service</h1>
@@ -15,7 +15,8 @@ import com.metrica.vibely.data.model.dto.ChatDTO;
  * @author Daniel, Raul
  */
 public interface ChatService extends CrudService<ChatDTO, UUID> {	
-	/**
+	
+    /**
 	 * Adds users to the chat
 	 * @param users to add
 	 * @throws NoSuchElementException

@@ -40,7 +40,7 @@ public class AdminController {
 
     // <<-FIELD->>
     private ResponseManager responseManager;
-    private AdminService adminService;
+    private AdminService    adminService;
 
     // <<-CONSTRUCTOR->>
     @Autowired

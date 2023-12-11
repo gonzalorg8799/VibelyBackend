@@ -1,12 +1,5 @@
 package com.metrica.vibely.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import com.metrica.vibely.data.entity.Chat;
 import com.metrica.vibely.data.entity.Message;
 import com.metrica.vibely.data.entity.User;
@@ -19,7 +12,16 @@ import com.metrica.vibely.data.repository.ChatRepository;
 import com.metrica.vibely.data.repository.UserRepository;
 import com.metrica.vibely.service.ChatService;
 
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 /**
+ * <h1>Chat Service Impl</h1>
+ * 
  * @since 2023-11-23
  * @author Raul
  * @version 1.0
@@ -117,5 +119,7 @@ public class ChatServiceImpl implements ChatService {
 		if(newStatus != null) { chat.setStatus(newStatus); }
 		
 		return ChatMapper.toDTO(this.chatRepository.save(chat));
-	}	
+	}
+	
 }
+

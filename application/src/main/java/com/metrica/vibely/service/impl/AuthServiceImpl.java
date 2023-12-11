@@ -1,10 +1,5 @@
 package com.metrica.vibely.service.impl;
 
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.metrica.vibely.data.entity.User;
 import com.metrica.vibely.data.exception.InvalidCredentialsException;
 import com.metrica.vibely.data.repository.AdminRepository;
@@ -13,10 +8,16 @@ import com.metrica.vibely.data.util.ApiKeyManager;
 import com.metrica.vibely.data.util.PasswordHasher;
 import com.metrica.vibely.service.AuthService;
 
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  * 
  * @since 2023-11-14
  * @version 1.0
+ * @author
  */
 @Service
 public class AuthServiceImpl implements AuthService {
