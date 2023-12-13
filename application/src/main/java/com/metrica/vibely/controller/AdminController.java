@@ -7,7 +7,7 @@ import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.model.request.CreateAdminRequest;
 import com.metrica.vibely.model.request.UpdateAdminRequest;
 import com.metrica.vibely.model.response.create.CreateAdminResponse;
-import com.metrica.vibely.model.response.get.BasicInfoResponse;
+import com.metrica.vibely.model.response.get.GetAdminResponse;
 import com.metrica.vibely.model.response.update.UpdateAdminResponse;
 import com.metrica.vibely.service.AdminService;
 
@@ -53,13 +53,13 @@ public class AdminController {
 
     // <<-METHODS->>
     @GetMapping("/{id}")
-    public ResponseEntity<BasicInfoResponse> getById(@PathVariable UUID id) {
+    public ResponseEntity<GetAdminResponse> getById(@PathVariable UUID id) {
         AdminDTO adminDTO = this.adminService.getById(id);
         return this.responseManager.generateGetResponse(adminDTO);
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<BasicInfoResponse> getByUsername(@PathVariable String username) {
+    public ResponseEntity<GetAdminResponse> getByUsername(@PathVariable String username) {
         AdminDTO adminDTO = this.adminService.getByUsername(username);
         
         if (adminDTO.getState()   != UserState.DISABLED &&
@@ -71,7 +71,7 @@ public class AdminController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<BasicInfoResponse> getByEmail(@PathVariable String email) {
+    public ResponseEntity<GetAdminResponse> getByEmail(@PathVariable String email) {
         AdminDTO adminDTO = this.adminService.getByEmail(email);
         
         if (adminDTO.getState()   != UserState.DISABLED &&

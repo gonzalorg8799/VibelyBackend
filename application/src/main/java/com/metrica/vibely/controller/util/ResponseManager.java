@@ -1,5 +1,12 @@
 package com.metrica.vibely.controller.util;
 
+import java.util.Set;
+import java.util.UUID;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
 import com.metrica.vibely.data.model.dto.AdminDTO;
 import com.metrica.vibely.data.model.dto.ChatDTO;
 import com.metrica.vibely.data.model.dto.MessageDTO;
@@ -10,11 +17,12 @@ import com.metrica.vibely.model.response.create.CreateChatResponse;
 import com.metrica.vibely.model.response.create.CreateMessageResponse;
 import com.metrica.vibely.model.response.create.CreatePostResponse;
 import com.metrica.vibely.model.response.create.CreateUserResponse;
-import com.metrica.vibely.model.response.get.BasicInfoResponse;
+import com.metrica.vibely.model.response.get.GetAdminResponse;
 import com.metrica.vibely.model.response.get.GetChatResponse;
 import com.metrica.vibely.model.response.get.GetFriendNetworkResponse;
 import com.metrica.vibely.model.response.get.GetMessageResponse;
 import com.metrica.vibely.model.response.get.GetPostResponse;
+import com.metrica.vibely.model.response.get.GetUserResponse;
 import com.metrica.vibely.model.response.update.UpdateAdminResponse;
 import com.metrica.vibely.model.response.update.UpdateChatResponse;
 import com.metrica.vibely.model.response.update.UpdateLikedByPostResponse;
@@ -22,13 +30,6 @@ import com.metrica.vibely.model.response.update.UpdateMessageResponse;
 import com.metrica.vibely.model.response.update.UpdatePostResponse;
 import com.metrica.vibely.model.response.update.UpdateSavedByPostResponse;
 import com.metrica.vibely.model.response.update.UpdateUserResponse;
-
-import java.util.Set;
-import java.util.UUID;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 
 /**
  * 
@@ -40,9 +41,14 @@ import org.springframework.stereotype.Component;
 public class ResponseManager {
 
     // <<-GET RESPONSE->>
-    public ResponseEntity<BasicInfoResponse> generateGetResponse(UserDTO userDto) {
-        BasicInfoResponse basicResponse = new BasicInfoResponse();
-        return ResponseEntity.ok().body(basicResponse.generateResponse(userDto));
+    public ResponseEntity<GetUserResponse> generateGetResponse(UserDTO userDto) {
+        GetUserResponse userResponse = new GetUserResponse();
+        return ResponseEntity.ok().body(userResponse.generateResponse(userDto));
+    }
+    
+    public ResponseEntity<GetAdminResponse> generateGetResponse(AdminDTO adminDto) {
+    	GetAdminResponse adminResponse = new GetAdminResponse();
+    	return ResponseEntity.ok().body(adminResponse.generateResponse(adminDto));
     }
     
     public ResponseEntity<GetPostResponse> generateGetResponse(PostDTO postDto) {

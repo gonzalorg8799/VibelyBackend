@@ -14,7 +14,7 @@ import java.util.UUID;
  * @version 1.0
  * @author Alex
  */
-public class BasicInfoResponse {
+public class GetUserResponse {
     
     // <<-FIELDS->>
     private UUID userId;
@@ -28,11 +28,11 @@ public class BasicInfoResponse {
     private Set<UUID> posts;
     
     // <<-CONSTRUCTOR->>
-    public BasicInfoResponse() {
+    public GetUserResponse() {
     }
     
     // <<-METHOD->>
-    public <T extends UserDTO> BasicInfoResponse generateResponse(T dto) {
+    public GetUserResponse generateResponse(UserDTO dto) {
         this.setUserId   (dto.getUserId());
         this.setUsername (dto.getUsername());
         this.setNickname (dto.getNickname());

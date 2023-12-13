@@ -7,7 +7,7 @@ import com.metrica.vibely.data.model.enumerator.UserState;
 import com.metrica.vibely.model.request.CreateUserRequest;
 import com.metrica.vibely.model.request.UpdateUserRequest;
 import com.metrica.vibely.model.response.create.CreateUserResponse;
-import com.metrica.vibely.model.response.get.BasicInfoResponse;
+import com.metrica.vibely.model.response.get.GetUserResponse;
 import com.metrica.vibely.model.response.update.UpdateUserResponse;
 import com.metrica.vibely.service.UserService;
 
@@ -51,7 +51,7 @@ public class UserController {
 
     // <<-METHODS->>
     @GetMapping("/{id}")
-    public ResponseEntity<BasicInfoResponse> getById(@PathVariable UUID id) {
+    public ResponseEntity<GetUserResponse> getById(@PathVariable UUID id) {
         UserDTO userDTO = this.userService.getById(id);
         
         if (userDTO.getState() != UserState.DISABLED) {
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<BasicInfoResponse> getByUsername(@PathVariable String username) {
+    public ResponseEntity<GetUserResponse> getByUsername(@PathVariable String username) {
         UserDTO userDTO = this.userService.getByUsername(username);
         
         if (userDTO.getState()   != UserState.DISABLED &&
@@ -74,7 +74,7 @@ public class UserController {
     }
     
     @GetMapping("/email/{email}")
-    public ResponseEntity<BasicInfoResponse> getByEmail(@PathVariable String email) {
+    public ResponseEntity<GetUserResponse> getByEmail(@PathVariable String email) {
         UserDTO userDTO = this.userService.getByEmail(email);
         
         if (userDTO.getState()   != UserState.DISABLED &&
